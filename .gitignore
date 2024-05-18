@@ -1,9 +1,5 @@
 # Compiled class file
 *.class
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'main' of https://github.com/Fabricio-Camilla/poo2.unq.tp-final.grupo.puc
 
 # Log file
 *.log
@@ -13,11 +9,7 @@
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
-<<<<<<< HEAD
-*.classpath
-=======
 .classpath
->>>>>>> branch 'main' of https://github.com/Fabricio-Camilla/poo2.unq.tp-final.grupo.puc
 
 # Package Files #
 *.jar
