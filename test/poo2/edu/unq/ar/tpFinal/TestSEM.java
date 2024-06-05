@@ -10,17 +10,17 @@ import org.mockito.Mockito;
 public class TestSEM {
 
 	private SEM sem;
-	private Usuario usuario;
+	private AppDeUsuario usuario;
 
 	@BeforeEach
 
 	void setUp() {
 		sem = new SEM();
-		usuario = mock(Usuario.class);
+		usuario = mock(AppDeUsuario.class);
 	}
 
 	@Test
-	void unSemRegistraAUnUsuario() {
+	void testUnSemRegistraAUnUsuario() {
 		sem.registrarAlUsuario(usuario);
 		assertTrue(sem.tieneRegistradoAlUsuario(usuario));
 	}

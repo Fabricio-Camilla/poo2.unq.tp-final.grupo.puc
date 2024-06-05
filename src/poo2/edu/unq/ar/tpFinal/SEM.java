@@ -5,17 +5,17 @@ import java.util.List;
 
 public class SEM {
 
-	private List<Usuario> usuarios;
+	private List<AppDeUsuario> usuarios;
 
 	public SEM() {
-		this.usuarios = new ArrayList<Usuario>();
+		this.usuarios = new ArrayList<AppDeUsuario>();
 	}
 
-	public void registrarAlUsuario(Usuario usuario) {
+	public void registrarAlUsuario(AppDeUsuario usuario) {
 		this.usuarios.add(usuario);
 	}
 
-	public boolean tieneRegistradoAlUsuario(Usuario usuario) {
+	public boolean tieneRegistradoAlUsuario(AppDeUsuario usuario) {
 		return this.usuarios.contains(usuario);
 	}
 
