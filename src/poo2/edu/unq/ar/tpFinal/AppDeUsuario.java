@@ -1,13 +1,18 @@
 package poo2.edu.unq.ar.tpFinal;
 
-public class AppDeUsuario {
+import java.util.ArrayList;
+import java.util.List;
+
+public class AppDeUsuario implements MovementSensor{
 	
 	private String celular;
 	private String patente;
 	private Double credito;
 	private ModoDeUso modo;
+	private List<String> notificaciones;
 	private IEstadoDeEstacionamiento estado;
-	//private MovementSensor sensor;
+	private SEM sem;
+	private MovementSensor sensor;
 	
 	public AppDeUsuario(String celular, String patente) {
 		this.setCelular(celular);
@@ -15,35 +20,29 @@ public class AppDeUsuario {
 		this.modo = new ModoManual();
 		this.credito = 0d; 
 		this.estado = new EstacionamientoNoVigente();
+		this.sem = new SEM();
+		this.notificaciones = new ArrayList<String>();
 	}
 	
-	/*public void indicarFinDeEstacionamiento() {
-			this.estado.finalizarEstacionamiento(this.patente, this.sem);
+	public void indicarFinDeEstacionamiento() {
+			this.sem.indicarFinEstacionamiento(this.patente);
 	}
 	
 	public void indicarInicioDeEstaciomiento(){
-	* pasaria la app entera pq con la patente no le podes preg el saldo para validar
-			this.estado.iniciarEstacionamiento(this.celular, this.sem);
+	//pasaria la app entera pq con la patente no le podes preg el saldo para validar
+			this.sem.indicarInicioEstacionamiento(this.celular);
 	}
-	@override
+
+	@Override
 	public void driving(){
-		if(this.estado.estaVigente()){
-		*con alerta
-			this.estado.alertaFinInicioEstacionamiento(this.celular,this.sem);
-			}
+			this.estado.alertaFinEstacionamiento(this);
 	}
-	
-	@override
+
+	@Override
 	public void walking(){
-		if(this.estado.estaVigente(){
-			this.driving()
-			}
+			this.estado.alertaInicioEstacionamiento(this);
 		}
-	
-	*/
-	
-	
-	
+		
 	private void setCelular(String celular) {
 		this.celular = celular;
 		
@@ -74,4 +73,13 @@ public class AppDeUsuario {
 	public IEstadoDeEstacionamiento getEstado() {
 		return this.estado;
 	}
+
+	public void notificarFinEstacionamiento(String mensaje) {
+		this.notificaciones.add(mensaje);
+	}
+
+	public void notificarInicioEstacionamiento(String mensaje) {
+		this.notificaciones.add(mensaje);
+	}
+
 }

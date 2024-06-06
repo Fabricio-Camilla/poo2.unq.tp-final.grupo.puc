@@ -2,12 +2,11 @@ package poo2.edu.unq.ar.tpFinal;
 
 public class EstacionamientoNoVigente implements IEstadoDeEstacionamiento{
 	
-public void iniciarEstacionamiento(String patente) {
-		
+	public void alertaInicioEstacionamiento(AppDeUsuario usuario) {
+		usuario.notificarInicioEstacionamiento("Alerta inicio Estacionamiento");
 	}
 	
-	public void finalizarEstacionamiento(String celular) {
-		
+	public void alertaFinEstacionamiento(AppDeUsuario usuario){
 	}
 	
 	public boolean estaVigente() {
