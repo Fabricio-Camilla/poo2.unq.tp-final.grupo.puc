@@ -1,10 +1,10 @@
 package poo2.edu.unq.ar.tpFinal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 public class TestAppDeUsuario {
 	
@@ -19,15 +19,16 @@ public class TestAppDeUsuario {
 		modoAutomatico = mock(ModoAutomatico.class);
 	}
 	
+	
 	@Test
 	void testUnaAppSeCreaSinCredito(){
-		assertEquals(appDeUsuario.getCredito(), 0.0);
+		assertEquals(appDeUsuario.getCredito(), 0d);
 	}
 	
 	@Test
 	void testUnaAppPuedeCargarCredito() {
-		appDeUsuario.cargarCredito(20);
-		assertEquals(appDeUsuario.getCredito(), 20);
+		appDeUsuario.cargarCredito(20d);
+		assertEquals(appDeUsuario.getCredito(), 20d);
 	}
 	
 	@Test

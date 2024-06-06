@@ -1,6 +1,6 @@
 package poo2.edu.unq.ar.tpFinal;
 
-public class EstacionamientoNoVigente {
+public class EstacionamientoNoVigente implements IEstadoDeEstacionamiento{
 	
 public void iniciarEstacionamiento(String patente) {
 		

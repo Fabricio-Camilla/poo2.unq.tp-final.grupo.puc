@@ -4,15 +4,45 @@ public class AppDeUsuario {
 	
 	private String celular;
 	private String patente;
-	private double credito;
+	private Double credito;
 	private ModoDeUso modo;
+	private IEstadoDeEstacionamiento estado;
+	//private MovementSensor sensor;
 	
 	public AppDeUsuario(String celular, String patente) {
 		this.setCelular(celular);
 		this.setPatente(patente);
 		this.modo = new ModoManual();
-		this.credito = 0; 
+		this.credito = 0d; 
+		this.estado = new EstacionamientoNoVigente();
 	}
+	
+	/*public void indicarFinDeEstacionamiento() {
+			this.estado.finalizarEstacionamiento(this.patente, this.sem);
+	}
+	
+	public void indicarInicioDeEstaciomiento(){
+	* pasaria la app entera pq con la patente no le podes preg el saldo para validar
+			this.estado.iniciarEstacionamiento(this.celular, this.sem);
+	}
+	@override
+	public void driving(){
+		if(this.estado.estaVigente()){
+		*con alerta
+			this.estado.alertaFinInicioEstacionamiento(this.celular,this.sem);
+			}
+	}
+	
+	@override
+	public void walking(){
+		if(this.estado.estaVigente(){
+			this.driving()
+			}
+		}
+	
+	*/
+	
+	
 	
 	private void setCelular(String celular) {
 		this.celular = celular;
@@ -28,7 +58,7 @@ public class AppDeUsuario {
 		return this.credito;
 	}
 
-	public void cargarCredito(double creditoACargar) {
+	public void cargarCredito(Double creditoACargar) {
 		this.credito += creditoACargar;
 	}
 
@@ -39,5 +69,9 @@ public class AppDeUsuario {
 
 	public ModoDeUso getModo() {
 		return this.modo;
+	}
+
+	public IEstadoDeEstacionamiento getEstado() {
+		return this.estado;
 	}
 }
