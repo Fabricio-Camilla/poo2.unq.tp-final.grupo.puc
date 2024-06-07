@@ -25,11 +25,11 @@ public class AppDeUsuario implements MovementSensor {
 	}
 
 	public void indicarFinDeEstacionamiento() {
-		this.sem.indicarFinEstacionamiento(this);
-	}
+		this.modo.finDeEstacionamiento(this);
+	} 
 
 	public void indicarInicioDeEstaciomiento() {
-		this.sem.indicarInicioEstacionamiento(this);
+		this.modo.inicioDeEstacionamiento(this);
 	}
 
 	@Override
@@ -87,9 +87,20 @@ public class AppDeUsuario implements MovementSensor {
 	public void setEstado(IEstadoDeEstacionamiento estado) {
 		this.estado = estado;
 	}
+	public SEM getSEM() {
+		return this.sem;
+	}
 
 	public void setSEM(SEM sem) {
 		this.sem = sem;
+	}
+
+	public void cambiarAEstadoVigente(IEstadoDeEstacionamiento estacionamiento) {
+		this.estado = estacionamiento;
+	}
+
+	public void cambiarAEstadoNoVigente(IEstadoDeEstacionamiento estacionamiento) {
+		this.estado = estacionamiento;
 	}
 
 }

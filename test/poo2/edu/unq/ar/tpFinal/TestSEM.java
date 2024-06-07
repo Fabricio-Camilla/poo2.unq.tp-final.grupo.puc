@@ -40,7 +40,7 @@ public class TestSEM {
 	void testElSemNoRegistraDosVecesAlMismoUsuario() {
 		sem.registrarAlUsuario(usuario);
 		sem.registrarAlUsuario(usuario);
-		assertEquals(sem.cantidadDeUsuarioRegistrados(), 1);
+		assertEquals(sem.cantidadDeUsuarioRegistrados(), 1); 
 	}
 
 	@Test

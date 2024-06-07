@@ -88,6 +88,8 @@ public class TestAppDeUsuario {
 	}
 	
 	
+	//si falta coverage, el caso estando no vigente que le llegue driving y vigente walking 
+	
 	
 	
 	
