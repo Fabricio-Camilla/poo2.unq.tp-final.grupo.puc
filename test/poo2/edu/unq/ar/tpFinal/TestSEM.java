@@ -45,7 +45,7 @@ public class TestSEM {
 	}
 
 	@Test
-	void testElSemNoRegistraUnaMismaZonaDeEstacionamientoDosVeces() {
+	void testElSemRegistraUnaZonaDeEstacionamiento() {
 		sem.registrarZonaDeEstacionamiento(new Point(1,2));
 		assertEquals(sem.cantidadDeZonasDeEstacionamiento(), 1);
 	}
