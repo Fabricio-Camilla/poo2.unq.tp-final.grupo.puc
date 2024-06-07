@@ -64,6 +64,7 @@ public class TestAppDeUsuario {
 		assertFalse(appDeUsuario.getEstado().estaVigente());
 		appDeUsuario.indicarFinDeEstacionamiento();
 		verify(sem).indicarFinEstacionamiento(appDeUsuario);
+		//esta bien que falle no implementado
 	}
 	
 	@Test
@@ -72,6 +73,7 @@ public class TestAppDeUsuario {
 		appDeUsuario.indicarInicioDeEstaciomiento();
 		assertFalse(appDeUsuario.getEstado().estaVigente());
 		verify(sem).indicarInicioEstacionamiento(appDeUsuario);
+		//esta bien que falle no implementado
 	}
 	
 	@Test

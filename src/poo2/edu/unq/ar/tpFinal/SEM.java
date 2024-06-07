@@ -39,11 +39,11 @@ public class SEM {
 	}
 
 	public void indicarFinEstacionamiento(AppDeUsuario appDeUsuario) {
-		//en base 
+		//en base al celular asociado a la app se finaliza el estacionamiento
 	}
 
 	public void indicarInicioEstacionamiento(AppDeUsuario appDeUsuario) {
-		// TODO Auto-generated method stub
+		// hay que chekiar que la app tenga credito para iniciar el estacionamiento
 		
 	}
 
