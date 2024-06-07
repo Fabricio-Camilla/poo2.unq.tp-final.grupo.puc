@@ -25,13 +25,11 @@ public class AppDeUsuario implements MovementSensor {
 	}
 
 	public void indicarFinDeEstacionamiento() {
-		this.sem.indicarFinEstacionamiento(this.patente);
+		this.sem.indicarFinEstacionamiento(this);
 	}
 
 	public void indicarInicioDeEstaciomiento() {
-		// pasaria la app entera pq con la patente no le podes preg el saldo para
-		// validar
-		this.sem.indicarInicioEstacionamiento(this.celular);
+		this.sem.indicarInicioEstacionamiento(this);
 	}
 
 	@Override
@@ -42,6 +40,10 @@ public class AppDeUsuario implements MovementSensor {
 	@Override
 	public void walking() {
 		this.estado.alertaInicioEstacionamiento(this);
+	}
+	
+	public String getPatente() {
+		return this.patente;
 	}
 
 	private void setCelular(String celular) {
@@ -64,7 +66,6 @@ public class AppDeUsuario implements MovementSensor {
 
 	public void cambiarModo(ModoDeUso modoDeUso) {
 		this.modo = modoDeUso;
-
 	}
 
 	public ModoDeUso getModo() {
@@ -81,6 +82,14 @@ public class AppDeUsuario implements MovementSensor {
 
 	public void notificarInicioEstacionamiento(String mensaje) {
 		this.notificaciones.add(mensaje);
+	}
+
+	public void setEstado(IEstadoDeEstacionamiento estado) {
+		this.estado = estado;
+	}
+
+	public void setSEM(SEM sem) {
+		this.sem = sem;
 	}
 
 }
