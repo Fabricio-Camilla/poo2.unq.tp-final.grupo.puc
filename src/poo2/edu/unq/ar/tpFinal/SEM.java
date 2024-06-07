@@ -38,6 +38,15 @@ public class SEM {
 		return this.zonasDeEstacionamiento.size();
 	}
 
+	public void indicarFinEstacionamiento(AppDeUsuario appDeUsuario) {
+		//en base 
+	}
+
+	public void indicarInicioEstacionamiento(AppDeUsuario appDeUsuario) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse
 	// aparte
 

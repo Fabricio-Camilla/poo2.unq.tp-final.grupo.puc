@@ -20,6 +20,7 @@ public class TestAppDeUsuario {
 	private IEstadoDeEstacionamiento noVigente;
 	private SEM sem;
 	
+
 	@BeforeEach
 	void setUp() {
 		appDeUsuario = new AppDeUsuario("1118654287", "SNW 025");
