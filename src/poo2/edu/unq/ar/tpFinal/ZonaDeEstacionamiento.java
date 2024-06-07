@@ -25,5 +25,9 @@ public class ZonaDeEstacionamiento {
 	public boolean seEncuentraUbicadaEnLaLocalizacion(Point localizacion) {
 		return this.localizacion.equals(localizacion);
 	}
+	
+	public boolean tieneAsignadoAlInspector(AppInspector inspector) {
+		return this.inspector.equals(inspector);
+	}
 
 }

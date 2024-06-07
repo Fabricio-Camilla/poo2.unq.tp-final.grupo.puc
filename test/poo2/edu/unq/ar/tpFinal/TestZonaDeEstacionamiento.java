@@ -32,4 +32,9 @@ public class TestZonaDeEstacionamiento {
 	void cuandoSeCreaUnaZonaDeEstacionamientoSeEncuentraEnUnPuntoDelMapa() {
 		assertTrue(zonaEstacionamiento.seEncuentraUbicadaEnLaLocalizacion(new Point(1, 2)));
 	}
+
+	@Test
+	void cuandoSeCreaUnaZonaDeEstacionamientoLaMismaTieneUnInspectorAsignado() {
+		assertTrue(zonaEstacionamiento.tieneAsignadoAlInspector(inspector));
+	}
 }

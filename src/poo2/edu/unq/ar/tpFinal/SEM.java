@@ -23,12 +23,12 @@ public class SEM {
 		return this.usuarios.contains(usuario);
 	}
 
-	public void registrarZonaDeEstacionamiento(Point unPuntoDelMapa) {
-		AppInspector inspector = new AppInspector();
-		ZonaDeEstacionamiento zonaEstacionamiento = new ZonaDeEstacionamiento(this, unPuntoDelMapa, inspector, LocalTime.of(7, 0),
-				LocalTime.of(20, 0), 40d);
+	public void registrarZonaDeEstacionamiento(Point localizacion) {
+		AppInspector inspector = new AppInspector(this);
+		ZonaDeEstacionamiento zonaEstacionamiento = new ZonaDeEstacionamiento(this, localizacion, inspector,
+				LocalTime.of(7, 0), LocalTime.of(20, 0), 40d);
 		this.zonasDeEstacionamiento.add(zonaEstacionamiento);
-	} 
+	}
 
 	public int cantidadDeUsuarioRegistrados() {
 		return this.usuarios.size();
@@ -38,16 +38,6 @@ public class SEM {
 		return this.zonasDeEstacionamiento.size();
 	}
 
-	public void indicarFinEstacionamiento(AppDeUsuario appDeUsuario) {
-		//en base al numero de celular del usuario se finaliza el usuario
-	}
-
-	public void indicarInicioEstacionamiento(AppDeUsuario appDeUsuario) {
-		//se comprueba si la app tiene credito y se registra el estacionamiento
-	}
-
-	// registrar una zona de estacionamiento con una fraja horaria, pasando precio
-	// por hora
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse
 	// aparte
 
