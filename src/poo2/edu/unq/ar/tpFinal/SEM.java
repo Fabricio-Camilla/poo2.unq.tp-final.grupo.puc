@@ -1,14 +1,17 @@
 package poo2.edu.unq.ar.tpFinal;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SEM {
-
-	private List<AppDeUsuario> usuarios;
+	private Set<ZonaDeEstacionamiento> zonasDeEstacionamiento;
+	private Set<AppDeUsuario> usuarios;
 
 	public SEM() {
-		this.usuarios = new ArrayList<AppDeUsuario>();
+		this.usuarios = new HashSet<AppDeUsuario>();
+		this.zonasDeEstacionamiento = new HashSet<ZonaDeEstacionamiento>();
 	}
 
 	public void registrarAlUsuario(AppDeUsuario usuario) {
@@ -17,6 +20,22 @@ public class SEM {
 
 	public boolean tieneRegistradoAlUsuario(AppDeUsuario usuario) {
 		return this.usuarios.contains(usuario);
+	}
+
+	public void registrarZonaDeEstacionamiento(ZonaDeEstacionamiento zonaEstacionamiento) {
+		this.zonasDeEstacionamiento.add(zonaEstacionamiento);
+	}
+
+	public int cantidadDeUsuarioRegistrados() {
+		return this.usuarios.size();
+	}
+
+	public boolean tieneRegistradaLaZonaDeEstacionamiento(ZonaDeEstacionamiento zonaEstacionamiento) {
+		return this.zonasDeEstacionamiento.contains(zonaEstacionamiento);
+	}
+
+	public int cantidadDeZonasDeEstacionamiento() {
+		return this.zonasDeEstacionamiento.size();
 	}
 
 	// registrar una zona de estacionamiento con una fraja horaria, pasando precio
