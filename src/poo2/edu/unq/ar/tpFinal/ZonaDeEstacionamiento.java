@@ -12,9 +12,9 @@ public class ZonaDeEstacionamiento {
 	private Double precioHora;
 	private Point localizacion;
 
-	public ZonaDeEstacionamiento(SEM sem, Point unaLocalizacion, AppInspector inspector, LocalTime horaInicio,
+	public ZonaDeEstacionamiento(SEM sem, Point unaLocalizacion, LocalTime horaInicio,
 			LocalTime horaFin, Double precioHora) {
-		this.inspector = inspector;
+		this.inspector = new AppInspector(this, sem);;
 		this.sem = sem;
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
@@ -26,8 +26,8 @@ public class ZonaDeEstacionamiento {
 		return this.localizacion.equals(localizacion);
 	}
 	
-	public boolean tieneAsignadoAlInspector(AppInspector inspector) {
-		return this.inspector.equals(inspector);
+	public boolean tieneAsignadoUnInspector() {
+		return this.inspector.estaAsignadoALaZonaDeEstacionamiento(this);
 	}
 
 }

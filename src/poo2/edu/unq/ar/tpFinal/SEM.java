@@ -24,8 +24,7 @@ public class SEM {
 	}
 
 	public void registrarZonaDeEstacionamiento(Point localizacion) {
-		AppInspector inspector = new AppInspector(this);
-		ZonaDeEstacionamiento zonaEstacionamiento = new ZonaDeEstacionamiento(this, localizacion, inspector,
+		ZonaDeEstacionamiento zonaEstacionamiento = new ZonaDeEstacionamiento(this, localizacion,
 				LocalTime.of(7, 0), LocalTime.of(20, 0), 40d);
 		this.zonasDeEstacionamiento.add(zonaEstacionamiento);
 	}

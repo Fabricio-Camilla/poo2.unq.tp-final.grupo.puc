@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 public class TestZonaDeEstacionamiento {
 
 	private ZonaDeEstacionamiento zonaEstacionamiento;
-	private AppInspector inspector;
 	private SEM sem;
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
@@ -22,10 +21,9 @@ public class TestZonaDeEstacionamiento {
 	void setUp() {
 		horaInicio = LocalTime.of(7, 0);
 		horaFin = LocalTime.of(20, 0);
-		inspector = mock(AppInspector.class);
 		sem = mock(SEM.class);
 		localizacion = new Point(1, 2);
-		zonaEstacionamiento = new ZonaDeEstacionamiento(sem, localizacion, inspector, horaInicio, horaFin, 40d);
+		zonaEstacionamiento = new ZonaDeEstacionamiento(sem, localizacion, horaInicio, horaFin, 40d);
 	}
 
 	@Test
@@ -35,6 +33,6 @@ public class TestZonaDeEstacionamiento {
 
 	@Test
 	void cuandoSeCreaUnaZonaDeEstacionamientoLaMismaTieneUnInspectorAsignado() {
-		assertTrue(zonaEstacionamiento.tieneAsignadoAlInspector(inspector));
+		assertTrue(zonaEstacionamiento.tieneAsignadoUnInspector());
 	}
 }

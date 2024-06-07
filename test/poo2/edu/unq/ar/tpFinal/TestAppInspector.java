@@ -10,18 +10,25 @@ public class TestAppInspector {
 
 	private AppInspector inspector;
 	private SEM sem;
+	private ZonaDeEstacionamiento zonaEstacionamiento;
 
 	@BeforeEach
 
 	void setUp() {
 		sem = mock(SEM.class);
-		inspector = new AppInspector(sem);
+		zonaEstacionamiento = mock(ZonaDeEstacionamiento.class);
+		inspector = new AppInspector(zonaEstacionamiento, sem);
 	}
-	
+
 	@Test
-	
+
 	void unInspectorAlSerCreadoPerteneceAUnSEM() {
 		assertTrue(inspector.perteneceAlSem(sem));
 	}
 
+	@Test
+
+	void unInspectorAlSerCreadoPerteneceAUnaZonaDeEstacionamiento() {
+		assertTrue(inspector.estaAsignadoALaZonaDeEstacionamiento(zonaEstacionamiento));
+	}
 }
