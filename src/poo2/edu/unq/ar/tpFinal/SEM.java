@@ -1,17 +1,18 @@
 package poo2.edu.unq.ar.tpFinal;
 
+import java.awt.Point;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class SEM {
-	private Set<ZonaDeEstacionamiento> zonasDeEstacionamiento;
+	private ArrayList<ZonaDeEstacionamiento> zonasDeEstacionamiento;
 	private Set<AppDeUsuario> usuarios;
 
 	public SEM() {
 		this.usuarios = new HashSet<AppDeUsuario>();
-		this.zonasDeEstacionamiento = new HashSet<ZonaDeEstacionamiento>();
+		this.zonasDeEstacionamiento = new ArrayList<ZonaDeEstacionamiento>();
 	}
 
 	public void registrarAlUsuario(AppDeUsuario usuario) {
@@ -22,16 +23,15 @@ public class SEM {
 		return this.usuarios.contains(usuario);
 	}
 
-	public void registrarZonaDeEstacionamiento(ZonaDeEstacionamiento zonaEstacionamiento) {
+	public void registrarZonaDeEstacionamiento(Point unPuntoDelMapa) {
+		AppInspector inspector = new AppInspector();
+		ZonaDeEstacionamiento zonaEstacionamiento = new ZonaDeEstacionamiento(this, unPuntoDelMapa, inspector, LocalTime.of(7, 0),
+				LocalTime.of(20, 0), 40d);
 		this.zonasDeEstacionamiento.add(zonaEstacionamiento);
-	}
+	} 
 
 	public int cantidadDeUsuarioRegistrados() {
 		return this.usuarios.size();
-	}
-
-	public boolean tieneRegistradaLaZonaDeEstacionamiento(ZonaDeEstacionamiento zonaEstacionamiento) {
-		return this.zonasDeEstacionamiento.contains(zonaEstacionamiento);
 	}
 
 	public int cantidadDeZonasDeEstacionamiento() {

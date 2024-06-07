@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
+import java.awt.Point;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -19,7 +21,6 @@ public class TestSEM {
 	void setUp() {
 		sem = new SEM();
 		usuario = mock(AppDeUsuario.class);
-		zonaEstacionamiento = mock(ZonaDeEstacionamiento.class);
 	}
 
 	@Test
@@ -44,14 +45,7 @@ public class TestSEM {
 
 	@Test
 	void testElSemRegistraUnaZonaDeEstacionamientoMedido() {
-		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
-		assertTrue(sem.tieneRegistradaLaZonaDeEstacionamiento(zonaEstacionamiento));
-	}
-
-	@Test
-	void testElSemNoRegistraUnaMismaZonaDeEstacionamientoDosVeces() {
-		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
-		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
+		sem.registrarZonaDeEstacionamiento(new Point(2, 4));
 		assertEquals(sem.cantidadDeZonasDeEstacionamiento(), 1);
 	}
 
