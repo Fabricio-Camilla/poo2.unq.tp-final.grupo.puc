@@ -38,6 +38,14 @@ public class SEM {
 		return this.zonasDeEstacionamiento.size();
 	}
 
+	public void indicarFinEstacionamiento(AppDeUsuario appDeUsuario) {
+		//en base al numero de celular del usuario se finaliza el usuario
+	}
+
+	public void indicarInicioEstacionamiento(AppDeUsuario appDeUsuario) {
+		//se comprueba si la app tiene credito y se registra el estacionamiento
+	}
+
 	// registrar una zona de estacionamiento con una fraja horaria, pasando precio
 	// por hora
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse
