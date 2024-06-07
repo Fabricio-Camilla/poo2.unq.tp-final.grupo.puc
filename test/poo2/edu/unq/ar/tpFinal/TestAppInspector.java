@@ -9,13 +9,19 @@ import org.junit.jupiter.api.Test;
 public class TestAppInspector {
 
 	private AppInspector inspector;
-	private ZonaDeEstacionamiento zonaEstacionamiento;
+	private SEM sem;
 
 	@BeforeEach
 
 	void setUp() {
-		zonaEstacionamiento = mock(ZonaDeEstacionamiento.class);
-		inspector = new AppInspector();
+		sem = mock(SEM.class);
+		inspector = new AppInspector(sem);
+	}
+	
+	@Test
+	
+	void unInspectorAlSerCreadoPerteneceAUnSEM() {
+		assertTrue(inspector.perteneceAlSem(sem));
 	}
 
 }

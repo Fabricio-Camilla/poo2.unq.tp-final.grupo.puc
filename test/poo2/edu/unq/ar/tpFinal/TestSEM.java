@@ -21,6 +21,7 @@ public class TestSEM {
 	void setUp() {
 		sem = new SEM();
 		usuario = mock(AppDeUsuario.class);
+		zonaEstacionamiento = mock(ZonaDeEstacionamiento.class);
 	}
 
 	@Test
@@ -44,8 +45,8 @@ public class TestSEM {
 	}
 
 	@Test
-	void testElSemRegistraUnaZonaDeEstacionamientoMedido() {
-		sem.registrarZonaDeEstacionamiento(new Point(2, 4));
+	void testElSemNoRegistraUnaMismaZonaDeEstacionamientoDosVeces() {
+		sem.registrarZonaDeEstacionamiento(new Point(1,2));
 		assertEquals(sem.cantidadDeZonasDeEstacionamiento(), 1);
 	}
 
