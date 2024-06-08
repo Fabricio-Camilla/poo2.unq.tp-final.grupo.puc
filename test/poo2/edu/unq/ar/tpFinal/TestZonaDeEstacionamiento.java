@@ -1,5 +1,6 @@
 package poo2.edu.unq.ar.tpFinal;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -16,6 +17,7 @@ public class TestZonaDeEstacionamiento {
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
 	private Point localizacion;
+	private PuntoDeVenta puntoDeVenta;
 
 	@BeforeEach
 	void setUp() {
@@ -23,16 +25,30 @@ public class TestZonaDeEstacionamiento {
 		horaFin = LocalTime.of(20, 0);
 		sem = mock(SEM.class);
 		localizacion = new Point(1, 2);
+		puntoDeVenta = mock(PuntoDeVenta.class);
 		zonaEstacionamiento = new ZonaDeEstacionamiento(sem, localizacion, horaInicio, horaFin, 40d);
 	}
 
 	@Test
-	void cuandoSeCreaUnaZonaDeEstacionamientoSeEncuentraEnUnPuntoDelMapa() {
+	void testCuandoSeCreaUnaZonaDeEstacionamientoSeEncuentraEnUnPuntoDelMapa() {
 		assertTrue(zonaEstacionamiento.seEncuentraUbicadaEnLaLocalizacion(new Point(1, 2)));
 	}
 
 	@Test
-	void cuandoSeCreaUnaZonaDeEstacionamientoLaMismaTieneUnInspectorAsignado() {
+	void testCuandoSeCreaUnaZonaDeEstacionamientoLaMismaTieneUnInspectorAsignado() {
 		assertTrue(zonaEstacionamiento.tieneAsignadoUnInspector());
+	}
+
+	@Test
+	void testUnaZonaDeEstacionamientoPuedeAgregarUnPuntoDeVenta() {
+		zonaEstacionamiento.agregarPuntoDeVenta(puntoDeVenta);
+		assertEquals(zonaEstacionamiento.cantidadDePuntosDeVenta(), 1);
+	}
+
+	@Test
+	void testUnaZonaDeEstacionamientoNoAgregaDosVecesElMismoPuntoDeVenta() {
+		zonaEstacionamiento.agregarPuntoDeVenta(puntoDeVenta);
+		zonaEstacionamiento.agregarPuntoDeVenta(puntoDeVenta);
+		assertEquals(zonaEstacionamiento.cantidadDePuntosDeVenta(), 1);
 	}
 }

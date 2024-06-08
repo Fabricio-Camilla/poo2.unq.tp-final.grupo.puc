@@ -1,18 +1,19 @@
 package poo2.edu.unq.ar.tpFinal;
 
-import java.awt.Point;
-import java.time.LocalTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class SEM {
-	private ArrayList<ZonaDeEstacionamiento> zonasDeEstacionamiento;
+	private Set<ZonaDeEstacionamiento> zonasDeEstacionamiento;
 	private Set<AppDeUsuario> usuarios;
+	private Set<PuntoDeVenta> puntosDeVenta;
+	private Set<AppInspector> inspectores;
 
 	public SEM() {
 		this.usuarios = new HashSet<AppDeUsuario>();
-		this.zonasDeEstacionamiento = new ArrayList<ZonaDeEstacionamiento>();
+		this.zonasDeEstacionamiento = new HashSet<ZonaDeEstacionamiento>();
+		this.puntosDeVenta = new HashSet<PuntoDeVenta>();
+		this.inspectores = new HashSet<AppInspector>();
 	}
 
 	public void registrarAlUsuario(AppDeUsuario usuario) {
@@ -23,10 +24,9 @@ public class SEM {
 		return this.usuarios.contains(usuario);
 	}
 
-	public void registrarZonaDeEstacionamiento(Point localizacion) {
-		ZonaDeEstacionamiento zonaEstacionamiento = new ZonaDeEstacionamiento(this, localizacion,
-				LocalTime.of(7, 0), LocalTime.of(20, 0), 40d);
+	public void registrarZonaDeEstacionamiento(ZonaDeEstacionamiento zonaEstacionamiento) {
 		this.zonasDeEstacionamiento.add(zonaEstacionamiento);
+		this.inspectores.add(zonaEstacionamiento.inspector());
 	}
 
 	public int cantidadDeUsuarioRegistrados() {
@@ -37,13 +37,30 @@ public class SEM {
 		return this.zonasDeEstacionamiento.size();
 	}
 
+	public void agregarPuntoDeVentaEnLaZonaDeEstacionamiento(PuntoDeVenta puntoDeVenta,
+			ZonaDeEstacionamiento zonaDeEstacionamiento) throws Exception {
+
+		ZonaDeEstacionamiento zona = this.zonasDeEstacionamiento.stream().filter(ze -> ze == zonaDeEstacionamiento)
+				.findFirst().orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
+		zona.agregarPuntoDeVenta(puntoDeVenta);
+		this.puntosDeVenta.add(puntoDeVenta);
+	}
+
+	public boolean tieneRegistradoElPuntoDeVenta(PuntoDeVenta puntoDeVenta) {
+		return this.puntosDeVenta.contains(puntoDeVenta);
+	}
+
+	public boolean tieneRegistradosInspectores() {
+		return !this.inspectores.isEmpty();
+	}
+
 	public void indicarFinEstacionamiento(AppDeUsuario appDeUsuario) {
-		//en base al celular asociado a la app se finaliza el estacionamiento
+		// en base al celular asociado a la app se finaliza el estacionamiento
 	}
 
 	public void indicarInicioEstacionamiento(AppDeUsuario appDeUsuario) {
 		// hay que chekiar que la app tenga credito para iniciar el estacionamiento
-		
+
 	}
 
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse

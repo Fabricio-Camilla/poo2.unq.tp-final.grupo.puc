@@ -2,7 +2,10 @@ package poo2.edu.unq.ar.tpFinal;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.awt.Point;
 
@@ -15,6 +18,7 @@ public class TestSEM {
 	private SEM sem;
 	private AppDeUsuario usuario;
 	private ZonaDeEstacionamiento zonaEstacionamiento;
+	private PuntoDeVenta puntoDeVenta;
 
 	@BeforeEach
 
@@ -22,6 +26,7 @@ public class TestSEM {
 		sem = new SEM();
 		usuario = mock(AppDeUsuario.class);
 		zonaEstacionamiento = mock(ZonaDeEstacionamiento.class);
+		puntoDeVenta = mock(PuntoDeVenta.class);
 	}
 
 	@Test
@@ -41,13 +46,48 @@ public class TestSEM {
 	void testElSemNoRegistraDosVecesAlMismoUsuario() {
 		sem.registrarAlUsuario(usuario);
 		sem.registrarAlUsuario(usuario);
-		assertEquals(sem.cantidadDeUsuarioRegistrados(), 1); 
+		assertEquals(sem.cantidadDeUsuarioRegistrados(), 1);
 	}
 
 	@Test
 	void testElSemRegistraUnaZonaDeEstacionamiento() {
-		sem.registrarZonaDeEstacionamiento(new Point(1,2));
+		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
 		assertEquals(sem.cantidadDeZonasDeEstacionamiento(), 1);
+	}
+
+	@Test
+	void testNoSeRegistraUnaMismaZonaDeEstacionamientoDosVecesEnElSem() {
+		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
+		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
+		assertEquals(sem.cantidadDeZonasDeEstacionamiento(), 1);
+	}
+
+	@Test
+	void testCuandoElSemRegistraUnPuntoDeVentaEnUnaZonaDeEstacionamientoElSemLoTieneRegistrado() throws Exception {
+		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
+		sem.agregarPuntoDeVentaEnLaZonaDeEstacionamiento(puntoDeVenta, zonaEstacionamiento);
+		assertTrue(sem.tieneRegistradoElPuntoDeVenta(puntoDeVenta));
+	}
+
+	@Test
+	void testElSemRegistraUnPuntoDeVentaEnUnaZonaDeEstacionamiento() throws Exception {
+		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
+		sem.agregarPuntoDeVentaEnLaZonaDeEstacionamiento(puntoDeVenta, zonaEstacionamiento);
+		verify(zonaEstacionamiento, atLeastOnce()).agregarPuntoDeVenta(puntoDeVenta);
+	}
+
+	@Test
+	void testElSemNoPuedeRegistrarUnPuntoDeVentaSiNoSeEncuentraLaZonaDeEstacionamiento() throws Exception {
+		assertThrows(Exception.class, () -> {
+			sem.agregarPuntoDeVentaEnLaZonaDeEstacionamiento(puntoDeVenta, zonaEstacionamiento);
+		}, "No existen cajas disponibles.");
+	}
+
+	@Test
+	void testCuandoElSemRegistraUnaZonaDeEstacionamientoRegistraAlInspectorQueContieneLaZona() {
+		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
+		assertTrue(sem.tieneRegistradosInspectores());
+		verify(zonaEstacionamiento, atLeastOnce()).inspector();
 	}
 
 }
