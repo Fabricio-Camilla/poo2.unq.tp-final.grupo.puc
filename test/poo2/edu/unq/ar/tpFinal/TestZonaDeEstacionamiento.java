@@ -18,6 +18,7 @@ public class TestZonaDeEstacionamiento {
 	private LocalTime horaFin;
 	private Point localizacion;
 	private PuntoDeVenta puntoDeVenta;
+	private Estacionamiento estacionamiento;
 
 	@BeforeEach
 	void setUp() {
@@ -27,6 +28,7 @@ public class TestZonaDeEstacionamiento {
 		localizacion = new Point(1, 2);
 		puntoDeVenta = mock(PuntoDeVenta.class);
 		zonaEstacionamiento = new ZonaDeEstacionamiento(sem, localizacion, horaInicio, horaFin, 40d);
+		estacionamiento = mock(EstacionamientoViaApp.class);
 	}
 
 	@Test
@@ -51,4 +53,12 @@ public class TestZonaDeEstacionamiento {
 		zonaEstacionamiento.agregarPuntoDeVenta(puntoDeVenta);
 		assertEquals(zonaEstacionamiento.cantidadDePuntosDeVenta(), 1);
 	}
+
+	@Test
+
+	void testUnaZonaDeEstacionamientoRegistraLosEstacionamientos() {
+		zonaEstacionamiento.registrarEstacionamiento(estacionamiento);
+		assertTrue(zonaEstacionamiento.estaRegistradoElEstacionamiento(estacionamiento));
+	}
+	
 }

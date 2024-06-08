@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 import java.awt.Point;
@@ -19,6 +20,7 @@ public class TestSEM {
 	private AppDeUsuario usuario;
 	private ZonaDeEstacionamiento zonaEstacionamiento;
 	private PuntoDeVenta puntoDeVenta;
+	private Estacionamiento estacionamiento;
 
 	@BeforeEach
 
@@ -27,6 +29,7 @@ public class TestSEM {
 		usuario = mock(AppDeUsuario.class);
 		zonaEstacionamiento = mock(ZonaDeEstacionamiento.class);
 		puntoDeVenta = mock(PuntoDeVenta.class);
+		estacionamiento = mock(EstacionamientoViaApp.class);
 	}
 
 	@Test
@@ -80,7 +83,7 @@ public class TestSEM {
 	void testElSemNoPuedeRegistrarUnPuntoDeVentaSiNoSeEncuentraLaZonaDeEstacionamiento() throws Exception {
 		assertThrows(Exception.class, () -> {
 			sem.agregarPuntoDeVentaEnLaZonaDeEstacionamiento(puntoDeVenta, zonaEstacionamiento);
-		}, "No existen cajas disponibles.");
+		}, "No existe una zona de estacionamiento registrada");
 	}
 
 	@Test
@@ -90,4 +93,18 @@ public class TestSEM {
 		verify(zonaEstacionamiento, atLeastOnce()).inspector();
 	}
 
+	@Test
+	void testElSemRegistraUnNuevoEstacionamiento() throws Exception {
+		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
+		sem.registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zonaEstacionamiento);
+		verify(zonaEstacionamiento, atLeastOnce()).registrarEstacionamiento(estacionamiento);
+		assertTrue(sem.tieneRegistradoElEstacionamiento(estacionamiento));
+	}
+
+	@Test
+	void testElSemNoPuedeRegistrarUnEstacionamientoSiNoSeEncuentraLaZonaDeEstacionamientoRegistrada() throws Exception {
+		assertThrows(Exception.class, () -> {
+			sem.registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zonaEstacionamiento);
+		}, "No existe una zona de estacionamiento registrada");
+	}
 }

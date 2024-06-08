@@ -8,8 +8,10 @@ public class SEM {
 	private Set<AppDeUsuario> usuarios;
 	private Set<PuntoDeVenta> puntosDeVenta;
 	private Set<AppInspector> inspectores;
+	private Set<Estacionamiento> estacionamientosRegistrados;
 
 	public SEM() {
+		this.estacionamientosRegistrados = new HashSet<Estacionamiento>();
 		this.usuarios = new HashSet<AppDeUsuario>();
 		this.zonasDeEstacionamiento = new HashSet<ZonaDeEstacionamiento>();
 		this.puntosDeVenta = new HashSet<PuntoDeVenta>();
@@ -61,6 +63,19 @@ public class SEM {
 	public void indicarInicioEstacionamiento(AppDeUsuario appDeUsuario) {
 		// hay que chekiar que la app tenga credito para iniciar el estacionamiento
 
+	}
+
+	public void registrarUnNuevoEstacionamientoEnLaZona(Estacionamiento estacionamiento,
+			ZonaDeEstacionamiento zonaEstacionamiento) throws Exception {
+
+		ZonaDeEstacionamiento zona = this.zonasDeEstacionamiento.stream().filter(ze -> ze.equals(zonaEstacionamiento))
+				.findFirst().orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
+		this.estacionamientosRegistrados.add(estacionamiento);
+		zona.registrarEstacionamiento(estacionamiento);
+	}
+
+	public boolean tieneRegistradoElEstacionamiento(Estacionamiento estacionamiento) {
+		return this.estacionamientosRegistrados.contains(estacionamiento);
 	}
 
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse

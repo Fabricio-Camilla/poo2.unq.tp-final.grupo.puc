@@ -14,6 +14,7 @@ public class ZonaDeEstacionamiento {
 	private Double precioHora;
 	private Point localizacion;
 	private Set<PuntoDeVenta> puntosDeVenta;
+	private Set<Estacionamiento> estacionamientos;
 
 	public ZonaDeEstacionamiento(SEM sem, Point unaLocalizacion, LocalTime horaInicio, LocalTime horaFin,
 			Double precioHora) {
@@ -28,6 +29,7 @@ public class ZonaDeEstacionamiento {
 		 */
 		this.inspector = new AppInspector(this, sem);
 		this.puntosDeVenta = new HashSet<PuntoDeVenta>();
+		this.estacionamientos = new HashSet<Estacionamiento>();
 		this.sem = sem;
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
@@ -53,6 +55,14 @@ public class ZonaDeEstacionamiento {
 
 	public AppInspector inspector() {
 		return this.inspector;
+	}
+
+	public boolean estaRegistradoElEstacionamiento(Estacionamiento estacionamiento) {
+		return this.estacionamientos.contains(estacionamiento);
+	}
+
+	public void registrarEstacionamiento(Estacionamiento estacionamiento) {
+		this.estacionamientos.add(estacionamiento);
 	}
 
 }
