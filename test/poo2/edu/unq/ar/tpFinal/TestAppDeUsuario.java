@@ -3,10 +3,7 @@ package poo2.edu.unq.ar.tpFinal;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +24,7 @@ public class TestAppDeUsuario {
 		modoAutomatico = mock(ModoAutomatico.class);
 		vigente = spy(EstacionamientoVigente.class);
 		noVigente = spy(EstacionamientoNoVigente.class);
-		sem = spy(SEM.class);
+		sem = mock(SEM.class);
 	}
 
 	@Test
