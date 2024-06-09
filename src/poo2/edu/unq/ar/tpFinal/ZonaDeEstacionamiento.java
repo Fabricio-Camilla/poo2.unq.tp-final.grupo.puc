@@ -68,4 +68,10 @@ public class ZonaDeEstacionamiento {
 		this.estacionamientos.add(estacionamiento);
 	}
 
+	public Set<Estacionamiento> getEstacionamientosRegistrados() {
+		return this.estacionamientos;
+	}
+	
+
+
 }

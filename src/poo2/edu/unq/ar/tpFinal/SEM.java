@@ -1,21 +1,31 @@
 package poo2.edu.unq.ar.tpFinal;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.awt.Point;
+import java.time.LocalTime;
+import java.util.HashSet;
+import java.util.Set;
 
 public class SEM {
-	private List<ZonaDeEstacionamiento> zonasDeEstacionamiento;
-	private List<AppDeUsuario> usuarios;
-	private List<PuntoDeVenta> puntosDeVenta;
-	private List<AppInspector> inspectores;
-	private List<Estacionamiento> estacionamientosRegistrados;
+	private Set<ZonaDeEstacionamiento> zonasDeEstacionamiento;
+	private Set<AppDeUsuario> usuarios;
+	private Set<PuntoDeVenta> puntosDeVenta;
+	private Set<AppInspector> inspectores;
+	private Set<Estacionamiento> estacionamientosRegistrados;
+	private Set<Ticket> tickets;
+	private Double montoxHora;
+	private LocalTime horaInicio;
+	private LocalTime horaFin;
 
-	public SEM() {
-		this.estacionamientosRegistrados = new ArrayList<Estacionamiento>();
-		this.usuarios = new ArrayList<AppDeUsuario>();
-		this.zonasDeEstacionamiento = new ArrayList<ZonaDeEstacionamiento>();
-		this.puntosDeVenta = new ArrayList<PuntoDeVenta>();
-		this.inspectores = new ArrayList<AppInspector>();
+	public SEM(Double montoxHora, LocalTime horaInicio, LocalTime horaFin) {
+		this.estacionamientosRegistrados = new HashSet<Estacionamiento>();
+		this.usuarios = new HashSet<AppDeUsuario>();
+		this.zonasDeEstacionamiento = new HashSet<ZonaDeEstacionamiento>();
+		this.puntosDeVenta = new HashSet<PuntoDeVenta>();
+		this.inspectores = new HashSet<AppInspector>();
+		this.tickets = new HashSet<Ticket>();
+		this.horaFin = horaFin;
+		this.horaInicio = horaInicio;
+		this.montoxHora = montoxHora;
 	}
 	
 	public Set<ZonaDeEstacionamiento> getZonasDeEstacionamiento(){
@@ -46,7 +56,7 @@ public class SEM {
 	public void agregarPuntoDeVentaEnLaZonaDeEstacionamiento(PuntoDeVenta puntoDeVenta,
 			ZonaDeEstacionamiento zonaDeEstacionamiento) throws Exception {
 
-		ZonaDeEstacionamiento zona = this.zonasDeEstacionamiento.stream().filter(ze -> ze == zonaDeEstacionamiento)
+		ZonaDeEstacionamiento zona = this.zonasDeEstacionamiento.stream().filter(ze -> ze.equals(zonaDeEstacionamiento))
 				.findFirst().orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
 		zona.agregarPuntoDeVenta(puntoDeVenta);
 		this.puntosDeVenta.add(puntoDeVenta);
@@ -80,6 +90,48 @@ public class SEM {
 
 	public boolean tieneRegistradoElEstacionamiento(Estacionamiento estacionamiento) {
 		return this.estacionamientosRegistrados.contains(estacionamiento);
+	}
+
+	public ZonaDeEstacionamiento encontrarZonaEstacionamientoEn(Point localizacion) throws Exception{
+		return this.zonasDeEstacionamiento.stream()
+				.filter(z -> z.getLocalizacion().equals(localizacion))
+				.findFirst().orElseThrow(() -> new Exception("No hay zonas de estacionamiento registradas"));
+	}
+
+	public boolean calcularSaldoSuficiente(AppDeUsuario usuario) {
+		return this.montoACobrarPor(this.getMontoxHora(), LocalTime.now(),  this.getHoraFin()) <= usuario.getCredito();
+	}
+
+	private Double montoACobrarPor(Double montoxHora2, LocalTime now, LocalTime horaFin2) {
+		return montoxHora2 *( now.getHour() - horaFin2.getHour());
+	}
+
+	public Double getMontoxHora() {
+		return this.montoxHora;
+	}
+
+	public LocalTime getHoraInicio() {
+		return this.horaInicio;
+	}
+
+	public LocalTime getHoraFin() {
+		return this.horaFin;
+	}
+
+	public void finalizarEstacionamiento(String celular) throws Exception {
+		AppDeUsuario usuario = this.usuarios.stream().filter(u -> u.getCelular().equals(celular)).findFirst().orElseThrow(() -> new Exception("Usuario no registrado"));
+		Estacionamiento estacionamiento = this.estacionamientosRegistrados.stream().filter(e -> e.getPatenteDeUsuario().equals(usuario.getPatente())).findFirst().orElseThrow(() -> new Exception("No hay estacionamiento para el usuario"));
+		ZonaDeEstacionamiento zona = this.zonasDeEstacionamiento.stream().filter(z -> z.getEstacionamientosRegistrados().equals(estacionamiento)).toList().get(0);
+		
+
+		usuario.cobrarEstacionamiento(this.montoACobrarPor(getMontoxHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
+		this.estacionamientosRegistrados.remove(estacionamiento);
+		zona.getEstacionamientosRegistrados().remove(estacionamiento);
+	
+	}
+
+	public Set<Ticket> getTickets() {
+		return this.tickets;
 	}
 
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse

@@ -2,16 +2,19 @@ package poo2.edu.unq.ar.tpFinal;
 
 import java.time.LocalTime;
 
-public class Estacionamiento {
+public abstract class Estacionamiento {
 
-	private LocalTime horaInicio;
-	private LocalTime horaFin;
-	private Double precio;
-	
-	public Estacionamiento(LocalTime horaInicio, LocalTime horaFin, Double precio) {
-		this.horaInicio = horaInicio;
-		this.horaFin = horaFin;
-		this.precio = precio;
-	}
+    protected LocalTime horaInicio;
+    protected LocalTime horaFin;
 
+    protected Estacionamiento(LocalTime horaInicio, LocalTime horaFin) {
+        this.horaInicio = horaInicio;
+        this.horaFin = horaFin;
+    }
+
+    protected abstract String getPatenteDeUsuario();
+
+    protected  LocalTime getHoraInicio() {
+        return this.horaFin;
+    }
 }
