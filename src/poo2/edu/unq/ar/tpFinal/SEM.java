@@ -12,11 +12,11 @@ public class SEM {
 	private Set<AppInspector> inspectores;
 	private Set<Estacionamiento> estacionamientosRegistrados;
 	private Set<Ticket> tickets;
-	private Double montoxHora;
+	private Double montoPorHora;
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
 
-	public SEM(Double montoxHora, LocalTime horaInicio, LocalTime horaFin) {
+	public SEM(Double montoPorHora, LocalTime horaInicio, LocalTime horaFin) {
 		this.estacionamientosRegistrados = new HashSet<Estacionamiento>();
 		this.usuarios = new HashSet<AppDeUsuario>();
 		this.zonasDeEstacionamiento = new HashSet<ZonaDeEstacionamiento>();
@@ -25,10 +25,10 @@ public class SEM {
 		this.tickets = new HashSet<Ticket>();
 		this.horaFin = horaFin;
 		this.horaInicio = horaInicio;
-		this.montoxHora = montoxHora;
+		this.montoPorHora = montoPorHora;
 	}
-	
-	public Set<ZonaDeEstacionamiento> getZonasDeEstacionamiento(){
+
+	public Set<ZonaDeEstacionamiento> getZonasDeEstacionamiento() {
 		return this.zonasDeEstacionamiento;
 	}
 
@@ -92,22 +92,21 @@ public class SEM {
 		return this.estacionamientosRegistrados.contains(estacionamiento);
 	}
 
-	public ZonaDeEstacionamiento encontrarZonaEstacionamientoEn(Point localizacion) throws Exception{
-		return this.zonasDeEstacionamiento.stream()
-				.filter(z -> z.getLocalizacion().equals(localizacion))
-				.findFirst().orElseThrow(() -> new Exception("No hay zonas de estacionamiento registradas"));
+	public ZonaDeEstacionamiento encontrarZonaEstacionamientoEn(Point localizacion) throws Exception {
+		return this.zonasDeEstacionamiento.stream().filter(z -> z.getLocalizacion().equals(localizacion)).findFirst()
+				.orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
 	}
 
 	public boolean calcularSaldoSuficiente(AppDeUsuario usuario) {
-		return this.montoACobrarPor(this.getMontoxHora(), LocalTime.now(),  this.getHoraFin()) <= usuario.getCredito();
+		return this.montoACobrarPor(this.getMontoPorHora(), LocalTime.now(), this.getHoraFin()) <= usuario.getCredito();
 	}
 
 	private Double montoACobrarPor(Double montoxHora2, LocalTime now, LocalTime horaFin2) {
-		return montoxHora2 *( now.getHour() - horaFin2.getHour());
+		return montoxHora2 * (now.getHour() - horaFin2.getHour());
 	}
 
-	public Double getMontoxHora() {
-		return this.montoxHora;
+	public Double getMontoPorHora() {
+		return this.montoPorHora;
 	}
 
 	public LocalTime getHoraInicio() {
@@ -119,15 +118,19 @@ public class SEM {
 	}
 
 	public void finalizarEstacionamiento(String celular) throws Exception {
-		AppDeUsuario usuario = this.usuarios.stream().filter(u -> u.getCelular().equals(celular)).findFirst().orElseThrow(() -> new Exception("Usuario no registrado"));
-		Estacionamiento estacionamiento = this.estacionamientosRegistrados.stream().filter(e -> e.getPatenteDeUsuario().equals(usuario.getPatente())).findFirst().orElseThrow(() -> new Exception("No hay estacionamiento para el usuario"));
-		ZonaDeEstacionamiento zona = this.zonasDeEstacionamiento.stream().filter(z -> z.getEstacionamientosRegistrados().equals(estacionamiento)).toList().get(0);
-		
+		AppDeUsuario usuario = this.usuarios.stream().filter(u -> u.getCelular().equals(celular)).findFirst()
+				.orElseThrow(() -> new Exception("Usuario no registrado"));
+		Estacionamiento estacionamiento = this.estacionamientosRegistrados.stream()
+				.filter(e -> e.getPatenteDeUsuario().equals(usuario.getPatente())).findFirst()
+				.orElseThrow(() -> new Exception("No hay estacionamiento para el usuario"));
+		ZonaDeEstacionamiento zona = this.zonasDeEstacionamiento.stream()
+				.filter(z -> z.estaRegistradoElEstacionamiento(estacionamiento)).toList().get(0);
 
-		usuario.cobrarEstacionamiento(this.montoACobrarPor(getMontoxHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
+		usuario.cobrarEstacionamiento(
+				this.montoACobrarPor(getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
 		this.estacionamientosRegistrados.remove(estacionamiento);
 		zona.getEstacionamientosRegistrados().remove(estacionamiento);
-	
+
 	}
 
 	public Set<Ticket> getTickets() {
