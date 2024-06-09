@@ -8,7 +8,7 @@ public class ModoManual implements ModoDeUso{
 	}
 
 	@Override
-	public void inicioDeEstacionamiento(AppDeUsuario appDeUsuario) {
+	public void inicioDeEstacionamiento(AppDeUsuario appDeUsuario) throws Exception {
 		appDeUsuario.getEstado().alertaInicioEstacionamiento(appDeUsuario);
 	}
 	

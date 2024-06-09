@@ -4,6 +4,6 @@ public interface ModoDeUso {
 
 	void finDeEstacionamiento(AppDeUsuario appDeUsuario);
 
-	void inicioDeEstacionamiento(AppDeUsuario appDeUsuario);
+	void inicioDeEstacionamiento(AppDeUsuario appDeUsuario) throws Exception;
 	
 }

@@ -9,7 +9,7 @@ public class ModoAutomatico implements ModoDeUso{
 	}
 
 	@Override
-	public void inicioDeEstacionamiento(AppDeUsuario appDeUsuario) {
+	public void inicioDeEstacionamiento(AppDeUsuario appDeUsuario) throws Exception {
 		appDeUsuario.getEstado().alertaInicioEstacionamiento(appDeUsuario);	
 		appDeUsuario.notificarInicioEstacionamiento("Se realizo inicio de estacionamiento automaticamente");
 	}

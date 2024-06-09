@@ -17,6 +17,10 @@ public class SEM {
 		this.puntosDeVenta = new ArrayList<PuntoDeVenta>();
 		this.inspectores = new ArrayList<AppInspector>();
 	}
+	
+	public Set<ZonaDeEstacionamiento> getZonasDeEstacionamiento(){
+		return this.zonasDeEstacionamiento;
+	}
 
 	public void registrarAlUsuario(AppDeUsuario usuario) {
 		this.usuarios.add(usuario);

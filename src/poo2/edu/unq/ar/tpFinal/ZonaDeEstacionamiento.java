@@ -57,6 +57,9 @@ public class ZonaDeEstacionamiento {
 		return this.inspector;
 	}
 
+	public Point getLocalizacion() {
+		return this.localizacion;
+	}
 	public boolean estaRegistradoElEstacionamiento(Estacionamiento estacionamiento) {
 		return this.estacionamientos.contains(estacionamiento);
 	}
