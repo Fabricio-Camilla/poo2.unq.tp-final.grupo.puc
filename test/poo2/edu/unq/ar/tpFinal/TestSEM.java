@@ -9,6 +9,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 
 import java.awt.Point;
+import java.time.LocalTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +26,7 @@ public class TestSEM {
 	@BeforeEach
 
 	void setUp() {
-		sem = new SEM();
+		sem = new SEM(40d, LocalTime.of(7, 0), LocalTime.of(20, 0));
 		usuario = mock(AppDeUsuario.class);
 		zonaEstacionamiento = mock(ZonaDeEstacionamiento.class);
 		puntoDeVenta = mock(PuntoDeVenta.class);

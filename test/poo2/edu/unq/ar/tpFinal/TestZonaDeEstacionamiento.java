@@ -14,20 +14,16 @@ public class TestZonaDeEstacionamiento {
 
 	private ZonaDeEstacionamiento zonaEstacionamiento;
 	private SEM sem;
-	private LocalTime horaInicio;
-	private LocalTime horaFin;
 	private Point localizacion;
 	private PuntoDeVenta puntoDeVenta;
 	private Estacionamiento estacionamiento;
 
 	@BeforeEach
 	void setUp() {
-		horaInicio = LocalTime.of(7, 0);
-		horaFin = LocalTime.of(20, 0);
 		sem = mock(SEM.class);
 		localizacion = new Point(1, 2);
 		puntoDeVenta = mock(PuntoDeVenta.class);
-		zonaEstacionamiento = new ZonaDeEstacionamiento(sem, localizacion, horaInicio, horaFin, 40d);
+		zonaEstacionamiento = new ZonaDeEstacionamiento(sem, localizacion);
 		estacionamiento = mock(EstacionamientoViaApp.class);
 	}
 
@@ -60,5 +56,5 @@ public class TestZonaDeEstacionamiento {
 		zonaEstacionamiento.registrarEstacionamiento(estacionamiento);
 		assertTrue(zonaEstacionamiento.estaRegistradoElEstacionamiento(estacionamiento));
 	}
-	
+
 }

@@ -9,15 +9,11 @@ public class ZonaDeEstacionamiento {
 
 	private AppInspector inspector;
 	private SEM sem;
-	private LocalTime horaInicio;
-	private LocalTime horaFin;
-	private Double precioHora;
 	private Point localizacion;
 	private Set<PuntoDeVenta> puntosDeVenta;
 	private Set<Estacionamiento> estacionamientos;
 
-	public ZonaDeEstacionamiento(SEM sem, Point unaLocalizacion, LocalTime horaInicio, LocalTime horaFin,
-			Double precioHora) {
+	public ZonaDeEstacionamiento(SEM sem, Point unaLocalizacion) {
 		/*
 		 * Se toma la decisión de inicializar un inspector cuando se crea la Zona de
 		 * Estacionamiento para no tener inconsistencias en los colaboradores internos u
@@ -31,9 +27,6 @@ public class ZonaDeEstacionamiento {
 		this.puntosDeVenta = new HashSet<PuntoDeVenta>();
 		this.estacionamientos = new HashSet<Estacionamiento>();
 		this.sem = sem;
-		this.horaInicio = horaInicio;
-		this.horaFin = horaFin;
-		this.precioHora = precioHora;
 		this.localizacion = unaLocalizacion;
 	}
 

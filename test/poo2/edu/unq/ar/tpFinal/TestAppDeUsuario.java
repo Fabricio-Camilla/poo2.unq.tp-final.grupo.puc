@@ -19,7 +19,6 @@ public class TestAppDeUsuario {
 	private IEstadoDeEstacionamiento vigente;
 	private IEstadoDeEstacionamiento noVigente;
 	private SEM sem;
-	
 
 	@BeforeEach
 	void setUp() {
@@ -35,6 +34,7 @@ public class TestAppDeUsuario {
 	void testUnaAppTieneUnaPatenteAsociada() {
 		assertEquals(appDeUsuario.getPatente(), "SNW 025");
 	}
+
 	@Test
 	void testUnaAppSeCreaSinCredito() {
 		assertEquals(appDeUsuario.getCredito(), 0d);
@@ -59,43 +59,38 @@ public class TestAppDeUsuario {
 	}
 
 	@Test
-	void testUnaAppIniciaConEstacionamientoEstadoNoVigente() {
+	void testUnaAppIniciaConEstacionamientoEstadoNoVigente() throws Exception {
 		appDeUsuario.setSEM(sem);
 		assertFalse(appDeUsuario.getEstado().estaVigente());
 		appDeUsuario.indicarFinDeEstacionamiento();
 		verify(sem).indicarFinEstacionamiento(appDeUsuario);
-		//esta bien que falle no implementado
+		// esta bien que falle no implementado
 	}
-	
+
 	@Test
-	void testUnaAppCambiaElEstacionamientoAEstadoVigente() {
+	void testUnaAppCambiaElEstacionamientoAEstadoVigente() throws Exception {
 		appDeUsuario.setSEM(sem);
 		appDeUsuario.indicarInicioDeEstaciomiento();
 		assertFalse(appDeUsuario.getEstado().estaVigente());
 		verify(sem).indicarInicioEstacionamiento(appDeUsuario);
-		//esta bien que falle no implementado
+		// esta bien que falle no implementado
 	}
-	
+
 	@Test
 	void testAUnaAppLeLlegaNotificacionDeAlertaAlCambiarAWalking() {
 		appDeUsuario.setEstado(noVigente);
 		appDeUsuario.walking();
 		verify(noVigente).alertaInicioEstacionamiento(appDeUsuario);
 	}
-	
+
 	@Test
 	void testAUnaAppLeLlegaNotificacionDeAlertaAlCambiarADriving() {
 		appDeUsuario.setEstado(vigente);
 		appDeUsuario.driving();
 		verify(vigente).alertaFinEstacionamiento(appDeUsuario);
 	}
-	
-	
-	//si falta coverage, el caso estando no vigente que le llegue driving y vigente walking 
-	
-	
-	
-	
-	
-	
+
+	// si falta coverage, el caso estando no vigente que le llegue driving y vigente
+	// walking
+
 }

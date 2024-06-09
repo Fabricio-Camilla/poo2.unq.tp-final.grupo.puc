@@ -11,7 +11,7 @@ public class EstacionamientoNoVigente implements IEstadoDeEstacionamiento{
             usuario.getSEM().registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zona); 
             usuario.cambiarAEstadoVigente(new EstacionamientoVigente());
         }else {
-            new Exception ("No tiene saldo sufiencte");
+            new Exception ("No tiene saldo suficiente");
         }
     }
 
