@@ -1,21 +1,21 @@
 package poo2.edu.unq.ar.tpFinal;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SEM {
-	private Set<ZonaDeEstacionamiento> zonasDeEstacionamiento;
-	private Set<AppDeUsuario> usuarios;
-	private Set<PuntoDeVenta> puntosDeVenta;
-	private Set<AppInspector> inspectores;
-	private Set<Estacionamiento> estacionamientosRegistrados;
+	private List<ZonaDeEstacionamiento> zonasDeEstacionamiento;
+	private List<AppDeUsuario> usuarios;
+	private List<PuntoDeVenta> puntosDeVenta;
+	private List<AppInspector> inspectores;
+	private List<Estacionamiento> estacionamientosRegistrados;
 
 	public SEM() {
-		this.estacionamientosRegistrados = new HashSet<Estacionamiento>();
-		this.usuarios = new HashSet<AppDeUsuario>();
-		this.zonasDeEstacionamiento = new HashSet<ZonaDeEstacionamiento>();
-		this.puntosDeVenta = new HashSet<PuntoDeVenta>();
-		this.inspectores = new HashSet<AppInspector>();
+		this.estacionamientosRegistrados = new ArrayList<Estacionamiento>();
+		this.usuarios = new ArrayList<AppDeUsuario>();
+		this.zonasDeEstacionamiento = new ArrayList<ZonaDeEstacionamiento>();
+		this.puntosDeVenta = new ArrayList<PuntoDeVenta>();
+		this.inspectores = new ArrayList<AppInspector>();
 	}
 
 	public void registrarAlUsuario(AppDeUsuario usuario) {
