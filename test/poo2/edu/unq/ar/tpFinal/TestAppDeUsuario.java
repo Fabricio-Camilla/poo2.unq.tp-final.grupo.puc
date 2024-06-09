@@ -77,14 +77,14 @@ public class TestAppDeUsuario {
 	}
 
 	@Test
-	void testAUnaAppLeLlegaNotificacionDeAlertaAlCambiarAWalking() {
+	void testAUnaAppLeLlegaNotificacionDeAlertaAlCambiarAWalking() throws Exception {
 		appDeUsuario.setEstado(noVigente);
 		appDeUsuario.walking();
 		verify(noVigente).alertaInicioEstacionamiento(appDeUsuario);
 	}
 
 	@Test
-	void testAUnaAppLeLlegaNotificacionDeAlertaAlCambiarADriving() {
+	void testAUnaAppLeLlegaNotificacionDeAlertaAlCambiarADriving() throws Exception {
 		appDeUsuario.setEstado(vigente);
 		appDeUsuario.driving();
 		verify(vigente).alertaFinEstacionamiento(appDeUsuario);
