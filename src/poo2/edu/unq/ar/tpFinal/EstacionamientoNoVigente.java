@@ -1,10 +1,18 @@
 package poo2.edu.unq.ar.tpFinal;
 
+import java.time.LocalTime;
+import java.util.Optional;
+
 public class EstacionamientoNoVigente implements IEstadoDeEstacionamiento{
 	
-	public void alertaInicioEstacionamiento(AppDeUsuario usuario) {
+	public void alertaInicioEstacionamiento(AppDeUsuario usuario) throws Exception {
 		usuario.notificarInicioEstacionamiento("Alerta inicio Estacionamiento");
-		usuario.getSEM().indicarInicioEstacionamiento(usuario);
+		ZonaDeEstacionamiento zona = usuario.getSEM()
+											.getZonasDeEstacionamiento()
+											.stream().toList()
+											.stream().filter(z -> z.getLocalizacion().equals(usuario.getLocalizacion())).toList().get(0);
+		LocalTime horaInicio = LocalTime.now();
+		usuario.getSEM().registrarUnNuevoEstacionamientoEnLaZona(new EstacionamientoViaApp(horaInicio, horaInicio.plusHours(1), 20d,usuario.getCelular()), zona);
 		usuario.cambiarAEstadoVigente(new EstacionamientoVigente());
 	}
 	

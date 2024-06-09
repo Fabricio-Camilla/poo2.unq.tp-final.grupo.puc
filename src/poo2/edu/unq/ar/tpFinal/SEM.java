@@ -17,6 +17,10 @@ public class SEM {
 		this.puntosDeVenta = new HashSet<PuntoDeVenta>();
 		this.inspectores = new HashSet<AppInspector>();
 	}
+	
+	public Set<ZonaDeEstacionamiento> getZonasDeEstacionamiento(){
+		return this.zonasDeEstacionamiento;
+	}
 
 	public void registrarAlUsuario(AppDeUsuario usuario) {
 		this.usuarios.add(usuario);

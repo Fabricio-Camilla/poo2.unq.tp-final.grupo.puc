@@ -1,5 +1,6 @@
 package poo2.edu.unq.ar.tpFinal;
 
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ public class AppDeUsuario implements MovementSensor {
 	private ModoDeUso modo;
 	private List<String> notificaciones;
 	private IEstadoDeEstacionamiento estado;
+	private Point localizacion;
 	private SEM sem;
 	private MovementSensor sensor;
 
@@ -22,13 +24,14 @@ public class AppDeUsuario implements MovementSensor {
 		this.estado = new EstacionamientoNoVigente();
 		this.sem = new SEM();
 		this.notificaciones = new ArrayList<String>();
+		this.localizacion = new Point(1,1); 
 	}
 
 	public void indicarFinDeEstacionamiento() {
 		this.modo.finDeEstacionamiento(this);
 	} 
 
-	public void indicarInicioDeEstaciomiento() {
+	public void indicarInicioDeEstaciomiento() throws Exception {
 		this.modo.inicioDeEstacionamiento(this);
 	}
 
@@ -38,12 +41,16 @@ public class AppDeUsuario implements MovementSensor {
 	}
 
 	@Override
-	public void walking() {
+	public void walking() throws Exception {
 		this.estado.alertaInicioEstacionamiento(this);
 	}
 	
 	public String getPatente() {
 		return this.patente;
+	}
+	
+	public String getCelular() {
+		return this.celular;
 	}
 
 	private void setCelular(String celular) {
@@ -101,6 +108,10 @@ public class AppDeUsuario implements MovementSensor {
 
 	public void cambiarAEstadoNoVigente(IEstadoDeEstacionamiento estacionamiento) {
 		this.estado = estacionamiento;
+	}
+
+	public Point getLocalizacion() {
+		return this.localizacion;
 	}
 
 }
