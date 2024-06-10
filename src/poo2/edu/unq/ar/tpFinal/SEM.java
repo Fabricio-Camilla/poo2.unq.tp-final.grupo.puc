@@ -16,7 +16,11 @@ public class SEM {
 	private Double montoPorHora;
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
-
+	
+	public SEM() {
+		
+	}
+	
 	public SEM(Double montoPorHora, LocalTime horaInicio, LocalTime horaFin) {
 		this.estacionamientosRegistrados = new HashSet<Estacionamiento>();
 		this.usuarios = new HashSet<AppDeUsuario>();
@@ -83,9 +87,9 @@ public class SEM {
 	public void registrarUnNuevoEstacionamientoEnLaZona(Estacionamiento estacionamiento,
 			ZonaDeEstacionamiento zonaEstacionamiento) throws Exception {
 
-		ZonaDeEstacionamiento zona = this.zonasDeEstacionamiento.stream().filter(ze -> ze.equals(zonaEstacionamiento))
+		ZonaDeEstacionamiento zona = this.getZonasDeEstacionamiento().stream().filter(ze -> ze.equals(zonaEstacionamiento))
 				.findFirst().orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
-		this.estacionamientosRegistrados.add(estacionamiento);
+		this.getEstacionamientosRegistrados().add(estacionamiento);
 		zona.registrarEstacionamiento(estacionamiento);
 	}
 
@@ -125,21 +129,39 @@ public class SEM {
 	public void finalizarEstacionamiento(String celular) throws Exception {
 		AppDeUsuario usuario = this.getUsuariosRegistrados().stream().filter(u -> u.getCelular().equals(celular)).findFirst()
 				.orElseThrow(() -> new Exception("Usuario no registrado"));
-		Estacionamiento estacionamiento = this.estacionamientosRegistrados.stream()
+		Estacionamiento estacionamiento = this.getEstacionamientosRegistrados().stream()
 				.filter(e -> e.getPatenteDeUsuario().equals(usuario.getPatente())).findFirst()
 				.orElseThrow(() -> new Exception("No hay estacionamiento para el usuario"));
-		ZonaDeEstacionamiento zona = this.zonasDeEstacionamiento.stream()
+		ZonaDeEstacionamiento zona = this.getZonasDeEstacionamiento().stream()
 				.filter(z -> z.estaRegistradoElEstacionamiento(estacionamiento)).toList().get(0);
 
 		usuario.cobrarEstacionamiento(
+<<<<<<< HEAD
 				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
 		this.estacionamientosRegistrados.remove(estacionamiento);
+=======
+				this.montoACobrarPor(getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
+		this.getEstacionamientosRegistrados().remove(estacionamiento);
+>>>>>>> 9661379c2049293481ff4e51c391f3466bfdc561
 		zona.getEstacionamientosRegistrados().remove(estacionamiento);
 
 	}
 
 	public Set<Ticket> getTickets() {
 		return this.tickets;
+	}
+
+	public void cargarCredito(Double montoACargar, String celular) {
+		AppDeUsuario usuarioARecargar = this.getUsuarios().stream().filter(u -> u.getCelular().equals(celular)).toList().get(0);
+		usuarioARecargar.cargarCredito(montoACargar);
+	}
+
+	private Set<AppDeUsuario> getUsuarios() {
+		return this.usuarios;
+	}
+
+	public Set<Estacionamiento> getEstacionamientosRegistrados() {
+		return this.estacionamientosRegistrados;
 	}
 
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse
