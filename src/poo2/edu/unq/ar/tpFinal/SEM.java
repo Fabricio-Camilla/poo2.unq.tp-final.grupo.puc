@@ -75,15 +75,6 @@ public class SEM {
 		return !this.inspectores.isEmpty();
 	}
 
-	public void indicarFinEstacionamiento(AppDeUsuario appDeUsuario) {
-		// en base al celular asociado a la app se finaliza el estacionamiento
-	}
-
-	public void indicarInicioEstacionamiento(AppDeUsuario appDeUsuario) {
-		// hay que chekiar que la app tenga credito para iniciar el estacionamiento
-
-	}
-
 	public void registrarUnNuevoEstacionamientoEnLaZona(Estacionamiento estacionamiento,
 			ZonaDeEstacionamiento zonaEstacionamiento) throws Exception {
 

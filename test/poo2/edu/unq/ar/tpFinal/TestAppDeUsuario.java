@@ -86,11 +86,28 @@ public class TestAppDeUsuario {
 		
 		assertTrue(appDeUsuario.getEstado().estaVigente());
 	}
+	
+	@Test
+	void testUnaAppCambiaElEstacionamientoAEstadoNoVigente() throws Exception {
+		Point locali = new Point(1,1);
+		when(sem.calcularSaldoSuficiente(appDeUsuario)).thenReturn(true);
+		when(sem.getZonasDeEstacionamiento()).thenReturn(zonas);
+		when(zona.getLocalizacion()).thenReturn(locali);
+		when(sem.encontrarZonaEstacionamientoEn(locali)).thenReturn(zona); 
+		
+		appDeUsuario.indicarInicioDeEstaciomiento();
+		appDeUsuario.indicarFinDeEstacionamiento();
+		
+		assertFalse(appDeUsuario.getEstado().estaVigente());
+		verify(sem, atLeastOnce()).finalizarEstacionamiento(appDeUsuario.getCelular());
+	}
+	
 
 	@Test
 	void testAUnaAppLeLlegaNotificacionDeAlertaAlCambiarAWalking() throws Exception {
 		appDeUsuario.setEstado(noVigente);
 		appDeUsuario.walking();
+		
 		verify(noVigente).alertaInicioEstacionamiento(appDeUsuario);
 	}
 
@@ -100,7 +117,24 @@ public class TestAppDeUsuario {
 		
 		appDeUsuario.setEstado(vigente);
 		appDeUsuario.driving();
+		
 		verify(vigente).alertaFinEstacionamiento(appDeUsuario);
+	}
+	
+	@Test
+	void testAUnaAppLeLlegaNotificacioDeInicioFinEstacionamientoAutomatico() {
+		appDeUsuario.notificarFinEstacionamiento("Se realizo fin de estacionamiento automaticamente");
+		appDeUsuario.notificarInicioEstacionamiento("Se realizo inicio de estacionamiento automaticamente");
+		
+		assertEquals(appDeUsuario.getNotificaciones().size(), 2);
+	}
+	
+	@Test
+	void testAUnUsuairoSeLeDescuentaDeSuCredito() {
+		appDeUsuario.cargarCredito(40d);
+		appDeUsuario.cobrarEstacionamiento(20d);
+		
+		assertEquals(appDeUsuario.getCredito(), 20d);
 	}
 
 	// si falta coverage, el caso estando no vigente que le llegue driving y vigente

@@ -83,6 +83,10 @@ public class AppDeUsuario implements MovementSensor {
 	public IEstadoDeEstacionamiento getEstado() {
 		return this.estado;
 	}
+	
+	public List<String> getNotificaciones() {
+		return this.notificaciones;
+	}
 
 	public void notificarFinEstacionamiento(String mensaje) {
 		this.notificaciones.add(mensaje);
@@ -97,10 +101,6 @@ public class AppDeUsuario implements MovementSensor {
 	}
 	public SEM getSEM() {
 		return this.sem;
-	}
-
-	public void setSEM(SEM sem) {
-		this.sem = sem;
 	}
 
 	public void cambiarAEstadoVigente(IEstadoDeEstacionamiento estacionamiento) {
