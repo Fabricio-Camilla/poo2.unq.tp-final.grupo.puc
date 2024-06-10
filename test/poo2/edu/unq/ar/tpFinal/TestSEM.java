@@ -108,4 +108,13 @@ public class TestSEM {
 			sem.registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zonaEstacionamiento);
 		}, "No existe una zona de estacionamiento registrada");
 	}
+	
+	@Test
+	void testElSemRegistraTicketsYaSeaDeCargasDeCreditoODeEstacionamientos() {
+		TicketDeEstacionamiento ticketDeEstacionamiento = mock(TicketDeEstacionamiento.class);
+		TicketDeRecargaCredito ticketDeRecarga = mock(TicketDeRecargaCredito.class);
+		sem.registrarTicket(ticketDeRecarga);
+		sem.registrarTicket(ticketDeEstacionamiento);
+		assertEquals(sem.cantidadDeTickets(), 2);
+	}
 }

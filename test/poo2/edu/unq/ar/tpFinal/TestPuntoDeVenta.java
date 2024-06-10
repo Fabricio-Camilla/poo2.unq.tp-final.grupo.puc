@@ -2,20 +2,12 @@ package poo2.edu.unq.ar.tpFinal;
 
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
-import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class TestPuntoDeVenta {
 	
-	private EstacionamientoCompraPuntual estacionamientoCompraPuntual;
 	private SEM sistema;
 	private PuntoDeVenta puntoDeVenta;
 	private ZonaDeEstacionamiento zona;
@@ -23,7 +15,6 @@ public class TestPuntoDeVenta {
 	@BeforeEach
 	void setUp() {
 		sistema = mock(SEM.class);
-		estacionamientoCompraPuntual = mock(EstacionamientoCompraPuntual.class);
 		zona = mock(ZonaDeEstacionamiento.class);
 		puntoDeVenta = new PuntoDeVenta(sistema, zona);
 	}

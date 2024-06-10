@@ -13,12 +13,16 @@ public class PuntoDeVenta {
 	}
 
 	public void cargarCredito(Double montoACargar, String celular) {
-		this.sistema.cargarCredito(montoACargar, celular);
+		TicketDeRecargaCredito ticket = new TicketDeRecargaCredito(125, this, LocalTime.now(), montoACargar, celular);
+		this.getSem().cargarCredito(montoACargar, celular);
+		this.getSem().registrarTicket(ticket);
 	}
 
 	public EstacionamientoCompraPuntual registarEstacionamiento(String patente, int cantidadDeHoras) throws Exception {
 		EstacionamientoCompraPuntual estacionamientoARegistrar = new EstacionamientoCompraPuntual(LocalTime.now(), patente, cantidadDeHoras);
+		TicketDeEstacionamiento ticket = new TicketDeEstacionamiento(1205, this, LocalTime.now(), cantidadDeHoras);
 		this.getSem().registrarUnNuevoEstacionamientoEnLaZona(estacionamientoARegistrar, this.getZona());
+		this.getSem().registrarTicket(ticket);
 		return estacionamientoARegistrar;
 	}
 

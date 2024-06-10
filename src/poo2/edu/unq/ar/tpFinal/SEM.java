@@ -164,6 +164,14 @@ public class SEM {
 		return this.estacionamientosRegistrados;
 	}
 
+	public void registrarTicket(Ticket ticket) {
+		this.getTickets().add(ticket);
+	}
+
+	public int cantidadDeTickets() {
+		return this.getTickets().size();
+	}
+
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse
 	// aparte
 
