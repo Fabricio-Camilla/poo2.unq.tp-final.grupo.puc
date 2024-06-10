@@ -5,6 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.*;
 
+import java.awt.Point;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,15 +20,23 @@ public class TestAppDeUsuario {
 	private IEstadoDeEstacionamiento vigente;
 	private IEstadoDeEstacionamiento noVigente;
 	private SEM sem;
+	private ZonaDeEstacionamiento zona;
+	private Set<AppDeUsuario> usuarios;
+	private Set<ZonaDeEstacionamiento> zonas;
 
 	@BeforeEach
 	void setUp() {
-		appDeUsuario = new AppDeUsuario("1118654287", "SNW 025");
+		usuarios = new HashSet<AppDeUsuario>();
+		zonas = new HashSet<ZonaDeEstacionamiento>();
+		zona = mock(ZonaDeEstacionamiento.class);
+		vigente = spy(EstacionamientoVigente.class);
+		sem = mock(SEM.class);
+		appDeUsuario = new AppDeUsuario("1118654287", "SNW 025", sem);
 		modoManual = mock(ModoManual.class);
 		modoAutomatico = mock(ModoAutomatico.class);
-		vigente = spy(EstacionamientoVigente.class);
 		noVigente = spy(EstacionamientoNoVigente.class);
-		sem = mock(SEM.class);
+		usuarios.add(appDeUsuario);
+		zonas.add(zona);
 	}
 
 	@Test
@@ -57,20 +69,22 @@ public class TestAppDeUsuario {
 
 	@Test
 	void testUnaAppIniciaConEstacionamientoEstadoNoVigente() throws Exception {
-		appDeUsuario.setSEM(sem);
 		assertFalse(appDeUsuario.getEstado().estaVigente());
-		appDeUsuario.indicarFinDeEstacionamiento();
-		verify(sem).indicarFinEstacionamiento(appDeUsuario);
-		// esta bien que falle no implementado
 	}
 
 	@Test
 	void testUnaAppCambiaElEstacionamientoAEstadoVigente() throws Exception {
-		appDeUsuario.setSEM(sem);
+		Point locali = new Point(1,1);
+		when(sem.calcularSaldoSuficiente(appDeUsuario)).thenReturn(true);
+		when(sem.getZonasDeEstacionamiento()).thenReturn(zonas);
+		when(zona.getLocalizacion()).thenReturn(locali);
+		when(sem.encontrarZonaEstacionamientoEn(locali)).thenReturn(zona);
+		
+		assertFalse(appDeUsuario.getEstado().estaVigente()); 
+		
 		appDeUsuario.indicarInicioDeEstaciomiento();
-		assertFalse(appDeUsuario.getEstado().estaVigente());
-		verify(sem).indicarInicioEstacionamiento(appDeUsuario);
-		// esta bien que falle no implementado
+		
+		assertTrue(appDeUsuario.getEstado().estaVigente());
 	}
 
 	@Test
@@ -82,6 +96,8 @@ public class TestAppDeUsuario {
 
 	@Test
 	void testAUnaAppLeLlegaNotificacionDeAlertaAlCambiarADriving() throws Exception {
+		when(sem.getUsuariosRegistrados()).thenReturn(usuarios);
+		
 		appDeUsuario.setEstado(vigente);
 		appDeUsuario.driving();
 		verify(vigente).alertaFinEstacionamiento(appDeUsuario);

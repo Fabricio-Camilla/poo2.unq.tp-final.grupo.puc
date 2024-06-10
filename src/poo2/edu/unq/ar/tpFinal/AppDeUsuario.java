@@ -17,13 +17,13 @@ public class AppDeUsuario implements MovementSensor {
 	private SEM sem;
 	private MovementSensor sensor;
 
-	public AppDeUsuario(String celular, String patente) {
+	public AppDeUsuario(String celular, String patente, SEM sem) {
 		this.setCelular(celular);
 		this.setPatente(patente);
 		this.modo = new ModoManual();
 		this.credito = 0d;
 		this.estado = new EstacionamientoNoVigente();
-		this.sem = new SEM(20d, LocalTime.of(20, 0),LocalTime.of(7, 0));
+		this.sem = sem;
 		this.notificaciones = new ArrayList<String>();
 		this.localizacion = new Point(1,1); 
 	}

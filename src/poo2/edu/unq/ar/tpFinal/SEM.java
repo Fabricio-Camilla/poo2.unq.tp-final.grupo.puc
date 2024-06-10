@@ -3,6 +3,7 @@ package poo2.edu.unq.ar.tpFinal;
 import java.awt.Point;
 import java.time.LocalTime;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 public class SEM {
@@ -93,7 +94,7 @@ public class SEM {
 	}
 
 	public ZonaDeEstacionamiento encontrarZonaEstacionamientoEn(Point localizacion) throws Exception {
-		return this.zonasDeEstacionamiento.stream().filter(z -> z.getLocalizacion().equals(localizacion)).findFirst()
+		return this.getZonasDeEstacionamiento().stream().filter(z -> z.getLocalizacion().equals(localizacion)).findFirst()
 				.orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
 	}
 
@@ -116,9 +117,13 @@ public class SEM {
 	public LocalTime getHoraFin() {
 		return this.horaFin;
 	}
+	
+	public Set<AppDeUsuario> getUsuariosRegistrados(){
+		return this.usuarios;
+	}
 
 	public void finalizarEstacionamiento(String celular) throws Exception {
-		AppDeUsuario usuario = this.usuarios.stream().filter(u -> u.getCelular().equals(celular)).findFirst()
+		AppDeUsuario usuario = this.getUsuariosRegistrados().stream().filter(u -> u.getCelular().equals(celular)).findFirst()
 				.orElseThrow(() -> new Exception("Usuario no registrado"));
 		Estacionamiento estacionamiento = this.estacionamientosRegistrados.stream()
 				.filter(e -> e.getPatenteDeUsuario().equals(usuario.getPatente())).findFirst()
@@ -127,7 +132,7 @@ public class SEM {
 				.filter(z -> z.estaRegistradoElEstacionamiento(estacionamiento)).toList().get(0);
 
 		usuario.cobrarEstacionamiento(
-				this.montoACobrarPor(getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
+				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
 		this.estacionamientosRegistrados.remove(estacionamiento);
 		zona.getEstacionamientosRegistrados().remove(estacionamiento);
 
