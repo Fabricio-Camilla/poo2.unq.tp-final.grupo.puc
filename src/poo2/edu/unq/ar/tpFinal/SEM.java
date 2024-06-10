@@ -136,13 +136,13 @@ public class SEM {
 				.filter(z -> z.estaRegistradoElEstacionamiento(estacionamiento)).toList().get(0);
 
 		usuario.cobrarEstacionamiento(
-<<<<<<< HEAD
+
 				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
 		this.estacionamientosRegistrados.remove(estacionamiento);
-=======
-				this.montoACobrarPor(getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
+
+				this.montoACobrarPor(getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now());
 		this.getEstacionamientosRegistrados().remove(estacionamiento);
->>>>>>> 9661379c2049293481ff4e51c391f3466bfdc561
+
 		zona.getEstacionamientosRegistrados().remove(estacionamiento);
 
 	}
