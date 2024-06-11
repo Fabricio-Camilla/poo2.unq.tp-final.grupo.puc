@@ -22,6 +22,7 @@ public class TestAppInspector {
 	private ZonaDeEstacionamiento zonaEstacionamiento;
 	private Estacionamiento estacionamiento;
 	private EstacionamientoNoVigente noVigente;
+	private EstacionamientoVigente vigente;
 
 	@BeforeEach
 
@@ -32,6 +33,7 @@ public class TestAppInspector {
 		estacionamiento = spy(Estacionamiento.class);
 		appUsuario = spy(AppDeUsuario.class);
 		noVigente = spy(EstacionamientoNoVigente.class);
+		vigente = spy(EstacionamientoVigente.class);
 	}
 
 	@Test
@@ -47,7 +49,7 @@ public class TestAppInspector {
 	}
 
 	@Test
-	
+
 	void unInspectorPuedeConsultarAlSemSiUnEstacionamientoEstaVigente() throws Exception {
 		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
 		estacionamientos.add(estacionamiento);
@@ -59,17 +61,17 @@ public class TestAppInspector {
 		when(appUsuario.estaVigente()).thenReturn(false);
 		when(estacionamiento.getAppUsuario()).thenReturn(appUsuario);
 		when(sem.estaVigenteElEstacionamientoConPatente("AF245GF")).thenReturn(true);
-		
+
 		assertTrue(inspector.estaVigenteElEstacionamientoConPatente("AF245GF"));
 	}
-	
+
 	@Test
 
 	void unInspectorRecorreLaZonaDeEstacionamientoVerificandoLaVigenciaDeLosEstacionamientos() throws Exception {
-		
+
 		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
 		estacionamientos.add(estacionamiento);
-		
+
 		when(appUsuario.getEstado()).thenReturn(noVigente);
 		when(sem.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
 		when(zonaEstacionamiento.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
@@ -82,7 +84,31 @@ public class TestAppInspector {
 		when(sem.estaVigenteElEstacionamientoConPatente("AF254AF")).thenReturn(false);
 
 		inspector.recorrerZonaDeEstacionamiento();
-	
-		assertEquals(inspector.cantidadDeInfraccionesEmitidas(), 1);	
+
+		assertEquals(inspector.cantidadDeInfraccionesEmitidas(), 1);
+	}
+
+	@Test
+
+	void unInspectorRecorreLaZonaDeEstacionamientoVerificandoLaVigenciaDeLosEstacionamientosYNoEmiteInfracciones()
+			throws Exception {
+
+		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
+		estacionamientos.add(estacionamiento);
+
+		when(appUsuario.getEstado()).thenReturn(noVigente);
+		when(sem.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
+		when(zonaEstacionamiento.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
+		when(zonaEstacionamiento.sem()).thenReturn(sem);
+		when(zonaEstacionamiento.inspector()).thenReturn(inspector);
+		when(appUsuario.getPatente()).thenReturn("AF254AF");
+		when(appUsuario.estaVigente()).thenReturn(true);
+		when(estacionamiento.getPatenteDeUsuario()).thenReturn("AF254AF");
+		when(estacionamiento.getAppUsuario()).thenReturn(appUsuario);
+		when(sem.estaVigenteElEstacionamientoConPatente("AF254AF")).thenReturn(true);
+
+		inspector.recorrerZonaDeEstacionamiento();
+
+		assertEquals(inspector.cantidadDeInfraccionesEmitidas(), 0);
 	}
 }

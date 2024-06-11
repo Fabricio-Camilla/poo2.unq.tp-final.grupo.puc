@@ -9,9 +9,10 @@ public abstract class Estacionamiento {
 	protected AppDeUsuario appUsuario;
 	protected String patente;
 
-	public Estacionamiento () {
-		
+	public Estacionamiento() {
+
 	}
+
 	protected Estacionamiento(String patente, AppDeUsuario appUsuario, LocalTime horaInicio, LocalTime horaFin) {
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
@@ -19,7 +20,9 @@ public abstract class Estacionamiento {
 		this.patente = patente;
 	}
 
-	protected abstract String getPatenteDeUsuario();
+	protected String getPatenteDeUsuario() {
+		return this.patente;
+	};
 
 	protected LocalTime getHoraInicio() {
 		return this.horaFin;

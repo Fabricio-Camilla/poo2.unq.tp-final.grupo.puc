@@ -8,7 +8,4 @@ public class EstacionamientoViaApp extends Estacionamiento {
 		super(patente, appUsuario, horaInicio, horaFin);
 	}
 
-	public String getPatenteDeUsuario() {
-		return this.patente;
-	}
 }

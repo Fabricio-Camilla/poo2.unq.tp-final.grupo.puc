@@ -12,8 +12,4 @@ public class EstacionamientoCompraPuntual extends Estacionamiento {
 		this.cantidadDeHoras = cantidadDeHoras;
 	}
 
-	@Override
-	protected String getPatenteDeUsuario() {
-		return this.patente;
-	}
 }
