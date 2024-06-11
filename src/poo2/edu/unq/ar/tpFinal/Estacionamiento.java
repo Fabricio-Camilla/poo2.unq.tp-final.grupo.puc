@@ -25,7 +25,7 @@ public abstract class Estacionamiento {
 	};
 
 	protected LocalTime getHoraInicio() {
-		return this.horaFin;
+		return this.horaInicio;
 	}
 
 	protected boolean estaVigente() {

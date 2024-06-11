@@ -97,11 +97,11 @@ public class SEM {
 	}
 
 	public boolean calcularSaldoSuficiente(AppDeUsuario usuario) {
-		return this.montoACobrarPor(this.getMontoPorHora(), LocalTime.now(), this.getHoraFin()) <= usuario.getCredito();
+		return this.montoACobrarPor(this.getMontoPorHora(), LocalTime.now(), this.getHoraFin()) < usuario.getCredito();
 	}
 
 	public Double montoACobrarPor(Double montoPorHora, LocalTime now, LocalTime horaFin) {
-		return montoPorHora * ( horaFin.getHour() - now.getHour());
+		return montoPorHora * (horaFin.getHour() - now.getHour());
 	}
 
 	public Double getMontoPorHora() {
@@ -130,11 +130,9 @@ public class SEM {
 				.filter(z -> z.estaRegistradoElEstacionamiento(estacionamiento)).toList().get(0);
 
 		usuario.cobrarEstacionamiento(
-				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now())
-				);
+				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
 		this.estacionamientosRegistrados.remove(estacionamiento);
 
-		//this.montoACobrarPor(getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now());
 		this.getEstacionamientosRegistrados().remove(estacionamiento);
 
 		zona.getEstacionamientosRegistrados().remove(estacionamiento);
@@ -146,11 +144,11 @@ public class SEM {
 	}
 
 	public void cargarCredito(Double montoACargar, String celular) throws Exception {
-		AppDeUsuario usuarioARecargar = this.getUsuariosRegistrados().stream().filter(u -> u.getCelular().equals(celular)).findFirst()
-				.orElseThrow(() -> new Exception ("El celular no se encuentra registrado"));
+		AppDeUsuario usuarioARecargar = this.getUsuariosRegistrados().stream()
+				.filter(u -> u.getCelular().equals(celular)).findFirst()
+				.orElseThrow(() -> new Exception("Usuario no registrado"));
 		usuarioARecargar.cargarCredito(montoACargar);
 	}
-
 
 	public Set<Estacionamiento> getEstacionamientosRegistrados() {
 		return this.estacionamientosRegistrados;
@@ -178,8 +176,8 @@ public class SEM {
 	public int cantidadDeInfraccionesRegistradas() {
 		return this.getInfraccionesRegistradas().size();
 	}
-	
-	public Set<Infraccion> getInfraccionesRegistradas(){
+
+	public Set<Infraccion> getInfraccionesRegistradas() {
 		return this.infraccionesRegistradas;
 	}
 

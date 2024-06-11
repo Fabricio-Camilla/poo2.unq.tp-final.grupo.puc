@@ -1,7 +1,11 @@
 package poo2.edu.unq.ar.tpFinal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThrows;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
@@ -49,8 +53,15 @@ public class TestAppInspector {
 	}
 
 	@Test
+	void unInspectorNotificaAlSemPorUnaInfraccion() {
+		when(sem.getInfraccionesRegistradas()).thenReturn(new HashSet<Infraccion>());
+		inspector.notificarAlSemPorEstacionamientoNoVigente("ASD24DA");
+		verify(sem).registrarInfraccion(any(Infraccion.class));
+	}
 
-	void unInspectorPuedeConsultarAlSemSiUnEstacionamientoEstaVigente() throws Exception {
+	@Test
+
+	void unInspectorPuedeConsultarAlSemPorEstacionamientoVigente() throws Exception {
 		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
 		estacionamientos.add(estacionamiento);
 
@@ -64,10 +75,39 @@ public class TestAppInspector {
 
 		assertTrue(inspector.estaVigenteElEstacionamientoConPatente("AF245GF"));
 	}
+	
+	@Test
+
+	void unInspectorPuedeConsultarAlSemPorEstacionamientoNoVigente() throws Exception {
+		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
+		estacionamientos.add(estacionamiento);
+
+		when(appUsuario.getEstado()).thenReturn(noVigente);
+		when(estacionamiento.getPatenteDeUsuario()).thenReturn("AF245GF");
+		when(sem.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
+		when(appUsuario.getPatente()).thenReturn("AF254AF");
+		when(appUsuario.estaVigente()).thenReturn(false);
+		when(estacionamiento.getAppUsuario()).thenReturn(appUsuario);
+		when(sem.estaVigenteElEstacionamientoConPatente("AF245GF")).thenReturn(false);
+
+		assertFalse(inspector.estaVigenteElEstacionamientoConPatente("AF245GF"));
+	}
 
 	@Test
 
-	void unInspectorRecorreLaZonaDeEstacionamientoVerificandoLaVigenciaDeLosEstacionamientos() throws Exception {
+	void unInspectorConsultaAlSemPorUnEstacionamientoNoExistente() throws Exception {
+		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
+
+		when(sem.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
+		assertThrows(Exception.class, () -> {
+			inspector.estaVigenteElEstacionamientoConPatente("AF245GF");
+		}, "No esta registrado el estacionamiento.");
+		verify(sem, atLeastOnce()).estaVigenteElEstacionamientoConPatente("AF245GF");
+	}
+
+	@Test
+
+	void unInspectorRecorreLaZonaDeEstacionamientoConEstacionamientosNoVigentes() throws Exception {
 
 		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
 		estacionamientos.add(estacionamiento);
@@ -90,8 +130,7 @@ public class TestAppInspector {
 
 	@Test
 
-	void unInspectorRecorreLaZonaDeEstacionamientoVerificandoLaVigenciaDeLosEstacionamientosYNoEmiteInfracciones()
-			throws Exception {
+	void unInspectorRecorreLaZonaDeEstacionamientoConEstacionamientosVigentes() throws Exception {
 
 		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
 		estacionamientos.add(estacionamiento);
@@ -111,4 +150,5 @@ public class TestAppInspector {
 
 		assertEquals(inspector.cantidadDeInfraccionesEmitidas(), 0);
 	}
+
 }

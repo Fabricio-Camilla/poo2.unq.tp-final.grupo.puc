@@ -47,7 +47,7 @@ public class AppInspector {
 	public Set<Infraccion> infraccionesRegistradas() {
 		return this.infraccionesEmitidas;
 	}
-	
+
 	public ZonaDeEstacionamiento getEstacionamientoAsignado() {
 		return this.estacionamientoAsignado;
 	}
