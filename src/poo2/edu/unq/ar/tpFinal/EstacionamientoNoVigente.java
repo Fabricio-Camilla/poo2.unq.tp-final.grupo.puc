@@ -23,8 +23,5 @@ public class EstacionamientoNoVigente implements IEstadoDeEstacionamiento {
 		return false;
 	}
 
-	@Override
-	public void vigenciaPara(AppInspector inspector, String patente) {
-		inspector.notificarAlSemPorEstacionamientoNoVigente(patente);
-	}
+	
 }

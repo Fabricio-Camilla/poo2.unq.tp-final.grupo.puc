@@ -9,6 +9,9 @@ public abstract class Estacionamiento {
 	protected AppDeUsuario appUsuario;
 	protected String patente;
 
+	public Estacionamiento () {
+		
+	}
 	protected Estacionamiento(String patente, AppDeUsuario appUsuario, LocalTime horaInicio, LocalTime horaFin) {
 		this.horaInicio = horaInicio;
 		this.horaFin = horaFin;
@@ -23,7 +26,7 @@ public abstract class Estacionamiento {
 	}
 
 	protected boolean estaVigente() {
-		return this.appUsuario.estaVigente();
+		return this.getAppUsuario().estaVigente();
 	}
 
 	public void revisarVigenciaCon(AppInspector inspector, SEM sem) throws Exception {
@@ -33,6 +36,6 @@ public abstract class Estacionamiento {
 	}
 
 	protected AppDeUsuario getAppUsuario() {
-		return appUsuario;
+		return this.appUsuario;
 	}
 }

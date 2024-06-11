@@ -17,6 +17,9 @@ public class AppDeUsuario implements MovementSensor {
 	private SEM sem;
 	private MovementSensor sensor;
 
+	public AppDeUsuario() {
+		
+	}
 	public AppDeUsuario(String celular, String patente, SEM sem) {
 		this.setCelular(celular);
 		this.setPatente(patente);
@@ -114,11 +117,9 @@ public class AppDeUsuario implements MovementSensor {
 	}
 
 	public boolean estaVigente() {
-		return this.estado.estaVigente();
+		return this.getEstado().estaVigente();
 	}
 
-	public void revisarVigenciaCon(AppInspector inspector) {
-		this.getEstado().vigenciaPara(inspector, this.getPatente());
-	}
+
 
 }

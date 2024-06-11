@@ -17,6 +17,5 @@ public class EstacionamientoVigente implements IEstadoDeEstacionamiento {
 		return true;
 	}
 
-	public void vigenciaPara(AppInspector inspector, String patente) {
-	}
+	
 }

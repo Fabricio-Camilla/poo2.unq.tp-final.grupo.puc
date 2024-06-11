@@ -21,15 +21,17 @@ public class TestAppInspector {
 	private SEM sem;
 	private ZonaDeEstacionamiento zonaEstacionamiento;
 	private Estacionamiento estacionamiento;
+	private EstacionamientoNoVigente noVigente;
 
 	@BeforeEach
 
 	void setUp() {
-		sem = mock(SEM.class);
-		zonaEstacionamiento = mock(ZonaDeEstacionamiento.class);
+		sem = spy(SEM.class);
+		zonaEstacionamiento = spy(ZonaDeEstacionamiento.class);
 		inspector = new AppInspector(zonaEstacionamiento, sem);
-		estacionamiento = mock(Estacionamiento.class);
-		appUsuario = mock(AppDeUsuario.class);
+		estacionamiento = spy(Estacionamiento.class);
+		appUsuario = spy(AppDeUsuario.class);
+		noVigente = spy(EstacionamientoNoVigente.class);
 	}
 
 	@Test
@@ -47,16 +49,28 @@ public class TestAppInspector {
 	@Test
 	
 	void unInspectorPuedeConsultarAlSemSiUnEstacionamientoEstaVigente() throws Exception {
+		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
+		estacionamientos.add(estacionamiento);
+
+		when(appUsuario.getEstado()).thenReturn(noVigente);
+		when(estacionamiento.getPatenteDeUsuario()).thenReturn("AF245GF");
+		when(sem.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
+		when(appUsuario.getPatente()).thenReturn("AF254AF");
+		when(appUsuario.estaVigente()).thenReturn(false);
+		when(estacionamiento.getAppUsuario()).thenReturn(appUsuario);
 		when(sem.estaVigenteElEstacionamientoConPatente("AF245GF")).thenReturn(true);
+		
 		assertTrue(inspector.estaVigenteElEstacionamientoConPatente("AF245GF"));
 	}
 	
 	@Test
 
 	void unInspectorRecorreLaZonaDeEstacionamientoVerificandoLaVigenciaDeLosEstacionamientos() throws Exception {
+		
 		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
 		estacionamientos.add(estacionamiento);
-
+		
+		when(appUsuario.getEstado()).thenReturn(noVigente);
 		when(sem.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
 		when(zonaEstacionamiento.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
 		when(zonaEstacionamiento.sem()).thenReturn(sem);
@@ -64,11 +78,11 @@ public class TestAppInspector {
 		when(appUsuario.getPatente()).thenReturn("AF254AF");
 		when(appUsuario.estaVigente()).thenReturn(false);
 		when(estacionamiento.getPatenteDeUsuario()).thenReturn("AF254AF");
-		when(estacionamiento.estaVigente()).thenReturn(false);
-		when(sem.estaVigenteElEstacionamientoConPatente("AF254AF")).thenReturn(true);
+		when(estacionamiento.getAppUsuario()).thenReturn(appUsuario);
+		when(sem.estaVigenteElEstacionamientoConPatente("AF254AF")).thenReturn(false);
 
 		inspector.recorrerZonaDeEstacionamiento();
-
-		assertEquals(inspector.cantidadDeInfraccionesEmitidas(), 1);
+	
+		assertEquals(inspector.cantidadDeInfraccionesEmitidas(), 1);	
 	}
 }

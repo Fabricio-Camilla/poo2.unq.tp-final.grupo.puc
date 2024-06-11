@@ -30,14 +30,14 @@ public class AppInspector {
 	}
 
 	public void recorrerZonaDeEstacionamiento() {
-		this.estacionamientoAsignado.revisarVigenciaDeEstacionamientos();
+		this.getEstacionamientoAsignado().revisarVigenciaDeEstacionamientos();
 	}
 
 	public void notificarAlSemPorEstacionamientoNoVigente(String patente) {
 		Infraccion infraccion = new Infraccion(patente, LocalDate.now(), LocalTime.now(), this,
 				this.estacionamientoAsignado);
-		this.sem.registrarInfraccion(infraccion);
 		this.infraccionesRegistradas().add(infraccion);
+		this.sem.registrarInfraccion(infraccion);
 	}
 
 	public int cantidadDeInfraccionesEmitidas() {
@@ -46,6 +46,10 @@ public class AppInspector {
 
 	public Set<Infraccion> infraccionesRegistradas() {
 		return this.infraccionesEmitidas;
+	}
+	
+	public ZonaDeEstacionamiento getEstacionamientoAsignado() {
+		return this.estacionamientoAsignado;
 	}
 
 }

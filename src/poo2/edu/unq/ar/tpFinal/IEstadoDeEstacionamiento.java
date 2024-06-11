@@ -8,5 +8,4 @@ public interface IEstadoDeEstacionamiento {
 
 	public boolean estaVigente();
 
-	public void vigenciaPara(AppInspector inspector, String patente);
 }

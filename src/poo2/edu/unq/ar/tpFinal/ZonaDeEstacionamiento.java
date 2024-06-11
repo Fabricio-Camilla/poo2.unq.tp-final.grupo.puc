@@ -12,6 +12,10 @@ public class ZonaDeEstacionamiento {
 	private Point localizacion;
 	private Set<PuntoDeVenta> puntosDeVenta;
 	private Set<Estacionamiento> estacionamientos;
+	
+	public ZonaDeEstacionamiento() {
+		
+	}
 
 	public ZonaDeEstacionamiento(SEM sem, Point unaLocalizacion) {
 		/*
