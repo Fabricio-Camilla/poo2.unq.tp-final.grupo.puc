@@ -4,17 +4,35 @@ import java.time.LocalTime;
 
 public abstract class Estacionamiento {
 
-    protected LocalTime horaInicio;
-    protected LocalTime horaFin;
+	protected LocalTime horaInicio;
+	protected LocalTime horaFin;
+	protected AppDeUsuario appUsuario;
+	protected String patente;
 
-    protected Estacionamiento(LocalTime horaInicio, LocalTime horaFin) {
-        this.horaInicio = horaInicio;
-        this.horaFin = horaFin;
-    }
+	protected Estacionamiento(String patente, AppDeUsuario appUsuario, LocalTime horaInicio, LocalTime horaFin) {
+		this.horaInicio = horaInicio;
+		this.horaFin = horaFin;
+		this.appUsuario = appUsuario;
+		this.patente = patente;
+	}
 
-    protected abstract String getPatenteDeUsuario();
+	protected abstract String getPatenteDeUsuario();
 
-    protected  LocalTime getHoraInicio() {
-        return this.horaFin;
-    }
+	protected LocalTime getHoraInicio() {
+		return this.horaFin;
+	}
+
+	protected boolean estaVigente() {
+		return this.appUsuario.estaVigente();
+	}
+
+	public void revisarVigenciaCon(AppInspector inspector, SEM sem) throws Exception {
+		if (!sem.estaVigenteElEstacionamientoConPatente(this.getPatenteDeUsuario())) {
+			inspector.notificarAlSemPorEstacionamientoNoVigente(this.getPatenteDeUsuario());
+		}
+	}
+
+	protected AppDeUsuario getAppUsuario() {
+		return appUsuario;
+	}
 }

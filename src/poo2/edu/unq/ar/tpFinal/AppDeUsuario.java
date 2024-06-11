@@ -25,12 +25,12 @@ public class AppDeUsuario implements MovementSensor {
 		this.estado = new EstacionamientoNoVigente();
 		this.sem = sem;
 		this.notificaciones = new ArrayList<String>();
-		this.localizacion = new Point(1,1); 
+		this.localizacion = new Point(1, 1);
 	}
 
 	public void indicarFinDeEstacionamiento() throws Exception {
 		this.modo.finDeEstacionamiento(this);
-	} 
+	}
 
 	public void indicarInicioDeEstaciomiento() throws Exception {
 		this.modo.inicioDeEstacionamiento(this);
@@ -45,11 +45,11 @@ public class AppDeUsuario implements MovementSensor {
 	public void walking() throws Exception {
 		this.estado.alertaInicioEstacionamiento(this);
 	}
-	
+
 	public String getPatente() {
 		return this.patente;
 	}
-	
+
 	public String getCelular() {
 		return this.celular;
 	}
@@ -83,7 +83,7 @@ public class AppDeUsuario implements MovementSensor {
 	public IEstadoDeEstacionamiento getEstado() {
 		return this.estado;
 	}
-	
+
 	public List<String> getNotificaciones() {
 		return this.notificaciones;
 	}
@@ -99,6 +99,7 @@ public class AppDeUsuario implements MovementSensor {
 	public void setEstado(IEstadoDeEstacionamiento estado) {
 		this.estado = estado;
 	}
+
 	public SEM getSEM() {
 		return this.sem;
 	}
@@ -109,7 +110,15 @@ public class AppDeUsuario implements MovementSensor {
 
 	public void cobrarEstacionamiento(Double montoACobrarPor) {
 		this.credito -= montoACobrarPor;
-		
+
+	}
+
+	public boolean estaVigente() {
+		return this.estado.estaVigente();
+	}
+
+	public void revisarVigenciaCon(AppInspector inspector) {
+		this.getEstado().vigenciaPara(inspector, this.getPatente());
 	}
 
 }

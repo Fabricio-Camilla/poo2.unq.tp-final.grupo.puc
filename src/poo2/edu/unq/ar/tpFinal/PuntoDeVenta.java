@@ -3,10 +3,10 @@ package poo2.edu.unq.ar.tpFinal;
 import java.time.LocalTime;
 
 public class PuntoDeVenta {
-	
+
 	private SEM sistema;
 	private ZonaDeEstacionamiento zona;
-	
+
 	public PuntoDeVenta(SEM sistema, ZonaDeEstacionamiento zona) {
 		this.sistema = sistema;
 		this.zona = zona;
@@ -18,8 +18,10 @@ public class PuntoDeVenta {
 		this.getSem().registrarTicket(ticket);
 	}
 
-	public EstacionamientoCompraPuntual registarEstacionamiento(String patente, int cantidadDeHoras) throws Exception {
-		EstacionamientoCompraPuntual estacionamientoARegistrar = new EstacionamientoCompraPuntual(LocalTime.now(), patente, cantidadDeHoras);
+	public EstacionamientoCompraPuntual registarEstacionamiento(AppDeUsuario appUsuario, String patente,
+			int cantidadDeHoras) throws Exception {
+		EstacionamientoCompraPuntual estacionamientoARegistrar = new EstacionamientoCompraPuntual(appUsuario,
+				LocalTime.now(), patente, cantidadDeHoras);
 		TicketDeEstacionamiento ticket = new TicketDeEstacionamiento(1205, this, LocalTime.now(), cantidadDeHoras);
 		this.getSem().registrarUnNuevoEstacionamientoEnLaZona(estacionamientoARegistrar, this.getZona());
 		this.getSem().registrarTicket(ticket);

@@ -16,14 +16,16 @@ public class SEM {
 	private Double montoPorHora;
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
-	
+	private Set<Infraccion> infraccionesRegistradas;
+
 	public SEM() {
-		
+
 	}
-	
+
 	public SEM(Double montoPorHora, LocalTime horaInicio, LocalTime horaFin) {
 		this.estacionamientosRegistrados = new HashSet<Estacionamiento>();
 		this.usuarios = new HashSet<AppDeUsuario>();
+		this.infraccionesRegistradas = new HashSet<Infraccion>();
 		this.zonasDeEstacionamiento = new HashSet<ZonaDeEstacionamiento>();
 		this.puntosDeVenta = new HashSet<PuntoDeVenta>();
 		this.inspectores = new HashSet<AppInspector>();
@@ -78,8 +80,9 @@ public class SEM {
 	public void registrarUnNuevoEstacionamientoEnLaZona(Estacionamiento estacionamiento,
 			ZonaDeEstacionamiento zonaEstacionamiento) throws Exception {
 
-		ZonaDeEstacionamiento zona = this.getZonasDeEstacionamiento().stream().filter(ze -> ze.equals(zonaEstacionamiento))
-				.findFirst().orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
+		ZonaDeEstacionamiento zona = this.getZonasDeEstacionamiento().stream()
+				.filter(ze -> ze.equals(zonaEstacionamiento)).findFirst()
+				.orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
 		this.getEstacionamientosRegistrados().add(estacionamiento);
 		zona.registrarEstacionamiento(estacionamiento);
 	}
@@ -89,8 +92,8 @@ public class SEM {
 	}
 
 	public ZonaDeEstacionamiento encontrarZonaEstacionamientoEn(Point localizacion) throws Exception {
-		return this.getZonasDeEstacionamiento().stream().filter(z -> z.getLocalizacion().equals(localizacion)).findFirst()
-				.orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
+		return this.getZonasDeEstacionamiento().stream().filter(z -> z.getLocalizacion().equals(localizacion))
+				.findFirst().orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
 	}
 
 	public boolean calcularSaldoSuficiente(AppDeUsuario usuario) {
@@ -112,14 +115,14 @@ public class SEM {
 	public LocalTime getHoraFin() {
 		return this.horaFin;
 	}
-	
-	public Set<AppDeUsuario> getUsuariosRegistrados(){
+
+	public Set<AppDeUsuario> getUsuariosRegistrados() {
 		return this.usuarios;
 	}
 
 	public void finalizarEstacionamiento(String celular) throws Exception {
-		AppDeUsuario usuario = this.getUsuariosRegistrados().stream().filter(u -> u.getCelular().equals(celular)).findFirst()
-				.orElseThrow(() -> new Exception("Usuario no registrado"));
+		AppDeUsuario usuario = this.getUsuariosRegistrados().stream().filter(u -> u.getCelular().equals(celular))
+				.findFirst().orElseThrow(() -> new Exception("Usuario no registrado"));
 		Estacionamiento estacionamiento = this.getEstacionamientosRegistrados().stream()
 				.filter(e -> e.getPatenteDeUsuario().equals(usuario.getPatente())).findFirst()
 				.orElseThrow(() -> new Exception("No hay estacionamiento para el usuario"));
@@ -131,7 +134,7 @@ public class SEM {
 				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
 		this.estacionamientosRegistrados.remove(estacionamiento);
 
-				this.montoACobrarPor(getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now());
+		this.montoACobrarPor(getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now());
 		this.getEstacionamientosRegistrados().remove(estacionamiento);
 
 		zona.getEstacionamientosRegistrados().remove(estacionamiento);
@@ -143,7 +146,8 @@ public class SEM {
 	}
 
 	public void cargarCredito(Double montoACargar, String celular) {
-		AppDeUsuario usuarioARecargar = this.getUsuarios().stream().filter(u -> u.getCelular().equals(celular)).toList().get(0);
+		AppDeUsuario usuarioARecargar = this.getUsuarios().stream().filter(u -> u.getCelular().equals(celular)).toList()
+				.get(0);
 		usuarioARecargar.cargarCredito(montoACargar);
 	}
 
@@ -161,6 +165,17 @@ public class SEM {
 
 	public int cantidadDeTickets() {
 		return this.getTickets().size();
+	}
+
+	public boolean estaVigenteElEstacionamientoConPatente(String patente) throws Exception {
+		Estacionamiento estacionamiento = this.getEstacionamientosRegistrados().stream()
+				.filter(e -> e.getPatenteDeUsuario().equals(patente)).findFirst()
+				.orElseThrow(() -> new Exception("No esta registrado el estacionamiento."));
+		return estacionamiento.estaVigente();
+	}
+
+	public void registrarInfraccion(Infraccion infraccion) {
+		this.infraccionesRegistradas.add(infraccion);
 	}
 
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse

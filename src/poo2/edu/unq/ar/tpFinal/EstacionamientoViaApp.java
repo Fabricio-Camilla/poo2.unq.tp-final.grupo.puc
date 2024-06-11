@@ -4,15 +4,11 @@ import java.time.LocalTime;
 
 public class EstacionamientoViaApp extends Estacionamiento {
 
+	public EstacionamientoViaApp(AppDeUsuario appUsuario, LocalTime horaInicio, LocalTime horaFin, String patente) {
+		super(patente, appUsuario, horaInicio, horaFin);
+	}
 
-    private String patente;
-
-    public EstacionamientoViaApp(LocalTime horaInicio, LocalTime horaFin, String patente) {
-        super(horaInicio, horaFin);
-        this.patente = patente;
-    }
-
-    public String getPatenteDeUsuario() {
-        return this.patente; 
-    }
+	public String getPatenteDeUsuario() {
+		return this.patente;
+	}
 }

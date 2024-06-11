@@ -53,6 +53,7 @@ public class ZonaDeEstacionamiento {
 	public Point getLocalizacion() {
 		return this.localizacion;
 	}
+
 	public boolean estaRegistradoElEstacionamiento(Estacionamiento estacionamiento) {
 		return this.estacionamientos.contains(estacionamiento);
 	}
@@ -64,7 +65,20 @@ public class ZonaDeEstacionamiento {
 	public Set<Estacionamiento> getEstacionamientosRegistrados() {
 		return this.estacionamientos;
 	}
-	
 
+	public void revisarVigenciaDeEstacionamientos() {
+		this.getEstacionamientosRegistrados().stream().forEach(e -> {
+			try {
+				e.revisarVigenciaCon(this.inspector(), this.sem());
+			} catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		});
+	}
+
+	public SEM sem() {
+
+		return this.sem;
+	}
 
 }
