@@ -9,7 +9,7 @@ public class EstacionamientoNoVigente implements IEstadoDeEstacionamiento{
             ZonaDeEstacionamiento zona = usuario.getSEM().encontrarZonaEstacionamientoEn(usuario.getLocalizacion());
             Estacionamiento estacionamiento = new EstacionamientoViaApp(LocalTime.now(), usuario.getSEM().getHoraFin(), usuario.getPatente());
             usuario.getSEM().registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zona); 
-            usuario.cambiarAEstadoVigente(new EstacionamientoVigente());
+            usuario.setEstado(new EstacionamientoVigente());
         }else {
             new Exception ("No tiene saldo suficiente");
         }

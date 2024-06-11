@@ -103,14 +103,6 @@ public class AppDeUsuario implements MovementSensor {
 		return this.sem;
 	}
 
-	public void cambiarAEstadoVigente(IEstadoDeEstacionamiento estacionamiento) {
-		this.estado = estacionamiento;
-	}
-
-	public void cambiarAEstadoNoVigente(IEstadoDeEstacionamiento estacionamiento) {
-		this.estado = estacionamiento;
-	}
-
 	public Point getLocalizacion() {
 		return this.localizacion;
 	}
