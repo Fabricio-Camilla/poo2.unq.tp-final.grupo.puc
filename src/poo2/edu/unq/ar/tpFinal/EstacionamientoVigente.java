@@ -6,11 +6,11 @@ public class EstacionamientoVigente implements IEstadoDeEstacionamiento {
 
 	public void alertaFinEstacionamiento(AppDeUsuario usuario) throws Exception {
 		usuario.getSEM().finalizarEstacionamiento(usuario.getCelular());
-		usuario.setEstado(new EstacionamientoNoVigente());
+		usuario.cambiarAEstadoNoVigente();
 	}
 
 	public void alertaInicioEstacionamiento(AppDeUsuario usuario) {
-
+		System.out.println("Ya tenes un estacionamiento vigente");
 	}
 
 	public boolean estaVigente() {

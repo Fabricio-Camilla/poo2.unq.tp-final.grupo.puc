@@ -113,11 +113,17 @@ public class AppDeUsuario implements MovementSensor {
 
 	public void cobrarEstacionamiento(Double montoACobrarPor) {
 		this.credito -= montoACobrarPor;
-
 	}
 
 	public boolean estaVigente() {
 		return this.getEstado().estaVigente();
+	}
+	public void cambiarAEstadoVigente() {
+		this.setEstado(new EstacionamientoVigente());
+	}
+	
+	public void cambiarAEstadoNoVigente() {
+		this.setEstado(new EstacionamientoNoVigente());
 	}
 
 

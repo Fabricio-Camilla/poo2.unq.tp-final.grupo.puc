@@ -22,7 +22,7 @@ public class TestPuntoDeVenta {
 	}
 
 	@Test
-	void testEnUnPuntoDeVentaUnUsuarioPuedeCargarCredito() {
+	void testEnUnPuntoDeVentaUnUsuarioPuedeCargarCredito() throws Exception {
 		puntoDeVenta.cargarCredito(20d, "0123456789");
 		verify(sistema, atLeastOnce()).cargarCredito(20d, "0123456789");
 	}

@@ -10,13 +10,14 @@ public class EstacionamientoNoVigente implements IEstadoDeEstacionamiento {
 			Estacionamiento estacionamiento = new EstacionamientoViaApp(usuario, LocalTime.now(),
 					usuario.getSEM().getHoraFin(), usuario.getPatente());
 			usuario.getSEM().registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zona);
-			usuario.setEstado(new EstacionamientoVigente());
+			usuario.cambiarAEstadoVigente();
 		} else {
-			new Exception("No tiene saldo suficiente");
+			new Exception("No tiene saldo suficiente"); 
 		}
 	}
 
 	public void alertaFinEstacionamiento(AppDeUsuario usuario) {
+		System.out.println("Ya tenes el estacionamiento finalizado");
 	}
 
 	public boolean estaVigente() {

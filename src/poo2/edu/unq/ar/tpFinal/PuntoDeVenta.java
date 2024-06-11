@@ -12,7 +12,7 @@ public class PuntoDeVenta {
 		this.zona = zona;
 	}
 
-	public void cargarCredito(Double montoACargar, String celular) {
+	public void cargarCredito(Double montoACargar, String celular) throws Exception {
 		TicketDeRecargaCredito ticket = new TicketDeRecargaCredito(125, this, LocalTime.now(), montoACargar, celular);
 		this.getSem().cargarCredito(montoACargar, celular);
 		this.getSem().registrarTicket(ticket);

@@ -53,7 +53,7 @@ public class SEM {
 	}
 
 	public int cantidadDeUsuarioRegistrados() {
-		return this.usuarios.size();
+		return this.getUsuariosRegistrados().size();
 	}
 
 	public int cantidadDeZonasDeEstacionamiento() {
@@ -100,8 +100,8 @@ public class SEM {
 		return this.montoACobrarPor(this.getMontoPorHora(), LocalTime.now(), this.getHoraFin()) <= usuario.getCredito();
 	}
 
-	private Double montoACobrarPor(Double montoxHora2, LocalTime now, LocalTime horaFin2) {
-		return montoxHora2 * (now.getHour() - horaFin2.getHour());
+	public Double montoACobrarPor(Double montoPorHora, LocalTime now, LocalTime horaFin) {
+		return montoPorHora * ( horaFin.getHour() - now.getHour());
 	}
 
 	public Double getMontoPorHora() {
@@ -130,11 +130,11 @@ public class SEM {
 				.filter(z -> z.estaRegistradoElEstacionamiento(estacionamiento)).toList().get(0);
 
 		usuario.cobrarEstacionamiento(
-
-				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
+				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now())
+				);
 		this.estacionamientosRegistrados.remove(estacionamiento);
 
-		this.montoACobrarPor(getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now());
+		//this.montoACobrarPor(getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now());
 		this.getEstacionamientosRegistrados().remove(estacionamiento);
 
 		zona.getEstacionamientosRegistrados().remove(estacionamiento);
@@ -145,15 +145,12 @@ public class SEM {
 		return this.tickets;
 	}
 
-	public void cargarCredito(Double montoACargar, String celular) {
-		AppDeUsuario usuarioARecargar = this.getUsuarios().stream().filter(u -> u.getCelular().equals(celular)).toList()
-				.get(0);
+	public void cargarCredito(Double montoACargar, String celular) throws Exception {
+		AppDeUsuario usuarioARecargar = this.getUsuariosRegistrados().stream().filter(u -> u.getCelular().equals(celular)).findFirst()
+				.orElseThrow(() -> new Exception ("El celular no se encuentra registrado"));
 		usuarioARecargar.cargarCredito(montoACargar);
 	}
 
-	private Set<AppDeUsuario> getUsuarios() {
-		return this.usuarios;
-	}
 
 	public Set<Estacionamiento> getEstacionamientosRegistrados() {
 		return this.estacionamientosRegistrados;
@@ -175,7 +172,15 @@ public class SEM {
 	}
 
 	public void registrarInfraccion(Infraccion infraccion) {
-		this.infraccionesRegistradas.add(infraccion);
+		this.getInfraccionesRegistradas().add(infraccion);
+	}
+
+	public int cantidadDeInfraccionesRegistradas() {
+		return this.getInfraccionesRegistradas().size();
+	}
+	
+	public Set<Infraccion> getInfraccionesRegistradas(){
+		return this.infraccionesRegistradas;
 	}
 
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse
