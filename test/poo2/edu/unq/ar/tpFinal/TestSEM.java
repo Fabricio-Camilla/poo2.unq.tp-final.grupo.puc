@@ -100,7 +100,7 @@ public class TestSEM {
 
 	@Test
 	void testElSemIndicaQueUnUsuarioNoTieneCreditoSuficiente() {
-		when(usuario.getCredito()).thenReturn(0d);
+		when(usuario.getCredito()).thenReturn(-100d);
 		
 		assertFalse(sem.calcularSaldoSuficiente(usuario));
 	}
@@ -283,5 +283,15 @@ public class TestSEM {
 		TicketDeRecargaCredito ticketDeRecarga = mock(TicketDeRecargaCredito.class);
 		sem.registrarTicket(ticketDeRecarga);
 		assertEquals(sem.cantidadDeTickets(), 1);
+	}
+	
+	@Test
+	void testElSemFinalizaTodosLosEstacionamientosAlFinDeLaFranjaHoraria() throws Exception{
+		when(vigente.estaVigente()).thenReturn(true);
+		when(usuario.getEstado()).thenReturn(vigente);
+		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
+		sem.registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zonaEstacionamiento);
+		sem.finDeFranjaHoraria();
+		when(usuario.estaVigente()).thenReturn(false);
 	}
 }

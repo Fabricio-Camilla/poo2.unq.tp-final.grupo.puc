@@ -1,7 +1,5 @@
 package poo2.edu.unq.ar.tpFinal;
 
-import java.time.LocalTime;
-
 public class EstacionamientoVigente implements IEstadoDeEstacionamiento {
 
 	public void alertaFinEstacionamiento(AppDeUsuario usuario) throws Exception {
