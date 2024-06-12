@@ -3,7 +3,6 @@ package poo2.edu.unq.ar.tpFinal;
 import java.awt.Point;
 import java.time.LocalTime;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 public class SEM {
@@ -97,7 +96,7 @@ public class SEM {
 	}
 
 	public boolean calcularSaldoSuficiente(AppDeUsuario usuario) {
-		return this.montoACobrarPor(this.getMontoPorHora(), LocalTime.now(), this.getHoraFin()) < usuario.getCredito();
+		return this.montoACobrarPor(this.getMontoPorHora(), LocalTime.now(), this.getHoraFin()) <= usuario.getCredito();
 	}
 
 	public Double montoACobrarPor(Double montoPorHora, LocalTime now, LocalTime horaFin) {
@@ -131,10 +130,7 @@ public class SEM {
 
 		usuario.cobrarEstacionamiento(
 				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
-		this.estacionamientosRegistrados.remove(estacionamiento);
-
 		this.getEstacionamientosRegistrados().remove(estacionamiento);
-
 		zona.getEstacionamientosRegistrados().remove(estacionamiento);
 
 	}
@@ -179,6 +175,16 @@ public class SEM {
 
 	public Set<Infraccion> getInfraccionesRegistradas() {
 		return this.infraccionesRegistradas;
+	}
+	
+	public void finDeFranjaHoraria() {
+		this.getUsuariosRegistrados().stream().forEach(usuario -> {
+			try {
+				usuario.indicarFinDeEstacionamiento();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
 	}
 
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse
