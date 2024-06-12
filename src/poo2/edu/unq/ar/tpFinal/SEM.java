@@ -5,8 +5,9 @@ import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Stream;
 
-public class SEM {
+public class SEM implements Observers{
 	private Set<ZonaDeEstacionamiento> zonasDeEstacionamiento;
 	private Set<AppDeUsuario> usuarios;
 	private Set<PuntoDeVenta> puntosDeVenta;
@@ -17,6 +18,7 @@ public class SEM {
 	private LocalTime horaInicio;
 	private LocalTime horaFin;
 	private Set<Infraccion> infraccionesRegistradas;
+	private Set<Notificable> suscriptores;
 
 	public SEM() {
 
@@ -30,6 +32,7 @@ public class SEM {
 		this.puntosDeVenta = new HashSet<PuntoDeVenta>();
 		this.inspectores = new HashSet<AppInspector>();
 		this.tickets = new HashSet<Ticket>();
+		this.suscriptores = new HashSet<Notificable>();
 		this.horaFin = horaFin;
 		this.horaInicio = horaInicio;
 		this.montoPorHora = montoPorHora;
@@ -180,6 +183,27 @@ public class SEM {
 	public Set<Infraccion> getInfraccionesRegistradas() {
 		return this.infraccionesRegistradas;
 	}
+
+	@Override
+	public void suscribir(String eventoInteres, Notificable suscriptor) {
+		this.getSuscriptores().add(suscriptor);
+	}
+
+	@Override
+	public void desuscribir(Notificable suscriptor) {
+		this.getSuscriptores().remove(suscriptor);		
+	}
+
+	@Override
+	public void notificiar(String eventoInteres) {
+		Stream<Notificable> interesados = this.getSuscriptores().stream().filter(s -> s.getInteres().equals(eventoInteres));
+		interesados.forEach(i -> i.update(eventoInteres));
+	}
+
+	public Set<Notificable> getSuscriptores() {
+		return suscriptores;
+	}
+	
 
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse
 	// aparte
