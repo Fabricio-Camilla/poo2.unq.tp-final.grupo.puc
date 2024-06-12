@@ -29,6 +29,7 @@ public class TestSEM {
 	private Estacionamiento estacionamiento;
 	private Infraccion infraccion;
 	private EstacionamientoVigente vigente;
+	private Notificable suscriptor;
 
 	@BeforeEach
 
@@ -40,6 +41,7 @@ public class TestSEM {
 		estacionamiento = mock(EstacionamientoViaApp.class);
 		infraccion = mock(Infraccion.class);
 		vigente = mock(EstacionamientoVigente.class);
+		suscriptor = spy(Notificable.class);
 	}
 
 	@Test
@@ -100,7 +102,7 @@ public class TestSEM {
 
 	@Test
 	void testElSemIndicaQueUnUsuarioNoTieneCreditoSuficiente() {
-		when(usuario.getCredito()).thenReturn(-100d);
+		when(usuario.getCredito()).thenReturn(-500d);
 		
 		assertFalse(sem.calcularSaldoSuficiente(usuario));
 	}
@@ -293,5 +295,70 @@ public class TestSEM {
 		sem.registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zonaEstacionamiento);
 		sem.finDeFranjaHoraria();
 		when(usuario.estaVigente()).thenReturn(false);
+	}
+	
+	
+	@Test
+	void testElSemNotificaALosSuscriptoresPorInicioDeEstacionamiento() throws Exception {
+		when(suscriptor.getInteres()).thenReturn("Inicio");
+		
+		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
+		sem.suscribir("Inicio", suscriptor);
+		sem.registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zonaEstacionamiento);
+		
+		verify(suscriptor, atLeastOnce()).update("Inicio");
+	}
+	
+	
+	@Test
+	void testElSemNotificaALosSuscriptoresPorFinDeEstacionamiento() throws Exception {
+		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
+		estacionamientos.add(estacionamiento);
+		
+		when(suscriptor.getInteres()).thenReturn("Fin");
+		when(estacionamiento.getHoraInicio()).thenReturn(LocalTime.now());
+		when(usuario.getCelular()).thenReturn("11223456");		
+		when(usuario.getPatente()).thenReturn("AD012TF");
+		when(zonaEstacionamiento.estaRegistradoElEstacionamiento(estacionamiento)).thenReturn(true);
+		when(estacionamiento.getPatenteDeUsuario()).thenReturn("AD012TF");
+		when(zonaEstacionamiento.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
+		
+		
+		sem.registrarAlUsuario(usuario);
+		sem.suscribir("Fin", suscriptor);
+		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
+		sem.registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zonaEstacionamiento);
+		
+		sem.finalizarEstacionamiento("11223456");
+		
+		verify(suscriptor, atLeastOnce()).update("Fin");
+	}
+	
+	@Test
+	void testElSemNotificaALosSuscriptoresPorRecargaDeCredito() throws Exception {
+		when(suscriptor.getInteres()).thenReturn("Recarga");
+		when(usuario.getCelular()).thenReturn("11224456");
+		
+		sem.registrarAlUsuario(usuario);
+		sem.suscribir("Recarga", suscriptor);
+		sem.cargarCredito(20d, "11224456");
+				
+		verify(suscriptor, atLeastOnce()).update("Recarga");
+	}
+	
+	@Test
+	void testElSemSuscribeAUnNotificable() {
+		sem.suscribir("Inicio", suscriptor);
+		
+		assertTrue(!sem.getSuscriptores().isEmpty());
+	}
+	
+	
+	@Test
+	void testElSemDesuscribeAUnNotificable() {
+		sem.suscribir("Inicio", suscriptor);
+		sem.desuscribir(suscriptor);
+		
+		assertTrue(sem.getSuscriptores().isEmpty());
 	}
 }

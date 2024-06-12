@@ -87,6 +87,7 @@ public class SEM implements Observers{
 				.orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
 		this.getEstacionamientosRegistrados().add(estacionamiento);
 		zona.registrarEstacionamiento(estacionamiento);
+		this.notificiar("Inicio");
 	}
 
 	public boolean tieneRegistradoElEstacionamiento(Estacionamiento estacionamiento) {
@@ -133,6 +134,7 @@ public class SEM implements Observers{
 
 		usuario.cobrarEstacionamiento(
 				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
+		this.notificiar("Fin");
 		this.getEstacionamientosRegistrados().remove(estacionamiento);
 		zona.getEstacionamientosRegistrados().remove(estacionamiento);
 
@@ -147,6 +149,7 @@ public class SEM implements Observers{
 				.filter(u -> u.getCelular().equals(celular)).findFirst()
 				.orElseThrow(() -> new Exception("Usuario no registrado"));
 		usuarioARecargar.cargarCredito(montoACargar);
+		this.notificiar("Recarga");
 	}
 
 	public Set<Estacionamiento> getEstacionamientosRegistrados() {
@@ -207,7 +210,7 @@ public class SEM implements Observers{
 	}
 
 	public Set<Notificable> getSuscriptores() {
-		return suscriptores;
+		return this.suscriptores;
 	}
 	
 
