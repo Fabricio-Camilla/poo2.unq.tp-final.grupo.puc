@@ -87,7 +87,7 @@ public class SEM implements Observers{
 				.orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
 		this.getEstacionamientosRegistrados().add(estacionamiento);
 		zona.registrarEstacionamiento(estacionamiento);
-		this.notificiar("Inicio");
+		this.notificiar(EventoEstacionamiento.InicioEstacionamiento);
 	}
 
 	public boolean tieneRegistradoElEstacionamiento(Estacionamiento estacionamiento) {
@@ -134,7 +134,7 @@ public class SEM implements Observers{
 
 		usuario.cobrarEstacionamiento(
 				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
-		this.notificiar("Fin");
+		this.notificiar(EventoEstacionamiento.FinEstacionamiento);
 		this.getEstacionamientosRegistrados().remove(estacionamiento);
 		zona.getEstacionamientosRegistrados().remove(estacionamiento);
 
@@ -149,7 +149,7 @@ public class SEM implements Observers{
 				.filter(u -> u.getCelular().equals(celular)).findFirst()
 				.orElseThrow(() -> new Exception("Usuario no registrado"));
 		usuarioARecargar.cargarCredito(montoACargar);
-		this.notificiar("Recarga");
+		this.notificiar(EventoEstacionamiento.CargaDeSaldo);
 	}
 
 	public Set<Estacionamiento> getEstacionamientosRegistrados() {
@@ -194,7 +194,7 @@ public class SEM implements Observers{
 	}
 
 	@Override
-	public void suscribir(String eventoInteres, Notificable suscriptor) {
+	public void suscribir(EventoEstacionamiento eventoInteres, Notificable suscriptor) {
 		this.getSuscriptores().add(suscriptor);
 	}
 
@@ -204,13 +204,17 @@ public class SEM implements Observers{
 	}
 
 	@Override
-	public void notificiar(String eventoInteres) {
+	public void notificiar(EventoEstacionamiento eventoInteres) {
 		Stream<Notificable> interesados = this.getSuscriptores().stream().filter(s -> s.getInteres().equals(eventoInteres));
 		interesados.forEach(i -> i.update(eventoInteres));
 	}
 
 	public Set<Notificable> getSuscriptores() {
 		return this.suscriptores;
+	}
+
+	public int cantidadDeSuscriptores() {
+		return this.getSuscriptores().size();
 	}
 	
 

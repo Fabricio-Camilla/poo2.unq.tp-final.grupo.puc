@@ -2,11 +2,11 @@ package poo2.edu.unq.ar.tpFinal;
 
 public abstract class Notificable {
 
-	private String interes;
+	private EventoEstacionamiento interes;
 
-	public String getInteres() {
+	public EventoEstacionamiento getInteres() {
 		return this.interes;
 	}
 
-	protected abstract void update(String eventoInteres);
+	protected abstract void update(EventoEstacionamiento eventoInteres);
 }

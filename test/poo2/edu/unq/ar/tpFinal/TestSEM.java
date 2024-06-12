@@ -300,13 +300,13 @@ public class TestSEM {
 	
 	@Test
 	void testElSemNotificaALosSuscriptoresPorInicioDeEstacionamiento() throws Exception {
-		when(suscriptor.getInteres()).thenReturn("Inicio");
+		when(suscriptor.getInteres()).thenReturn(EventoEstacionamiento.InicioEstacionamiento);
 		
 		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
-		sem.suscribir("Inicio", suscriptor);
+		sem.suscribir(EventoEstacionamiento.InicioEstacionamiento, suscriptor);
 		sem.registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zonaEstacionamiento);
 		
-		verify(suscriptor, atLeastOnce()).update("Inicio");
+		verify(suscriptor, atLeastOnce()).update(EventoEstacionamiento.InicioEstacionamiento);
 	}
 	
 	
@@ -315,7 +315,7 @@ public class TestSEM {
 		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
 		estacionamientos.add(estacionamiento);
 		
-		when(suscriptor.getInteres()).thenReturn("Fin");
+		when(suscriptor.getInteres()).thenReturn(EventoEstacionamiento.FinEstacionamiento);
 		when(estacionamiento.getHoraInicio()).thenReturn(LocalTime.now());
 		when(usuario.getCelular()).thenReturn("11223456");		
 		when(usuario.getPatente()).thenReturn("AD012TF");
@@ -325,38 +325,38 @@ public class TestSEM {
 		
 		
 		sem.registrarAlUsuario(usuario);
-		sem.suscribir("Fin", suscriptor);
+		sem.suscribir(EventoEstacionamiento.FinEstacionamiento, suscriptor);
 		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
 		sem.registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zonaEstacionamiento);
 		
 		sem.finalizarEstacionamiento("11223456");
 		
-		verify(suscriptor, atLeastOnce()).update("Fin");
+		verify(suscriptor, atLeastOnce()).update(EventoEstacionamiento.FinEstacionamiento);
 	}
 	
 	@Test
 	void testElSemNotificaALosSuscriptoresPorRecargaDeCredito() throws Exception {
-		when(suscriptor.getInteres()).thenReturn("Recarga");
+		when(suscriptor.getInteres()).thenReturn(EventoEstacionamiento.CargaDeSaldo);
 		when(usuario.getCelular()).thenReturn("11224456");
 		
 		sem.registrarAlUsuario(usuario);
-		sem.suscribir("Recarga", suscriptor);
+		sem.suscribir(EventoEstacionamiento.CargaDeSaldo, suscriptor);
 		sem.cargarCredito(20d, "11224456");
 				
-		verify(suscriptor, atLeastOnce()).update("Recarga");
+		verify(suscriptor, atLeastOnce()).update(EventoEstacionamiento.CargaDeSaldo);
 	}
 	
 	@Test
 	void testElSemSuscribeAUnNotificable() {
-		sem.suscribir("Inicio", suscriptor);
+		sem.suscribir(EventoEstacionamiento.FinEstacionamiento, suscriptor);
 		
-		assertTrue(!sem.getSuscriptores().isEmpty());
+		assertEquals(sem.cantidadDeSuscriptores(), 1);
 	}
 	
 	
 	@Test
 	void testElSemDesuscribeAUnNotificable() {
-		sem.suscribir("Inicio", suscriptor);
+		sem.suscribir(EventoEstacionamiento.CargaDeSaldo, suscriptor);
 		sem.desuscribir(suscriptor);
 		
 		assertTrue(sem.getSuscriptores().isEmpty());
