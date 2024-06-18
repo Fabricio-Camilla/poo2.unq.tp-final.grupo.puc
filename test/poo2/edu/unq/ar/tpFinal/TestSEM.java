@@ -240,13 +240,6 @@ public class TestSEM {
 	}
 
 	@Test
-	void testElSemNoPuedeRegistrarUnPuntoDeVentaSiNoSeEncuentraLaZonaDeEstacionamiento() throws Exception {
-		assertThrows(Exception.class, () -> {
-			sem.agregarPuntoDeVentaEnLaZonaDeEstacionamiento(puntoDeVenta, zonaEstacionamiento);
-		}, "No existe una zona de estacionamiento registrada");
-	}
-
-	@Test
 	void testCuandoElSemRegistraUnaZonaDeEstacionamientoRegistraAlInspectorQueContieneLaZona() {
 		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
 		assertTrue(sem.tieneRegistradosInspectores());
@@ -264,13 +257,6 @@ public class TestSEM {
 		sem.registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zonaEstacionamiento);
 		verify(zonaEstacionamiento, atLeastOnce()).registrarEstacionamiento(estacionamiento);
 		assertTrue(sem.tieneRegistradoElEstacionamiento(estacionamiento));
-	}
-
-	@Test
-	void testElSemNoPuedeRegistrarUnEstacionamientoSiNoSeEncuentraLaZonaDeEstacionamientoRegistrada() throws Exception {
-		assertThrows(Exception.class, () -> {
-			sem.registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zonaEstacionamiento);
-		}, "No existe una zona de estacionamiento registrada");
 	}
 
 	@Test

@@ -37,7 +37,11 @@ public class AppInspector {
 		Infraccion infraccion = new Infraccion(patente, LocalDate.now(), LocalTime.now(), this,
 				this.estacionamientoAsignado);
 		this.infraccionesRegistradas().add(infraccion);
-		this.sem.registrarInfraccion(infraccion);
+		this.getSEM().registrarInfraccion(infraccion);
+	}
+
+	private SEM getSEM() {
+		return this.sem;
 	}
 
 	public int cantidadDeInfraccionesEmitidas() {

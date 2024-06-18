@@ -65,10 +65,12 @@ public class SEM implements Observers{
 	public void agregarPuntoDeVentaEnLaZonaDeEstacionamiento(PuntoDeVenta puntoDeVenta,
 			ZonaDeEstacionamiento zonaDeEstacionamiento) throws Exception {
 
-		ZonaDeEstacionamiento zona = this.zonasDeEstacionamiento.stream().filter(ze -> ze.equals(zonaDeEstacionamiento))
-				.findFirst().orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
-		zona.agregarPuntoDeVenta(puntoDeVenta);
-		this.puntosDeVenta.add(puntoDeVenta);
+		zonaDeEstacionamiento.agregarPuntoDeVenta(puntoDeVenta);
+		this.getPuntosDeVenta().add(puntoDeVenta);
+	}
+
+	private Set<PuntoDeVenta> getPuntosDeVenta() {
+		return this.puntosDeVenta;
 	}
 
 	public boolean tieneRegistradoElPuntoDeVenta(PuntoDeVenta puntoDeVenta) {
@@ -81,12 +83,9 @@ public class SEM implements Observers{
 
 	public void registrarUnNuevoEstacionamientoEnLaZona(Estacionamiento estacionamiento,
 			ZonaDeEstacionamiento zonaEstacionamiento) throws Exception {
-
-		ZonaDeEstacionamiento zona = this.getZonasDeEstacionamiento().stream()
-				.filter(ze -> ze.equals(zonaEstacionamiento)).findFirst()
-				.orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
+		
 		this.getEstacionamientosRegistrados().add(estacionamiento);
-		zona.registrarEstacionamiento(estacionamiento);
+		zonaEstacionamiento.registrarEstacionamiento(estacionamiento);
 		this.notificiar(EventoEstacionamiento.InicioEstacionamiento);
 	}
 
