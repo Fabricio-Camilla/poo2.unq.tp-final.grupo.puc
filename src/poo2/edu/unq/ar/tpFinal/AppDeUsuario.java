@@ -31,21 +31,27 @@ public class AppDeUsuario implements MovementSensor {
 	}
 
 	public void indicarFinDeEstacionamiento() throws Exception {
+		//se ejecuta en el modo manual y finaliza el estacionamiento directamente sin delegar en el estado
 		this.modo.finDeEstacionamiento(this);
 	}
 
 	public void indicarInicioDeEstaciomiento() throws Exception {
+		//se ejecuta en el modo manual e inicia el estacionamiento directamente sin delegar en el estado
 		this.modo.inicioDeEstacionamiento(this);
 	}
-
+	//asumiendo que siempre se ejectuta en modo automatico
 	@Override
 	public void driving() throws Exception {
+		//dentro del modo delegar en el estado
 		this.estado.alertaFinEstacionamiento(this);
+		//this.modo.finDeEstacionamiento(this);
 	}
 
 	@Override
 	public void walking() throws Exception {
+		//dentro del modo delegar en el estado 
 		this.estado.alertaInicioEstacionamiento(this);
+		//this.modo.inicioDeEstacionamiento(this);
 	}
 
 	public String getPatente() {

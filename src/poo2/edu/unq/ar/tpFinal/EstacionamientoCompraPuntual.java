@@ -5,10 +5,9 @@ import java.time.LocalTime;
 public class EstacionamientoCompraPuntual extends Estacionamiento {
 	
 	private int cantidadDeHoras;
-
-	public EstacionamientoCompraPuntual(AppDeUsuario appUsuario, LocalTime horaInicio, String patente,
-			int cantidadDeHoras) {
-		super(patente, appUsuario, horaInicio, null);
+	
+	public EstacionamientoCompraPuntual(AppDeUsuario appUsuario, LocalTime horaInicio, String patente, int cantidadDeHoras) {
+		super(patente, appUsuario, horaInicio);
 		this.cantidadDeHoras = cantidadDeHoras;
 	}
 

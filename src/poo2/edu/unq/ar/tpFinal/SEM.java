@@ -22,7 +22,7 @@ public class SEM implements Observers{
 	public SEM() {
 
 	}
-
+	// quedarnos con el historial de los estacionamientos
 	public SEM(Double montoPorHora, LocalTime horaInicio, LocalTime horaFin) {
 		this.estacionamientosRegistrados = new HashSet<Estacionamiento>();
 		this.usuarios = new HashSet<AppDeUsuario>();
@@ -123,6 +123,7 @@ public class SEM implements Observers{
 	}
 
 	public void finalizarEstacionamiento(String celular) throws Exception {
+		//encapsular filtros
 		AppDeUsuario usuario = this.getUsuariosRegistrados().stream().filter(u -> u.getCelular().equals(celular))
 				.findFirst().orElseThrow(() -> new Exception("Usuario no registrado"));
 		Estacionamiento estacionamiento = this.getEstacionamientosRegistrados().stream()
@@ -134,8 +135,8 @@ public class SEM implements Observers{
 		usuario.cobrarEstacionamiento(
 				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
 		this.notificiar(EventoEstacionamiento.FinEstacionamiento);
-		this.getEstacionamientosRegistrados().remove(estacionamiento);
-		zona.getEstacionamientosRegistrados().remove(estacionamiento);
+		//this.getEstacionamientosRegistrados().remove(estacionamiento);
+		//zona.getEstacionamientosRegistrados().remove(estacionamiento);
 
 	}
 

@@ -5,7 +5,6 @@ import java.time.LocalTime;
 public abstract class Estacionamiento {
 
 	protected LocalTime horaInicio;
-	protected LocalTime horaFin;
 	protected AppDeUsuario appUsuario;
 	protected String patente;
 
@@ -13,9 +12,8 @@ public abstract class Estacionamiento {
 
 	}
 
-	protected Estacionamiento(String patente, AppDeUsuario appUsuario, LocalTime horaInicio, LocalTime horaFin) {
+	protected Estacionamiento(String patente, AppDeUsuario appUsuario, LocalTime horaInicio) {
 		this.horaInicio = horaInicio;
-		this.horaFin = horaFin;
 		this.appUsuario = appUsuario;
 		this.patente = patente;
 	}
@@ -29,6 +27,7 @@ public abstract class Estacionamiento {
 	}
 
 	protected boolean estaVigente() {
+		//no delegar en la app que el estacionamineto via app o compra puntal sepa responder calculando la hora
 		return this.getAppUsuario().estaVigente();
 	}
 
