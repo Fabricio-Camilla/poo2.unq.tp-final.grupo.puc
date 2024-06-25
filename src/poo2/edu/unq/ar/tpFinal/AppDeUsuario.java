@@ -29,14 +29,12 @@ public class AppDeUsuario implements MovementSensor {
 		this.notificaciones = new ArrayList<String>();
 		this.localizacion = new Point(1, 1);
 	}
-
+// si tiene el modo de desplazamiento si esta activado driving y walking deelga en el modo, desactivado manual solo avisa, automatico avisa y inicio estacionamiento
 	public void indicarFinDeEstacionamiento() throws Exception {
-		//se ejecuta en el modo manual y finaliza el estacionamiento directamente sin delegar en el estado
 		this.modo.finDeEstacionamiento(this);
 	}
 
 	public void indicarInicioDeEstaciomiento() throws Exception {
-		//se ejecuta en el modo manual e inicia el estacionamiento directamente sin delegar en el estado
 		this.modo.inicioDeEstacionamiento(this);
 	}
 	//asumiendo que siempre se ejectuta en modo automatico

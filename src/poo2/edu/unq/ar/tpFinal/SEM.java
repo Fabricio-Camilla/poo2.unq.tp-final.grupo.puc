@@ -193,7 +193,7 @@ public class SEM implements Observers{
 		});
 	}
 
-	@Override
+	@Override // evento no iria como parametro
 	public void suscribir(EventoEstacionamiento eventoInteres, Notificable suscriptor) {
 		this.getSuscriptores().add(suscriptor);
 	}

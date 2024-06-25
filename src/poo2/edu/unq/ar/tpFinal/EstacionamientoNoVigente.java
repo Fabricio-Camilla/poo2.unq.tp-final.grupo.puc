@@ -15,7 +15,7 @@ public class EstacionamientoNoVigente implements IEstadoDeEstacionamiento {
 			new Exception("No tiene saldo suficiente"); 
 		}
 	}
-
+//Igps preguntarle una zona valida que esta en mi localizacion
 	public void alertaFinEstacionamiento(AppDeUsuario usuario) {
 		System.out.println("Ya tenes el estacionamiento finalizado");
 	}
