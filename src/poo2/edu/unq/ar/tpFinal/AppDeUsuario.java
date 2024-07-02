@@ -15,6 +15,7 @@ public class AppDeUsuario implements MovementSensor {
 	private Point localizacion;
 	private SEM sem;
 	private MovementSensor sensor;
+	private boolean desplazamiento;
 
 	public AppDeUsuario() {
 		
@@ -28,21 +29,35 @@ public class AppDeUsuario implements MovementSensor {
 		this.sem = sem;
 		this.notificaciones = new ArrayList<String>();
 		this.localizacion = new Point(1, 1);
+		this.desplazamiento = false;
 	}
+	
+	public void activarModoDesplazamiento() {
+		this.desplazamiento = true;
+	}
+	
+	public void desactivarModoDesplazamiento() {
+		this.desplazamiento = false;
+	}
+	
 // si tiene el modo de desplazamiento si esta activado driving y walking deelga en el modo, desactivado manual solo avisa, automatico avisa y inicio estacionamiento
 	public void indicarFinDeEstacionamiento() throws Exception {
-		this.modo.finDeEstacionamiento(this);
+		if (this.getModoDesplazamiento()) {
+			this.modo.finDeEstacionamiento(this);			
+		}
 	}
 
 	public void indicarInicioDeEstaciomiento() throws Exception {
-		this.modo.inicioDeEstacionamiento(this);
+		if (this.getModoDesplazamiento()) {
+			this.modo.inicioDeEstacionamiento(this);
+		}
 	}
 	//asumiendo que siempre se ejectuta en modo automatico
 	@Override
 	public void driving() throws Exception {
 		//dentro del modo delegar en el estado
-		this.estado.alertaFinEstacionamiento(this);
-		//this.modo.finDeEstacionamiento(this);
+		//this.estado.alertaFinEstacionamiento(this);
+		this.modo.finDeEstacionamiento(this);
 	}
 
 	@Override
@@ -130,5 +145,21 @@ public class AppDeUsuario implements MovementSensor {
 	}
 
 
+	public boolean getModoDesplazamiento() {
+		return this.desplazamiento;
+	}
+	
+	public void realizarAlertaFinEstacionamiento() throws Exception {
+		this.getEstado().alertaFinEstacionamiento(this.getSEM(), this.getCelular());	
+	}
+	public void realizarAlertaInicioEstacionamiento() throws Exception {
+		this.getEstado().alertaInicioEstacionamiento(this);	 
+	}
+	public boolean cumpleConSaldoParaPagar() {
+		return this.getSEM().calcularSaldoSuficiente(this);
+	}
+	public void iniciarEstacionamiento(Estacionamiento estacionamiento, ZonaDeEstacionamiento zona) throws Exception {
+		this.getSEM().registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zona); 
+	}
 
 }
