@@ -4,7 +4,7 @@ public class ModoAutomatico implements ModoDeUso{
 
 	@Override
 	public void finDeEstacionamiento(AppDeUsuario appDeUsuario) throws Exception{
-		appDeUsuario.realizarAlertaFinEstacionamiento(); //encapsular
+		appDeUsuario.realizarAlertaFinEstacionamiento(); 
 		appDeUsuario.notificarFinEstacionamiento("Se realizo fin de estacionamiento automaticamente");
 	}
 

@@ -1,6 +1,7 @@
 package poo2.edu.unq.ar.tpFinal;
 
 import java.awt.Point;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -133,9 +134,6 @@ public class AppDeUsuario implements MovementSensor {
 		this.credito -= montoACobrarPor;
 	}
 
-	public boolean estaVigente() {
-		return this.getEstado().estaVigente();
-	}
 	public void cambiarAEstadoVigente() {
 		this.setEstado(new EstacionamientoVigente());
 	}
@@ -149,12 +147,10 @@ public class AppDeUsuario implements MovementSensor {
 	}
 	
 	public void realizarAlertaFinEstacionamiento() throws Exception {
-		//Desacoplar del estado y que lo realice el modo automatico
-		this.getEstado().alertaFinEstacionamiento(this.getSEM(), this.getCelular());	
+		this.getEstado().alertaFinEstacionamiento(this);	
 	}
 	
 	public void realizarAlertaInicioEstacionamiento() throws Exception {
-		//Desacoplar del estado y que lo realice el modo automatico
 		this.getEstado().alertaInicioEstacionamiento(this);	 
 	}
 	
@@ -164,6 +160,15 @@ public class AppDeUsuario implements MovementSensor {
 	
 	public void iniciarEstacionamiento(Estacionamiento estacionamiento, ZonaDeEstacionamiento zona) throws Exception {
 		this.getSEM().registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zona); 
+	}
+	public LocalDateTime horaDeCierreDelSistema() {
+		return this.getSEM().getHoraFin();
+	}
+	public void finalizarEstacionamineto() throws Exception {
+		this.getSEM().finalizarEstacionamiento(this.celular);
+	}
+	public ZonaDeEstacionamiento pedirZonaDeEstacionamientoValida() throws Exception {
+		return this.getSEM().encontrarZonaEstacionamientoEn(this.getLocalizacion()); 
 	}
 
 }

@@ -71,7 +71,6 @@ public class ZonaDeEstacionamiento {
 	}
 
 	public SEM sem() {
-
 		return this.sem;
 	}
 

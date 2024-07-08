@@ -22,7 +22,7 @@ public class SEM implements Observers{
 	public SEM() {
 
 	}
-	// quedarnos con el historial de los estacionamientos
+	//quedarnos con el historial de los estacionamientos
 	public SEM(Double montoPorHora, LocalDateTime horaInicio, LocalDateTime horaFin) {
 		this.estacionamientosRegistrados = new HashSet<Estacionamiento>();
 		this.usuarios = new HashSet<AppDeUsuario>();
@@ -92,8 +92,8 @@ public class SEM implements Observers{
 	public boolean tieneRegistradoElEstacionamiento(Estacionamiento estacionamiento) {
 		return this.estacionamientosRegistrados.contains(estacionamiento);
 	}
-
-	public ZonaDeEstacionamiento encontrarZonaEstacionamientoEn(Point localizacion) throws Exception {
+	
+	public ZonaDeEstacionamiento encontrarZonaEstacionamientoEn(Point localizacion) throws Exception {//devolver zona "valida"
 		return this.getZonasDeEstacionamiento().stream().filter(z -> z.getLocalizacion().equals(localizacion))
 				.findFirst().orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
 	}
@@ -194,13 +194,13 @@ public class SEM implements Observers{
 	}
 
 	@Override // evento no iria como parametro
-	public void suscribir(EventoEstacionamiento eventoInteres, Notificable suscriptor) {
+	public void suscribir(Notificable suscriptor) {
 		this.getSuscriptores().add(suscriptor);
 	}
 
 	@Override
 	public void desuscribir(Notificable suscriptor) {
-		this.getSuscriptores().remove(suscriptor);		
+		this.getSuscriptores().remove(suscriptor);
 	}
 
 	@Override
