@@ -1,7 +1,7 @@
 package poo2.edu.unq.ar.tpFinal;
 
 import java.awt.Point;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -14,8 +14,8 @@ public class SEM implements Observers{
 	private Set<Estacionamiento> estacionamientosRegistrados;
 	private Set<Ticket> tickets;
 	private Double montoPorHora;
-	private LocalTime horaInicio;
-	private LocalTime horaFin;
+	private LocalDateTime horaInicio;
+	private LocalDateTime horaFin;
 	private Set<Infraccion> infraccionesRegistradas;
 	private Set<Notificable> suscriptores;
 
@@ -23,7 +23,7 @@ public class SEM implements Observers{
 
 	}
 	// quedarnos con el historial de los estacionamientos
-	public SEM(Double montoPorHora, LocalTime horaInicio, LocalTime horaFin) {
+	public SEM(Double montoPorHora, LocalDateTime horaInicio, LocalDateTime horaFin) {
 		this.estacionamientosRegistrados = new HashSet<Estacionamiento>();
 		this.usuarios = new HashSet<AppDeUsuario>();
 		this.infraccionesRegistradas = new HashSet<Infraccion>();
@@ -99,10 +99,10 @@ public class SEM implements Observers{
 	}
 
 	public boolean calcularSaldoSuficiente(AppDeUsuario usuario) {
-		return this.montoACobrarPor(this.getMontoPorHora(), LocalTime.now(), this.getHoraFin()) <= usuario.getCredito();
+		return this.montoACobrarPor(this.getMontoPorHora(), LocalDateTime.now(), this.getHoraFin()) <= usuario.getCredito();
 	}
 
-	public Double montoACobrarPor(Double montoPorHora, LocalTime now, LocalTime horaFin) {
+	public Double montoACobrarPor(Double montoPorHora, LocalDateTime now, LocalDateTime horaFin) {
 		return montoPorHora * (horaFin.getHour() - now.getHour());
 	}
 
@@ -110,11 +110,11 @@ public class SEM implements Observers{
 		return this.montoPorHora;
 	}
 
-	public LocalTime getHoraInicio() {
+	public LocalDateTime getHoraInicio() {
 		return this.horaInicio;
 	}
 
-	public LocalTime getHoraFin() {
+	public LocalDateTime getHoraFin() {
 		return this.horaFin;
 	}
 
@@ -133,7 +133,7 @@ public class SEM implements Observers{
 				.filter(z -> z.estaRegistradoElEstacionamiento(estacionamiento)).toList().get(0);
 
 		usuario.cobrarEstacionamiento(
-				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalTime.now()));
+				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalDateTime.now()));
 		this.notificiar(EventoEstacionamiento.FinEstacionamiento);
 		//this.getEstacionamientosRegistrados().remove(estacionamiento);
 		//zona.getEstacionamientosRegistrados().remove(estacionamiento);

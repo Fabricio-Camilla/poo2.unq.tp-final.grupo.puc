@@ -1,6 +1,6 @@
 package poo2.edu.unq.ar.tpFinal;
 
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 
 public class PuntoDeVenta {
 
@@ -13,7 +13,7 @@ public class PuntoDeVenta {
 	}
 
 	public void cargarCredito(Double montoACargar, String celular) throws Exception {
-		TicketDeRecargaCredito ticket = new TicketDeRecargaCredito(125, this, LocalTime.now(), montoACargar, celular);
+		TicketDeRecargaCredito ticket = new TicketDeRecargaCredito(125, this, LocalDateTime.now(), montoACargar, celular);
 		this.getSem().cargarCredito(montoACargar, celular);
 		this.getSem().registrarTicket(ticket);
 	}
@@ -21,8 +21,8 @@ public class PuntoDeVenta {
 	public EstacionamientoCompraPuntual registarEstacionamiento(AppDeUsuario appUsuario, String patente,
 			int cantidadDeHoras) throws Exception {
 		EstacionamientoCompraPuntual estacionamientoARegistrar = new EstacionamientoCompraPuntual(appUsuario,
-				LocalTime.now(), patente, cantidadDeHoras);
-		TicketDeEstacionamiento ticket = new TicketDeEstacionamiento(1205, this, LocalTime.now(), cantidadDeHoras);
+				LocalDateTime.now(), patente, cantidadDeHoras);
+		TicketDeEstacionamiento ticket = new TicketDeEstacionamiento(1205, this, LocalDateTime.now(), cantidadDeHoras);
 		this.getSem().registrarUnNuevoEstacionamientoEnLaZona(estacionamientoARegistrar, this.getZona());
 		this.getSem().registrarTicket(ticket);
 		return estacionamientoARegistrar;
