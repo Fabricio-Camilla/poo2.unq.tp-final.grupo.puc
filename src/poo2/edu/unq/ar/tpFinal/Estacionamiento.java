@@ -26,9 +26,13 @@ public abstract class Estacionamiento {
 		return this.horaInicio;
 	}
 
-	protected boolean estaVigente() {
+	protected abstract boolean estaVigente();
 		//no delegar en la app que el estacionamineto via app o compra puntal sepa responder calculando la hora
-		return this.getAppUsuario().estaVigente();
+	
+	protected abstract LocalTime getHoraFin();
+	
+	public boolean estaVigenteParaHorario(LocalTime hora) {
+		return this.getHoraFin().isBefore(hora);
 	}
 
 	public void revisarVigenciaCon(AppInspector inspector, SEM sem) throws Exception {

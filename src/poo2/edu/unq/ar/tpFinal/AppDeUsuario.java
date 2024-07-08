@@ -144,20 +144,24 @@ public class AppDeUsuario implements MovementSensor {
 		this.setEstado(new EstacionamientoNoVigente());
 	}
 
-
 	public boolean getModoDesplazamiento() {
 		return this.desplazamiento;
 	}
 	
 	public void realizarAlertaFinEstacionamiento() throws Exception {
+		//Desacoplar del estado y que lo realice el modo automatico
 		this.getEstado().alertaFinEstacionamiento(this.getSEM(), this.getCelular());	
 	}
+	
 	public void realizarAlertaInicioEstacionamiento() throws Exception {
+		//Desacoplar del estado y que lo realice el modo automatico
 		this.getEstado().alertaInicioEstacionamiento(this);	 
 	}
+	
 	public boolean cumpleConSaldoParaPagar() {
 		return this.getSEM().calcularSaldoSuficiente(this);
 	}
+	
 	public void iniciarEstacionamiento(Estacionamiento estacionamiento, ZonaDeEstacionamiento zona) throws Exception {
 		this.getSEM().registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zona); 
 	}

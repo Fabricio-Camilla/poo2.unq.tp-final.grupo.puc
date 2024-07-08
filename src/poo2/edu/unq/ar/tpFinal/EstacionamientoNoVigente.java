@@ -4,7 +4,7 @@ import java.time.LocalTime;
 
 public class EstacionamientoNoVigente implements IEstadoDeEstacionamiento {
 	//solo se utilzaria estando en el modo atuomatico
-	public void alertaInicioEstacionamiento(AppDeUsuario usuario) throws Exception {
+	/*public void alertaInicioEstacionamiento(AppDeUsuario usuario) throws Exception {
 		if (usuario.cumpleConSaldoParaPagar()) {
 			ZonaDeEstacionamiento zona = usuario.getSEM().encontrarZonaEstacionamientoEn(usuario.getLocalizacion()); //delgar en el gps
 			Estacionamiento estacionamiento = new EstacionamientoViaApp(usuario, LocalTime.now(),
@@ -14,16 +14,16 @@ public class EstacionamientoNoVigente implements IEstadoDeEstacionamiento {
 		} else {
 			new Exception("No tiene saldo suficiente"); 
 		}
-	}
+	}*/
 //Igps preguntarle una zona valida que esta en mi localizacion
 
 	public boolean estaVigente() {
 		return false;
 	}
-	@Override
-	public void alertaFinEstacionamiento(SEM sem, String celular) throws Exception {
+	
+	/*public void alertaFinEstacionamiento(SEM sem, String celular) throws Exception {
 		
-	}
+	}*/
 
 	
 }

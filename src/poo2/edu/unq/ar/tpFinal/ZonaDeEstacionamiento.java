@@ -59,25 +59,15 @@ public class ZonaDeEstacionamiento {
 	}
 
 	public boolean estaRegistradoElEstacionamiento(Estacionamiento estacionamiento) {
-		return this.estacionamientos.contains(estacionamiento);
+		return this.getEstacionamientosRegistrados().contains(estacionamiento);
 	}
 
 	public void registrarEstacionamiento(Estacionamiento estacionamiento) {
-		this.estacionamientos.add(estacionamiento);
+		this.getEstacionamientosRegistrados().add(estacionamiento);
 	}
 
 	public Set<Estacionamiento> getEstacionamientosRegistrados() {
 		return this.estacionamientos;
-	}
-
-	public void revisarVigenciaDeEstacionamientos() {
-		this.getEstacionamientosRegistrados().stream().forEach(e -> {
-			try {
-				e.revisarVigenciaCon(this.inspector(), this.sem());
-			} catch (Exception e1) {
-				e1.printStackTrace();
-			}
-		});
 	}
 
 	public SEM sem() {
