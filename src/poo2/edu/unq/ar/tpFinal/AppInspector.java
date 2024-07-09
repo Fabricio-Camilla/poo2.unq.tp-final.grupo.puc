@@ -29,12 +29,13 @@ public class AppInspector {
 		return this.getSEM().estaVigenteElEstacionamientoConPatente(patente);
 	}
 
-
-	public void notificarAlSemPorEstacionamientoNoVigente(String patente) {
-		Infraccion infraccion = new Infraccion(patente, LocalDate.now(), LocalTime.now(), this,
-				this.getEstacionamientoAsignado());
-		this.infraccionesRegistradas().add(infraccion);
-		this.getSEM().registrarInfraccion(infraccion);
+	public void notificarAlSemPorEstacionamientoNoVigente(String patente) throws Exception {
+		if (this.estaVigenteElEstacionamientoConPatente(patente)) {
+			Infraccion infraccion = new Infraccion(patente, LocalDate.now(), LocalTime.now(), this,
+					this.getEstacionamientoAsignado());
+			this.infraccionesRegistradas().add(infraccion);
+			this.getSEM().registrarInfraccion(infraccion);
+		}
 	}
 
 	private SEM getSEM() {
@@ -52,6 +53,5 @@ public class AppInspector {
 	public ZonaDeEstacionamiento getEstacionamientoAsignado() {
 		return this.estacionamientoAsignado;
 	}
-	
 
 }
