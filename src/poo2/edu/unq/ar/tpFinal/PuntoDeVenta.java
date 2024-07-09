@@ -14,9 +14,10 @@ public class PuntoDeVenta {
 
 	public void cargarCredito(Double montoACargar, String celular) throws Exception {
 		TicketDeRecargaCredito ticket = new TicketDeRecargaCredito(125, this, LocalDateTime.now(), montoACargar, celular);
-		this.getSem().cargarCredito(montoACargar, celular);
-		this.getSem().registrarTicket(ticket);
+		this.solicitarCargaDeCredito(montoACargar, celular);
+		this.enviarTicket(ticket);
 	}
+
 
 	public EstacionamientoCompraPuntual registarEstacionamiento(AppDeUsuario appUsuario, String patente,
 			int cantidadDeHoras) throws Exception {
@@ -28,8 +29,12 @@ public class PuntoDeVenta {
 		return estacionamientoARegistrar;
 	}
 
-	public  void enviarTicket(TicketDeEstacionamiento ticket) {
+	public  void enviarTicket(Ticket ticket) {
 		this.getSem().registrarTicket(ticket);		
+	}
+	
+	public void solicitarCargaDeCredito(Double montoACargar, String celular) throws Exception {
+		this.getSem().cargarCredito(montoACargar, celular);
 	}
 
 	public void enviarCompraDeEstacionamiento(EstacionamientoCompraPuntual estacionamientoARegistrar) {

@@ -30,6 +30,6 @@ public class TestPuntoDeVenta {
 	@Test
 	void testUnPuntoDeVentaCreaYRegistraUnEstacionamientoDeCompraPuntual() throws Exception {
 		EstacionamientoCompraPuntual estacionamiento = this.puntoDeVenta.registarEstacionamiento(appUsuario, "FIA 690", 4);
-		verify(sistema, atLeastOnce()).registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zona);
+		verify(sistema, atLeastOnce()).agregarEstacionmiento(estacionamiento);
 	}
 }
