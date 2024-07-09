@@ -23,9 +23,17 @@ public class PuntoDeVenta {
 		EstacionamientoCompraPuntual estacionamientoARegistrar = new EstacionamientoCompraPuntual(appUsuario,
 				LocalDateTime.now(), patente, cantidadDeHoras);
 		TicketDeEstacionamiento ticket = new TicketDeEstacionamiento(1205, this, LocalDateTime.now(), cantidadDeHoras);
-		this.getSem().registrarUnNuevoEstacionamientoEnLaZona(estacionamientoARegistrar, this.getZona());
-		this.getSem().registrarTicket(ticket);
+		this.enviarCompraDeEstacionamiento(estacionamientoARegistrar);
+		this.enviarTicket(ticket);
 		return estacionamientoARegistrar;
+	}
+
+	public  void enviarTicket(TicketDeEstacionamiento ticket) {
+		this.getSem().registrarTicket(ticket);		
+	}
+
+	public void enviarCompraDeEstacionamiento(EstacionamientoCompraPuntual estacionamientoARegistrar) {
+		this.getSem().agregarEstacionmiento(estacionamientoARegistrar);		
 	}
 
 	private ZonaDeEstacionamiento getZona() {

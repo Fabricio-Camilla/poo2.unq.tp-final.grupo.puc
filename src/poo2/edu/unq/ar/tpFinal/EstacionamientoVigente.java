@@ -8,7 +8,7 @@ public class EstacionamientoVigente implements IEstadoDeEstacionamiento {
 	}
 
 	public void alertaInicioEstacionamiento(AppDeUsuario usuario) {
-		System.out.println("Ya tenes un estacionamiento vigente");
+		//System.out.println("Ya tenes un estacionamiento vigente");
 	}
 
 	

@@ -158,15 +158,24 @@ public class AppDeUsuario implements MovementSensor {
 		return this.getSEM().calcularSaldoSuficiente(this);
 	}
 	
-	public void iniciarEstacionamiento(Estacionamiento estacionamiento, ZonaDeEstacionamiento zona) throws Exception {
-		this.getSEM().registrarUnNuevoEstacionamientoEnLaZona(estacionamiento, zona); 
+	public void iniciarEstacionamiento() throws Exception {
+		if(this.validarZonaDeEstacionmiento(this.getLocalizacion())) {
+			ZonaDeEstacionamiento zona = this.pedirZonaDeEstacionamientoValida();
+			this.getSEM().registrarUnNuevoEstacionamientoEnLaZona(this, zona);
+		}
+	}
+	
+	private boolean validarZonaDeEstacionmiento(Point localizacion2) {
+		return this.getSEM().validarLocalizacionParaEstacionamiento(localizacion2);
 	}
 	public LocalDateTime horaDeCierreDelSistema() {
 		return this.getSEM().getHoraFin();
 	}
+	
 	public void finalizarEstacionamineto() throws Exception {
 		this.getSEM().finalizarEstacionamiento(this.celular);
 	}
+	
 	public ZonaDeEstacionamiento pedirZonaDeEstacionamientoValida() throws Exception {
 		return this.getSEM().encontrarZonaEstacionamientoEn(this.getLocalizacion()); 
 	}

@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
 
-public class SEM implements Observers{
+public class SEM implements Observers {
 	private Set<ZonaDeEstacionamiento> zonasDeEstacionamiento;
 	private Set<AppDeUsuario> usuarios;
 	private Set<PuntoDeVenta> puntosDeVenta;
@@ -22,7 +22,8 @@ public class SEM implements Observers{
 	public SEM() {
 
 	}
-	//quedarnos con el historial de los estacionamientos
+
+	// quedarnos con el historial de los estacionamientos
 	public SEM(Double montoPorHora, LocalDateTime horaInicio, LocalDateTime horaFin) {
 		this.estacionamientosRegistrados = new HashSet<Estacionamiento>();
 		this.usuarios = new HashSet<AppDeUsuario>();
@@ -81,25 +82,38 @@ public class SEM implements Observers{
 		return !this.inspectores.isEmpty();
 	}
 
-	public void registrarUnNuevoEstacionamientoEnLaZona(Estacionamiento estacionamiento,
-			ZonaDeEstacionamiento zonaEstacionamiento) throws Exception {
+	public void registrarUnNuevoEstacionamientoEnLaZona(AppDeUsuario usuario, ZonaDeEstacionamiento zonaEstacionamiento)
+			throws Exception {
+		Estacionamiento estacionamiento = new EstacionamientoViaApp(usuario, LocalDateTime.now(),
+				usuario.horaDeCierreDelSistema(), usuario.getPatente());
 		
-		this.getEstacionamientosRegistrados().add(estacionamiento);
+		this.agregarEstacionmiento(estacionamiento);
 		zonaEstacionamiento.registrarEstacionamiento(estacionamiento);
 		this.notificiar(EventoEstacionamiento.InicioEstacionamiento);
+	}
+
+	public void agregarEstacionmiento(Estacionamiento estacionamiento) {
+		this.getEstacionamientosRegistrados().add(estacionamiento);		
 	}
 
 	public boolean tieneRegistradoElEstacionamiento(Estacionamiento estacionamiento) {
 		return this.estacionamientosRegistrados.contains(estacionamiento);
 	}
-	
-	public ZonaDeEstacionamiento encontrarZonaEstacionamientoEn(Point localizacion) throws Exception {//devolver zona "valida"
-		return this.getZonasDeEstacionamiento().stream().filter(z -> z.getLocalizacion().equals(localizacion))
-				.findFirst().orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
+
+	public ZonaDeEstacionamiento encontrarZonaEstacionamientoEn(Point localizacion) throws Exception{ 
+		//this.getZonasDeEstacionamiento().stream().filter(z -> z.getLocalizacion().equals(localizacion))
+		//.findFirst().orElseThrow(() -> new Exception("No existe una zona de estacionamiento registrada"));
+		
+		return new ZonaDeEstacionamiento(this, localizacion);
+	}
+
+	public boolean validarLocalizacionParaEstacionamiento(Point localizacion) {
+		return true;
 	}
 
 	public boolean calcularSaldoSuficiente(AppDeUsuario usuario) {
-		return this.montoACobrarPor(this.getMontoPorHora(), LocalDateTime.now(), this.getHoraFin()) <= usuario.getCredito();
+		return this.montoACobrarPor(this.getMontoPorHora(), LocalDateTime.now(), this.getHoraFin()) <= usuario
+				.getCredito();
 	}
 
 	public Double montoACobrarPor(Double montoPorHora, LocalDateTime now, LocalDateTime horaFin) {
@@ -123,21 +137,16 @@ public class SEM implements Observers{
 	}
 
 	public void finalizarEstacionamiento(String celular) throws Exception {
-		//encapsular filtros
+		// encapsular filtros
 		AppDeUsuario usuario = this.getUsuariosRegistrados().stream().filter(u -> u.getCelular().equals(celular))
 				.findFirst().orElseThrow(() -> new Exception("Usuario no registrado"));
 		Estacionamiento estacionamiento = this.getEstacionamientosRegistrados().stream()
 				.filter(e -> e.getPatenteDeUsuario().equals(usuario.getPatente())).findFirst()
 				.orElseThrow(() -> new Exception("No hay estacionamiento para el usuario"));
-		ZonaDeEstacionamiento zona = this.getZonasDeEstacionamiento().stream()
-				.filter(z -> z.estaRegistradoElEstacionamiento(estacionamiento)).toList().get(0);
 
 		usuario.cobrarEstacionamiento(
 				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalDateTime.now()));
 		this.notificiar(EventoEstacionamiento.FinEstacionamiento);
-		//this.getEstacionamientosRegistrados().remove(estacionamiento);
-		//zona.getEstacionamientosRegistrados().remove(estacionamiento);
-
 	}
 
 	public Set<Ticket> getTickets() {
@@ -148,6 +157,7 @@ public class SEM implements Observers{
 		AppDeUsuario usuarioARecargar = this.getUsuariosRegistrados().stream()
 				.filter(u -> u.getCelular().equals(celular)).findFirst()
 				.orElseThrow(() -> new Exception("Usuario no registrado"));
+		
 		usuarioARecargar.cargarCredito(montoACargar);
 		this.notificiar(EventoEstacionamiento.CargaDeSaldo);
 	}
@@ -182,7 +192,7 @@ public class SEM implements Observers{
 	public Set<Infraccion> getInfraccionesRegistradas() {
 		return this.infraccionesRegistradas;
 	}
-	
+
 	public void finDeFranjaHoraria() {
 		this.getUsuariosRegistrados().stream().forEach(usuario -> {
 			try {
@@ -193,7 +203,7 @@ public class SEM implements Observers{
 		});
 	}
 
-	@Override // evento no iria como parametro
+	@Override 
 	public void suscribir(Notificable suscriptor) {
 		this.getSuscriptores().add(suscriptor);
 	}
@@ -205,7 +215,8 @@ public class SEM implements Observers{
 
 	@Override
 	public void notificiar(EventoEstacionamiento eventoInteres) {
-		Stream<Notificable> interesados = this.getSuscriptores().stream().filter(s -> s.getInteres().equals(eventoInteres));
+		Stream<Notificable> interesados = this.getSuscriptores().stream()
+				.filter(s -> s.getInteres().equals(eventoInteres));
 		interesados.forEach(i -> i.update(eventoInteres));
 	}
 
@@ -216,7 +227,6 @@ public class SEM implements Observers{
 	public int cantidadDeSuscriptores() {
 		return this.getSuscriptores().size();
 	}
-	
 
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse
 	// aparte
