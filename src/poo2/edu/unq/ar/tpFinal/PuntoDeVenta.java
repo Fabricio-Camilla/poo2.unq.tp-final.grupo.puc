@@ -19,7 +19,7 @@ public class PuntoDeVenta {
 	}
 
 
-	public EstacionamientoCompraPuntual registarEstacionamiento(AppDeUsuario appUsuario, String patente,
+	public Estacionamiento registarEstacionamiento(AppDeUsuario appUsuario, String patente,
 			int cantidadDeHoras) throws Exception {
 		EstacionamientoCompraPuntual estacionamientoARegistrar = new EstacionamientoCompraPuntual(appUsuario,
 				LocalDateTime.now(), patente, cantidadDeHoras);
