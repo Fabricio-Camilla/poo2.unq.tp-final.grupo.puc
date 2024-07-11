@@ -81,7 +81,7 @@ public class SEM implements Observers {
 	public void registrarUnNuevoEstacionamientoEnLaZona(AppDeUsuario usuario, ZonaDeEstacionamiento zonaEstacionamiento)
 			throws Exception {
 		Estacionamiento estacionamiento = new EstacionamientoViaApp(usuario, LocalDateTime.now(),
-				this.getHoraFin(), usuario.getPatente());
+				this.getHoraFin(), usuario.getPatente()); 
 		
 		this.agregarEstacionmiento(estacionamiento);
 		zonaEstacionamiento.registrarEstacionamiento(estacionamiento);

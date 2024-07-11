@@ -47,16 +47,25 @@ public class TestEstacionamientoViaApp {
 	void unEstacionamientoEstaVigenteSiNoSeSuperaElLimiteHorario() {
 		Estacionamiento estacionamientoVigente = new EstacionamientoViaApp(appUsuario,
 				LocalDateTime.of(LocalDate.now(), LocalTime.of(7, 0)),
-				LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)), "AA20AA");
-		;
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 59)), "AA20AA");
+		
 		assertTrue(estacionamientoVigente.estaVigente());
+	}
+	
+	@Test
+	void unEstacionamientoNoEstaVigenteSiSuperaElLimiteHorarioDeCierre() {
+		Estacionamiento estacionamientoVigente = new EstacionamientoViaApp(appUsuario,
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(7, 0)),
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 01)), "AA20AA");
+		
+		assertFalse(estacionamientoVigente.estaVigente());
 	}
 
 	@Test
 	void unEstacionamientoNoEstaVigenteUnaVezSuperadoElLimiteHorario() {
 		Estacionamiento estacionamientoNoVigente = new EstacionamientoViaApp(appUsuario,
-				LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59)),
-				LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59)), "AA20AA");
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(9, 0)),
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(10, 0)), "AA20AA");
 		;
 		assertFalse(estacionamientoNoVigente.estaVigente());
 	}

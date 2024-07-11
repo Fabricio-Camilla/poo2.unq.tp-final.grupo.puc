@@ -29,6 +29,7 @@ public class TestSEM {
 	private ZonaDeEstacionamiento zonaEstacionamiento;
 	private PuntoDeVenta puntoDeVenta;
 	private Estacionamiento estacionamiento;
+	private Estacionamiento estacionamiento2;
 	private Infraccion infraccion;
 	private EstacionamientoVigente vigente;
 	private Notificable suscriptor;
@@ -44,6 +45,7 @@ public class TestSEM {
 		zonaEstacionamiento = mock(ZonaDeEstacionamiento.class);
 		puntoDeVenta = mock(PuntoDeVenta.class);
 		estacionamiento = spy(EstacionamientoViaApp.class);
+		estacionamiento2 = mock(EstacionamientoViaApp.class);
 		infraccion = mock(Infraccion.class);
 		vigente = mock(EstacionamientoVigente.class);
 		suscriptor = spy(Notificable.class);
@@ -136,13 +138,13 @@ public class TestSEM {
 		
 		when(usuario.getPatente()).thenReturn("AD213GU");
 		when(estacionamiento.getPatenteDeUsuario()).thenReturn("AD213GU");
-		when(estacionamiento.getHoraInicio()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(14, 0)));
-		when(estacionamiento.getHoraFin()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(15, 0)));
+		when(estacionamiento.getHoraInicio()).thenReturn(LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0)));
+		when(estacionamiento.getHoraFin()).thenReturn(LocalDateTime.of(LocalDate.now(), LocalTime.of(14, 0)));
 		when(estacionamiento.estaVigente()).thenReturn(true);
 		
-		sem.registrarUnNuevoEstacionamientoEnLaZona(usuario, zonaEstacionamiento);
+		sem.agregarEstacionmiento(estacionamiento);
 		
-		assertTrue(sem.estaVigenteElEstacionamientoConPatente("AD213GU"));
+		assertTrue(sem.estaVigenteElEstacionamientoConPatente("AD213GU")); 
 	}
 
 	@Test

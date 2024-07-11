@@ -48,7 +48,7 @@ public class AppDeUsuario implements MovementSensor {
 		}
 	}
 
-	public void indicarInicioDeEstaciomiento() throws Exception {
+	public void indicarInicioDeEstacionamiento() throws Exception {
 		if (this.getModoDesplazamiento()) {
 			this.modo.inicioDeEstacionamiento(this);
 		}
@@ -57,15 +57,13 @@ public class AppDeUsuario implements MovementSensor {
 	@Override
 	public void driving() throws Exception {
 		//dentro del modo delegar en el estado
-		//this.estado.alertaFinEstacionamiento(this);
 		this.modo.finDeEstacionamiento(this);
 	}
 
 	@Override
 	public void walking() throws Exception {
 		//dentro del modo delegar en el estado 
-		this.estado.alertaInicioEstacionamiento(this);
-		//this.modo.inicioDeEstacionamiento(this);
+		this.modo.inicioDeEstacionamiento(this);
 	}
 
 	public String getPatente() {

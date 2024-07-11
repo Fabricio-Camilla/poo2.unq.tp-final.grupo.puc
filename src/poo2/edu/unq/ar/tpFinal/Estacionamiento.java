@@ -34,8 +34,9 @@ public abstract class Estacionamiento {
 
 	public boolean estaVigente() {
 		return this.estaVigenteParaElDia()
-				&& (this.estaVigenteParaHorario(LocalDateTime.now())
-				|| this.estaVigenteParaHorario(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0))));
+				&& (this.getHoraFin().isAfter(LocalDateTime.now()) 
+				&& this.estaVigenteParaHorario(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0))));
+				
 	}
 	
 	protected abstract LocalDateTime getHoraFin();

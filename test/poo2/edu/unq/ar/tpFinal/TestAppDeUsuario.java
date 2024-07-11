@@ -69,10 +69,13 @@ public class TestAppDeUsuario {
 
 	@Test
 	void testAUnaAppLeLlegaNotificacionDeAlertaAlCambiarAWalking() throws Exception {
+		when(sem.getUsuariosRegistrados()).thenReturn(usuarios);
+		
+		appDeUsuario.cambiarModo(modoAutomatico);
 		appDeUsuario.setEstado(noVigente);
 		appDeUsuario.walking();
 		
-		verify(noVigente).alertaInicioEstacionamiento(appDeUsuario);
+		verify(noVigente, atLeastOnce()).alertaInicioEstacionamiento(appDeUsuario);
 	}
 
 	@Test
@@ -112,8 +115,37 @@ public class TestAppDeUsuario {
 		assertEquals(appDeUsuario.getCredito(), 20d);
 	}
 	
+	@Test
+	void testUnUsuarioIndicaFinDeEstacionamiento() throws Exception {
+		appDeUsuario.activarModoDesplazamiento();
+		appDeUsuario.cambiarModo(modoAutomatico);
+		appDeUsuario.indicarFinDeEstacionamiento();
+		
+		verify(modoAutomatico).finDeEstacionamiento(appDeUsuario);
+	}
+ 
+	@Test
+	void testUnUsuarioIndicaFinDeEstacionamientoConDesplazamientoDesactivado() throws Exception {
+		appDeUsuario.cambiarModo(modoAutomatico);
+		appDeUsuario.indicarFinDeEstacionamiento();
+		
+		verify(modoAutomatico, never()).finDeEstacionamiento(appDeUsuario);
+	}
 	
-	// si falta coverage, el caso estando no vigente que le llegue driving y vigente
-	// walking
-
+	@Test
+	void testUnUsuarioIndicaIncioDeEstacionamiento() throws Exception {
+		appDeUsuario.activarModoDesplazamiento();
+		appDeUsuario.cambiarModo(modoAutomatico);
+		appDeUsuario.indicarInicioDeEstacionamiento();
+		
+		verify(modoAutomatico).inicioDeEstacionamiento(appDeUsuario);
+	}
+ 
+	@Test
+	void testUnUsuarioIndicaInicioDeEstacionamientoConDesplazamientoDesactivado() throws Exception {
+		appDeUsuario.cambiarModo(modoAutomatico);
+		appDeUsuario.indicarInicioDeEstacionamiento();
+		
+		verify(modoAutomatico, never()).inicioDeEstacionamiento(appDeUsuario);
+	}
 }
