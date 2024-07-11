@@ -23,10 +23,4 @@ public class EstacionamientoViaApp extends Estacionamiento {
 
 	}
 
-	public boolean estaVigente() {
-		return estaVigenteParaElDia()
-				&& (this.estaVigenteParaHorario(LocalDateTime.now())
-				|| this.estaVigenteParaHorario(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0))));
-	}
-
 }

@@ -12,6 +12,9 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -59,6 +62,8 @@ public class TestAppInspector {
 
 		when(appUsuario.getPatente()).thenReturn("ASD24DA");
 		when(estacionamiento.getPatenteDeUsuario()).thenReturn("ASD24DA");
+		when(estacionamiento.getHoraInicio()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(14, 0)));
+		when(estacionamiento.getHoraFin()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(15, 0)));
 		when(sem.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
 		when(zonaEstacionamiento.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
 		when(sem.getInfraccionesRegistradas()).thenReturn(new HashSet<Infraccion>());
@@ -76,6 +81,8 @@ public class TestAppInspector {
 		estacionamientos.add(estacionamiento);
 
 		when(appUsuario.getEstado()).thenReturn(noVigente);
+		when(estacionamiento.getHoraInicio()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(14, 0)));
+		when(estacionamiento.getHoraFin()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(15, 0)));
 		when(estacionamiento.getPatenteDeUsuario()).thenReturn("AF245GF");
 		when(sem.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
 		when(appUsuario.getPatente()).thenReturn("AF254AF");
@@ -91,6 +98,8 @@ public class TestAppInspector {
 		estacionamientos.add(estacionamiento);
 
 		when(estacionamiento.getPatenteDeUsuario()).thenReturn("AF245GF");
+		when(estacionamiento.getHoraInicio()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(14, 0)));
+		when(estacionamiento.getHoraFin()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(15, 0)));
 		when(sem.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
 		when(appUsuario.getPatente()).thenReturn("AF254AF");
 		when(sem.estaVigenteElEstacionamientoConPatente("AF245GF")).thenReturn(false);
@@ -123,6 +132,8 @@ public class TestAppInspector {
 		when(zonaEstacionamiento.inspector()).thenReturn(inspector);
 		when(appUsuario.getPatente()).thenReturn("AF254AF");
 		when(estacionamiento.getPatenteDeUsuario()).thenReturn("AF254AF");
+		when(estacionamiento.getHoraInicio()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(14, 0)));
+		when(estacionamiento.getHoraFin()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(15, 0)));
 		when(estacionamiento.estaVigente()).thenReturn(false);		
 		when(sem.estaVigenteElEstacionamientoConPatente("AF254AF")).thenReturn(false);
 		
@@ -143,6 +154,8 @@ public class TestAppInspector {
 		when(zonaEstacionamiento.sem()).thenReturn(sem);
 		when(zonaEstacionamiento.inspector()).thenReturn(inspector);
 		when(appUsuario.getPatente()).thenReturn("AF254AF");
+		when(estacionamiento.getHoraInicio()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(14, 0)));
+		when(estacionamiento.getHoraFin()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(15, 0)));
 		when(estacionamiento.getPatenteDeUsuario()).thenReturn("AF254AF");
 		when(estacionamiento.getAppUsuario()).thenReturn(appUsuario);
 		when(sem.getInfraccionesRegistradas()).thenReturn(new HashSet<Infraccion>());

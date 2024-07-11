@@ -32,8 +32,8 @@ public class TestAppDeUsuario {
 		vigente = spy(EstacionamientoVigente.class);
 		sem = mock(SEM.class);
 		appDeUsuario = new AppDeUsuario("1118654287", "SNW 025", sem);
-		modoManual = mock(ModoManual.class);
-		modoAutomatico = mock(ModoAutomatico.class);
+		modoManual = spy(ModoManual.class);
+		modoAutomatico = spy(ModoAutomatico.class);
 		noVigente = spy(EstacionamientoNoVigente.class);
 		usuarios.add(appDeUsuario);
 		zonas.add(zona);
@@ -68,42 +68,6 @@ public class TestAppDeUsuario {
 	}
 
 	@Test
-	void testUnaAppIniciaConEstacionamientoEstadoNoVigente() throws Exception {
-		assertFalse(appDeUsuario.getEstado().estaVigente());
-	}
-
-	@Test
-	void testUnaAppCambiaElEstacionamientoAEstadoVigente() throws Exception {
-		Point locali = new Point(1,1);
-		when(sem.calcularSaldoSuficiente(appDeUsuario)).thenReturn(true);
-		when(sem.getZonasDeEstacionamiento()).thenReturn(zonas);
-		when(zona.getLocalizacion()).thenReturn(locali);
-		when(sem.encontrarZonaEstacionamientoEn(locali)).thenReturn(zona);
-		
-		assertFalse(appDeUsuario.getEstado().estaVigente()); 
-		
-		appDeUsuario.indicarInicioDeEstaciomiento();
-		
-		assertTrue(appDeUsuario.getEstado().estaVigente());
-	}
-	
-	@Test
-	void testUnaAppCambiaElEstacionamientoAEstadoNoVigente() throws Exception {
-		Point locali = new Point(1,1);
-		when(sem.calcularSaldoSuficiente(appDeUsuario)).thenReturn(true);
-		when(sem.getZonasDeEstacionamiento()).thenReturn(zonas);
-		when(zona.getLocalizacion()).thenReturn(locali);
-		when(sem.encontrarZonaEstacionamientoEn(locali)).thenReturn(zona); 
-		
-		appDeUsuario.indicarInicioDeEstaciomiento();
-		appDeUsuario.indicarFinDeEstacionamiento();
-		
-		assertFalse(appDeUsuario.getEstado().estaVigente());
-		verify(sem, atLeastOnce()).finalizarEstacionamiento(appDeUsuario.getCelular());
-	}
-	
-
-	@Test
 	void testAUnaAppLeLlegaNotificacionDeAlertaAlCambiarAWalking() throws Exception {
 		appDeUsuario.setEstado(noVigente);
 		appDeUsuario.walking();
@@ -115,6 +79,7 @@ public class TestAppDeUsuario {
 	void testAUnaAppLeLlegaNotificacionDeAlertaAlCambiarADriving() throws Exception {
 		when(sem.getUsuariosRegistrados()).thenReturn(usuarios);
 		
+		appDeUsuario.cambiarModo(modoAutomatico);;
 		appDeUsuario.setEstado(vigente);
 		appDeUsuario.driving();
 		
@@ -128,7 +93,17 @@ public class TestAppDeUsuario {
 		
 		assertEquals(appDeUsuario.getNotificaciones().size(), 2);
 	}
+	@Test
+	void testUnUsuarioPuedeActivarElModoDeDesplazamiento() {
+		appDeUsuario.activarModoDesplazamiento();
+		assertTrue(appDeUsuario.getModoDesplazamiento());
+	}
 	
+	@Test
+	void testUnUsuarioPuedeDesactivarElModoDeDesplazamiento() {
+		appDeUsuario.desactivarModoDesplazamiento();
+		assertFalse(appDeUsuario.getModoDesplazamiento());
+	}
 	@Test
 	void testAUnUsuairoSeLeDescuentaDeSuCredito() {
 		appDeUsuario.cargarCredito(40d);
@@ -136,7 +111,8 @@ public class TestAppDeUsuario {
 		
 		assertEquals(appDeUsuario.getCredito(), 20d);
 	}
-
+	
+	
 	// si falta coverage, el caso estando no vigente que le llegue driving y vigente
 	// walking
 

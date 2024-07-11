@@ -41,10 +41,6 @@ public class PuntoDeVenta {
 		this.getSem().agregarEstacionmiento(estacionamientoARegistrar);		
 	}
 
-	private ZonaDeEstacionamiento getZona() {
-		return this.zona;
-	}
-
 	private SEM getSem() {
 		return this.sistema;
 	}

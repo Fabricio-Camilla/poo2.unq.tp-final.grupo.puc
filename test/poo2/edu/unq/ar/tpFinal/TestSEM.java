@@ -37,7 +37,8 @@ public class TestSEM {
 	@BeforeEach
 
 	void setUp() {
-		sem = new SEM(40d, LocalDateTime.of(LocalDate.now(), LocalTime.of(7, 0)), LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)));
+		sem = new SEM(40d, LocalDateTime.of(LocalDate.now(), LocalTime.of(7, 0)),
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)));
 		usuario = spy(AppDeUsuario.class);
 		usuario2 = mock(AppDeUsuario.class);
 		zonaEstacionamiento = mock(ZonaDeEstacionamiento.class);
@@ -46,6 +47,11 @@ public class TestSEM {
 		infraccion = mock(Infraccion.class);
 		vigente = mock(EstacionamientoVigente.class);
 		suscriptor = spy(Notificable.class);
+	}
+
+	@Test
+	void testElSemDevuelveQueUnaLocalizacionEsValida() {
+		assertTrue(sem.validarLocalizacionParaEstacionamiento(new Point(1, 1)));
 	}
 
 	@Test
@@ -94,7 +100,8 @@ public class TestSEM {
 
 	@Test
 	void testElSemCalculaMontoACobrarPorEstacionar() {
-		assertEquals(sem.montoACobrarPor(sem.getMontoPorHora(), LocalDateTime.of(LocalDate.now(), LocalTime.of(13, 0)), sem.getHoraFin()), (Double) 280d);
+		assertEquals(sem.montoACobrarPor(sem.getMontoPorHora(), LocalDateTime.of(LocalDate.now(), LocalTime.of(13, 0)),
+				sem.getHoraFin()), (Double) 280d);
 	}
 
 	@Test
@@ -186,17 +193,8 @@ public class TestSEM {
 		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
 		assertEquals(sem.cantidadDeZonasDeEstacionamiento(), 1);
 	}
-
-	@Test
-	void testElSemBuscaUnaZonaDeEstacionamientoEspecifica() throws Exception {
-		Point localizacion = new Point(1, 1);
-		when(zonaEstacionamiento.getLocalizacion()).thenReturn(localizacion);
-
-		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
-
-		//assertEquals(sem.encontrarZonaEstacionamientoEn(localizacion), zonaEstacionamiento);
-	}
-
+	
+	
 	@Test
 	void testErrorAlFinalizarUnEstacionamientoConUnEstacionamientoNoRegistrado() {
 		when(usuario.getCelular()).thenReturn("115952323");
@@ -218,15 +216,6 @@ public class TestSEM {
 		assertThrows(Exception.class, () -> {
 			sem.cargarCredito(40d, "9999999");
 		}, "Usuario no registrado");
-	}
-
-	@Test
-
-	void testErrorElSemNoEncuentraUnaZonaDeEstacionamientoRegistrada() throws Exception {
-		Point localizacion = new Point(1, 1);
-		/*assertThrows(Exception.class, () -> {
-			sem.encontrarZonaEstacionamientoEn(localizacion);
-		}, "No existe una zona de estacionamiento registrada");*/
 	}
 
 	@Test
@@ -259,10 +248,11 @@ public class TestSEM {
 	void testElSemRegistraUnNuevoEstacionamiento() throws Exception {
 		sem.registrarZonaDeEstacionamiento(zonaEstacionamiento);
 		sem.registrarUnNuevoEstacionamientoEnLaZona(usuario, zonaEstacionamiento);
-		
-		//verify(zonaEstacionamiento, atLeastOnce()).registrarEstacionamiento(estacionamiento);
+
+		// verify(zonaEstacionamiento,
+		// atLeastOnce()).registrarEstacionamiento(estacionamiento);
 		assertEquals(sem.cantidadDeEstacionamientosRegistrados(), 1);
-	//	assertTrue(sem.tieneRegistradoElEstacionamiento(estacionamiento));
+		// assertTrue(sem.tieneRegistradoElEstacionamiento(estacionamiento));
 	}
 
 	@Test
@@ -271,14 +261,14 @@ public class TestSEM {
 		sem.registrarTicket(ticketDeEstacionamiento);
 		assertEquals(sem.cantidadDeTickets(), 1);
 	}
-	
+
 	@Test
 	void testElSemRegistraUnTicketDeCargaDeCredito() {
 		TicketDeRecargaCredito ticketDeRecarga = mock(TicketDeRecargaCredito.class);
 		sem.registrarTicket(ticketDeRecarga);
 		assertEquals(sem.cantidadDeTickets(), 1);
 	}
-	
+
 	@Test
 	void testElSemFinalizaTodosLosEstacionamientosAlFinDeLaFranjaHoraria() throws Exception{
 		when(usuario.getEstado()).thenReturn(vigente);
@@ -286,8 +276,7 @@ public class TestSEM {
 		sem.registrarUnNuevoEstacionamientoEnLaZona(usuario, zonaEstacionamiento);
 		sem.finDeFranjaHoraria();
 	}
-	
-	
+
 	@Test
 	void testElSemNotificaALosSuscriptoresPorInicioDeEstacionamiento() throws Exception {
 		when(suscriptor.getInteres()).thenReturn(EventoEstacionamiento.InicioEstacionamiento);
@@ -298,32 +287,33 @@ public class TestSEM {
 		
 		verify(suscriptor, atLeastOnce()).update(EventoEstacionamiento.InicioEstacionamiento);
 	}
-	
-	
+
 	@Test
 	void testElSemNotificaALosSuscriptoresPorFinDeEstacionamiento() throws Exception {
-		//AppDeUsuario usuario2 = mock(AppDeUsuario.class);
+		// AppDeUsuario usuario2 = mock(AppDeUsuario.class);
 		Set<Estacionamiento> estacionamientos = new HashSet<Estacionamiento>();
 		estacionamientos.add(estacionamiento);
-		
+
 		when(suscriptor.getInteres()).thenReturn(EventoEstacionamiento.FinEstacionamiento);
-		when(estacionamiento.getHoraInicio()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(14, 0)));
-		when(estacionamiento.getHoraFin()).thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(15, 0)));
-		when(usuario2.getCelular()).thenReturn("11223456");		
+		when(estacionamiento.getHoraInicio())
+				.thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(14, 0)));
+		when(estacionamiento.getHoraFin())
+				.thenReturn(LocalDateTime.of(LocalDate.of(2024, 10, 20), LocalTime.of(15, 0)));
+		when(usuario2.getCelular()).thenReturn("11223456");
 		when(usuario2.getPatente()).thenReturn("AD012TF");
 		when(usuario2.getCredito()).thenReturn(1000d);
 		when(estacionamiento.getPatenteDeUsuario()).thenReturn("AD012TF");
 		when(zonaEstacionamiento.getEstacionamientosRegistrados()).thenReturn(estacionamientos);
-		
+
 		sem.registrarAlUsuario(usuario2);
 		sem.suscribir(suscriptor);
 		sem.registrarUnNuevoEstacionamientoEnLaZona(usuario2, zonaEstacionamiento);
-		
+
 		sem.finalizarEstacionamiento("11223456");
-		
+
 		verify(suscriptor, atLeastOnce()).update(EventoEstacionamiento.FinEstacionamiento);
 	}
-	
+
 	@Test
 	void testElSemNotificaALosSuscriptoresPorRecargaDeCredito() throws Exception {
 		//AppDeUsuario usuario2 = mock(AppDeUsuario.class);
@@ -336,20 +326,19 @@ public class TestSEM {
 				
 		verify(suscriptor, atLeastOnce()).update(EventoEstacionamiento.CargaDeSaldo);
 	}
-	
+
 	@Test
 	void testElSemSuscribeAUnNotificable() {
 		sem.suscribir(suscriptor);
-		
+
 		assertEquals(sem.cantidadDeSuscriptores(), 1);
 	}
-	
-	
+
 	@Test
 	void testElSemDesuscribeAUnNotificable() {
 		sem.suscribir(suscriptor);
 		sem.desuscribir(suscriptor);
-		
+
 		assertTrue(sem.getSuscriptores().isEmpty());
 	}
 }

@@ -38,10 +38,6 @@ public class SEM implements Observers {
 		this.montoPorHora = montoPorHora;
 	}
 
-	public Set<ZonaDeEstacionamiento> getZonasDeEstacionamiento() {
-		return this.zonasDeEstacionamiento;
-	}
-
 	public void registrarAlUsuario(AppDeUsuario usuario) {
 		this.usuarios.add(usuario);
 	}

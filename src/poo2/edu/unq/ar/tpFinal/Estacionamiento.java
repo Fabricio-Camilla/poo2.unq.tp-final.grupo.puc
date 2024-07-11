@@ -1,6 +1,8 @@
 package poo2.edu.unq.ar.tpFinal;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 public abstract class Estacionamiento {
 
@@ -30,8 +32,11 @@ public abstract class Estacionamiento {
 		return this.horaInicio;
 	}
 
-	protected abstract boolean estaVigente();
-		//no delegar en la app que el estacionamineto via app o compra puntal sepa responder calculando la hora
+	public boolean estaVigente() {
+		return this.estaVigenteParaElDia()
+				&& (this.estaVigenteParaHorario(LocalDateTime.now())
+				|| this.estaVigenteParaHorario(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0))));
+	}
 	
 	protected abstract LocalDateTime getHoraFin();
 	

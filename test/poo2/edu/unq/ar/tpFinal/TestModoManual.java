@@ -9,7 +9,7 @@ import static org.mockito.Mockito.when;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TestModoAutomatico {
+class TestModoManual {
 
 	private ModoDeUso modo;
 	private AppDeUsuario usuario;
@@ -18,7 +18,7 @@ class TestModoAutomatico {
 	
 	@BeforeEach
 	void setUp()  {
-		modo = new ModoAutomatico();
+		modo = new ModoManual();
 		usuario = mock(AppDeUsuario.class);
 		noVigente = mock(EstacionamientoNoVigente.class);
 		vigente = mock(EstacionamientoVigente.class);
@@ -41,7 +41,5 @@ class TestModoAutomatico {
 		
 		verify(usuario, atLeastOnce()).notificarFinEstacionamiento("Se realizo fin de estacionamiento automaticamente");
 	}
-	
-	
 
 }

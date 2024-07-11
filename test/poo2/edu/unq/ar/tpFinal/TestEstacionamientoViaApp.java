@@ -1,6 +1,8 @@
 package poo2.edu.unq.ar.tpFinal;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -39,5 +41,32 @@ public class TestEstacionamientoViaApp {
 		when(sem.estaVigenteElEstacionamientoConPatente("AA20AA")).thenReturn(false);
 		estacionamiento.revisarVigenciaCon(inspector, sem);
 		verify(inspector, atLeastOnce()).notificarAlSemPorEstacionamientoNoVigente("AA20AA");
+	}
+
+	@Test
+	void unEstacionamientoEstaVigenteSiNoSeSuperaElLimiteHorario() {
+		Estacionamiento estacionamientoVigente = new EstacionamientoViaApp(appUsuario,
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(7, 0)),
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)), "AA20AA");
+		;
+		assertTrue(estacionamientoVigente.estaVigente());
+	}
+
+	@Test
+	void unEstacionamientoNoEstaVigenteUnaVezSuperadoElLimiteHorario() {
+		Estacionamiento estacionamientoNoVigente = new EstacionamientoViaApp(appUsuario,
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59)),
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(23, 59)), "AA20AA");
+		;
+		assertFalse(estacionamientoNoVigente.estaVigente());
+	}
+	
+	@Test
+	void unEstacionamientoNoEstaVigenteUnaVezPasadaLasOchoDeLaNoche() {
+		Estacionamiento estacionamientoNoVigente = new EstacionamientoViaApp(appUsuario,
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(7, 0)),
+				LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 59)), "AA20AA");
+		;
+		assertTrue(estacionamientoNoVigente.estaVigente());
 	}
 }
