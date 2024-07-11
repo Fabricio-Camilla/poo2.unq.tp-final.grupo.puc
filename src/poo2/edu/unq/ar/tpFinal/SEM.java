@@ -85,7 +85,7 @@ public class SEM implements Observers {
 	public void registrarUnNuevoEstacionamientoEnLaZona(AppDeUsuario usuario, ZonaDeEstacionamiento zonaEstacionamiento)
 			throws Exception {
 		Estacionamiento estacionamiento = new EstacionamientoViaApp(usuario, LocalDateTime.now(),
-				usuario.horaDeCierreDelSistema(), usuario.getPatente());
+				this.getHoraFin(), usuario.getPatente());
 		
 		this.agregarEstacionmiento(estacionamiento);
 		zonaEstacionamiento.registrarEstacionamiento(estacionamiento);
@@ -226,6 +226,10 @@ public class SEM implements Observers {
 
 	public int cantidadDeSuscriptores() {
 		return this.getSuscriptores().size();
+	}
+
+	public int cantidadDeEstacionamientosRegistrados() {
+		return this.getEstacionamientosRegistrados().size();
 	}
 
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse

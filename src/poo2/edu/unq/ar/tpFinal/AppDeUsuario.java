@@ -131,9 +131,12 @@ public class AppDeUsuario implements MovementSensor {
 	}
 
 	public void cobrarEstacionamiento(Double montoACobrarPor) {
-		this.credito -= montoACobrarPor;
+		this.setCredito(this.getCredito() - montoACobrarPor);
 	}
 
+	public void setCredito(Double monto) {
+		this.credito -= monto;
+	}
 	public void cambiarAEstadoVigente() {
 		this.setEstado(new EstacionamientoVigente());
 	}
@@ -167,9 +170,6 @@ public class AppDeUsuario implements MovementSensor {
 	
 	private boolean validarZonaDeEstacionmiento(Point localizacion2) {
 		return this.getSEM().validarLocalizacionParaEstacionamiento(localizacion2);
-	}
-	public LocalDateTime horaDeCierreDelSistema() {
-		return this.getSEM().getHoraFin();
 	}
 	
 	public void finalizarEstacionamineto() throws Exception {

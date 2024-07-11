@@ -8,6 +8,10 @@ public class EstacionamientoViaApp extends Estacionamiento {
 
 	private LocalDateTime horaFin;
 
+	public EstacionamientoViaApp() {
+		
+	}
+	
 	public EstacionamientoViaApp(AppDeUsuario appUsuario, LocalDateTime horaInicio, LocalDateTime horaFin,
 			String patente) {
 		super(patente, appUsuario, horaInicio);
@@ -21,8 +25,8 @@ public class EstacionamientoViaApp extends Estacionamiento {
 
 	public boolean estaVigente() {
 		return estaVigenteParaElDia()
-				&& this.estaVigenteParaHorario(LocalDateTime.now())
-				|| this.estaVigenteParaHorario(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0)));
+				&& (this.estaVigenteParaHorario(LocalDateTime.now())
+				|| this.estaVigenteParaHorario(LocalDateTime.of(LocalDate.now(), LocalTime.of(20, 0))));
 	}
 
 }

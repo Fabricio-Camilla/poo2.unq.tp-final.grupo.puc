@@ -23,7 +23,7 @@ public class TestPuntoDeVenta {
 
 	@BeforeEach
 	void setUp() {
-		sistema = spy(SEM.class);
+		sistema = mock(SEM.class);
 		zona = mock(ZonaDeEstacionamiento.class);
 		puntoDeVenta = new PuntoDeVenta(sistema, zona);
 		appUsuario = mock(AppDeUsuario.class);
@@ -31,6 +31,11 @@ public class TestPuntoDeVenta {
 
 	@Test
 	void testEnUnPuntoDeVentaUnUsuarioPuedeCargarCredito() throws Exception {
+		HashSet usuarios = new HashSet<AppDeUsuario>();
+		usuarios.add(appUsuario);
+		when(sistema.getUsuariosRegistrados()).thenReturn(usuarios);
+		when(appUsuario.getCelular()).thenReturn("0123456789");
+		
 		puntoDeVenta.cargarCredito(20d, "0123456789");
 		verify(sistema, atLeastOnce()).cargarCredito(20d, "0123456789");
 	}
