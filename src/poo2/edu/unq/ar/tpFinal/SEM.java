@@ -1,7 +1,9 @@
 package poo2.edu.unq.ar.tpFinal;
 
 import java.awt.Point;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Stream;
@@ -81,7 +83,7 @@ public class SEM implements Observers {
 	public void registrarUnNuevoEstacionamientoEnLaZona(AppDeUsuario usuario, ZonaDeEstacionamiento zonaEstacionamiento)
 			throws Exception {
 		Estacionamiento estacionamiento = new EstacionamientoViaApp(usuario, LocalDateTime.now(),
-				this.getHoraFin(), usuario.getPatente()); 
+				this.getHoraCierre(), usuario.getPatente()); 
 		
 		this.agregarEstacionmiento(estacionamiento);
 		zonaEstacionamiento.registrarEstacionamiento(estacionamiento);
@@ -134,15 +136,23 @@ public class SEM implements Observers {
 
 	public void finalizarEstacionamiento(String celular) throws Exception {
 		// encapsular filtros
-		AppDeUsuario usuario = this.getUsuariosRegistrados().stream().filter(u -> u.getCelular().equals(celular))
-				.findFirst().orElseThrow(() -> new Exception("Usuario no registrado"));
-		Estacionamiento estacionamiento = this.getEstacionamientosRegistrados().stream()
-				.filter(e -> e.getPatenteDeUsuario().equals(usuario.getPatente())).findFirst()
-				.orElseThrow(() -> new Exception("No hay estacionamiento para el usuario"));
+		AppDeUsuario usuario = this.obtenerUsuarioPor(celular);
+		Estacionamiento estacionamiento = this.obtenerEstacionamientoPor(usuario.getPatente());
 
 		usuario.cobrarEstacionamiento(
 				this.montoACobrarPor(this.getMontoPorHora(), estacionamiento.getHoraInicio(), LocalDateTime.now()));
 		this.notificiar(EventoEstacionamiento.FinEstacionamiento);
+	}
+
+	public AppDeUsuario obtenerUsuarioPor(String celular) throws Exception {
+		return this.getUsuariosRegistrados().stream().filter(u -> u.getCelular().equals(celular))
+				.findFirst().orElseThrow(() -> new Exception("Usuario no registrado"));
+	}
+
+	public Estacionamiento obtenerEstacionamientoPor(String patente) throws Exception{
+		return  this.getEstacionamientosRegistrados().stream()
+				.filter(e -> e.getPatenteDeUsuario().equals(patente)).findFirst()
+				.orElseThrow(() -> new Exception("No hay estacionamiento para el usuario"));
 	}
 
 	public Set<Ticket> getTickets() {
@@ -226,6 +236,11 @@ public class SEM implements Observers {
 
 	public int cantidadDeEstacionamientosRegistrados() {
 		return this.getEstacionamientosRegistrados().size();
+	}
+	
+	
+	public LocalDateTime getHoraCierre() {
+		return LocalDateTime.of(LocalDate.now(), LocalTime.of(19, 59));
 	}
 
 	// cada zona de estacionamiento tiene puntos de venta, deberían de agregarse

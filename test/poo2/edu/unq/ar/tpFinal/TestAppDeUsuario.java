@@ -148,4 +148,13 @@ public class TestAppDeUsuario {
 		
 		verify(modoAutomatico, never()).inicioDeEstacionamiento(appDeUsuario);
 	}
+	
+	@Test
+	void testUnUsuarioIniciaUnEstacionamiento() throws Exception {
+		when(sem.validarLocalizacionParaEstacionamiento(appDeUsuario.getLocalizacion())).thenReturn(true);
+		appDeUsuario.cambiarModo(modoAutomatico);
+		appDeUsuario.iniciarEstacionamiento();
+		
+		verify(sem, atLeastOnce()).encontrarZonaEstacionamientoEn(appDeUsuario.getLocalizacion());
+	}
 }
